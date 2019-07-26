@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+import air_ES.views as aes
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('test_query/',aes.get_query_result,name='test_query')
 ]
