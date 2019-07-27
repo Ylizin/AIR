@@ -18,7 +18,7 @@ class RegisterForm(forms.Form):
     initial_tag_1 = forms.CharField(label='initial_tag_0', max_length=500,widget=forms.TextInput)
 
     ## TODO: check for safety
-
+    
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', max_length=50)

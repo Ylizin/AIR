@@ -3,7 +3,9 @@ from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
+from django.urls import reverse
+
 
 from .models import UserProfile
 from .forms import RegisterForm,LoginForm
@@ -53,6 +55,7 @@ class RegisterView(View):
             # 保存到数据库中
             user_profile.save()
             # TODO: 查重 
+            print('save success!!!!')
             return render(request, 'account/register_success.html', {'form': form})
         return render(request, self.template_name, {'form': form})
 
@@ -62,7 +65,7 @@ class LoginView(View):
     template_name = 'account/login.html'
     
     def get(self,request):
-        form = self.form_class(None)
+        form = LoginForm(None)
         return render(request, self.template_name, {'form': form})
 
     def post(self,request):
@@ -80,17 +83,37 @@ class LoginView(View):
                 login(request, user)
                 # return JsonResponse(__get_response_json_dict(data={}))
                 # response.set_cookie('username',username,3600)
-                return render(request, 'index.html', {'username':username})
+                return render(request, 'account/index.html', {'username':username})
             else:
                 # return JsonResponse(__get_response_json_dict(data={}, err_code=-1, message="Invalid username or password"))
                 return render(request, self.template_name, {'form': user_form,'message': 'Wrong password or account. Please try again.'})
 
+        # return HttpResponseRedirect("/account/login")
 
 class LogoutView(View):
     # form_class = UserForm  # models.py中自定义的表单
-
-    def post(self,request):
-        form = LoginForm(None)
+    def get(self,request):
         logout(request)
-        return render(request,'account/login.html', {'form': form,'message': 'Logout success.'})
+        print('log out ..............')
+        username = request.POST.get('username')
+        print("dsd"+str(username))
+        # return render(request,'account/login.html', {'message': 'Logout success.'})
+        return HttpResponseRedirect('/account/login')
+    def post(self,request):
+        # form = LoginForm(None)
+        logout(request)
+        print('log out ..............')
+        username = request.POST.get('username')
+        print("dsd"+str(username))
+        # return render(request,'account/login.html', {'form': form,'message': 'Logout success.'})
+        return HttpResponseRedirect('/account/login')
+        # return JsonResponse(__get_response_json_dict(data={}))
+
+class IndexView(View):
+    # form_class = UserForm  # models.py中自定义的表单
+
+    def get(self,request):
+        # form = LoginForm(None)
+        # return render(request,'account/login.html', {'form': form,'message': 'Logout success.'})
+        return HttpResponseRedirect("account/index.html")
         # return JsonResponse(__get_response_json_dict(data={}))
