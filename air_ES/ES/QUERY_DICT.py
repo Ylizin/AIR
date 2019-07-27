@@ -59,3 +59,7 @@ def generate_bulk_query(to_index_list):
         _query.append(record)
     # print(_query)
     return _query
+
+def get_paper_info_query(titles):
+    _query = {'title':{'$in':titles}}
+    return _query

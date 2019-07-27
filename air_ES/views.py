@@ -17,6 +17,6 @@ class RecView(View):
         #get user id in GET
         _usr_id = request.GET.get('_id',None)
         _dummy_user_text = 'data'
-        return get_query_result(request,_dummy_user_text)
+        return JsonResponse(get_query_result(request,_dummy_user_text))
 
 

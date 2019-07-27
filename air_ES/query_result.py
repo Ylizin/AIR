@@ -1,5 +1,12 @@
 from django.http import JsonResponse
 from .ES.ES_query import query_text
+from .ES.QUERY_DICT import get_paper_info_query
+from pymongo import MongoClient
+conn = MongoClient()
+db = conn.paper
+arxiv = db.arxiv
+
+
 
 def get_rough_query_result(request,text='Data'):
     _text_abs_url = query_text(text)
@@ -7,10 +14,11 @@ def get_rough_query_result(request,text='Data'):
     for t in _text_abs_url:
         _title = t['title']
         titles.append(_title)
-    
-    return JsonResponse({'texts':query_text(text)})
+    _q = get_paper_info_query(titles)
+    result = arxiv.find(_q)
+    return result
 
-def get_acc_query_result(user_vec,rough_vec):
+def get_acc_query_result(user_info,rough_info):
     '''this function pass the user_vec and the result of rough seach to the accurate search
     
     Arguments:
