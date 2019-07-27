@@ -1,0 +1,55 @@
+from pymongo import MongoClient
+from .ES_connector import get_es_conn
+from .QUERY_DICT import get_newly_added_query,mark_added_query,generate_bulk_query
+
+conn = MongoClient()
+db = conn.paper
+arxiv = db.arxiv
+
+
+def update_ES_from_arxiv():
+    es = get_es_conn()
+    _QUERY = get_newly_added_query()
+
+    # _newly_cursor = arxiv.find(_QUERY,limit = 500)
+    _newly_cursor = arxiv.find(_QUERY).batch_size(500) #set baatch_size, the cursor will get 500 each time access the mongo
+
+    #maintain the ids and the field we needed
+    _newly_ids = []
+    _newly_records = []
+    for record in _newly_cursor:
+        _newly_ids.append(record['_id'])
+        _newly_records.append(record)
+        if len(_newly_records) == 500:
+            # insert into ES
+            bulk_q = generate_bulk_query(_newly_records)
+            es.bulk(bulk_q)
+            _newly_records=[]
+            #update the mongo mark
+            _filter_query,_update_query = mark_added_query(_newly_ids)
+            arxiv.update_many(_filter_query,_update_query)
+            _newly_ids = []            
+    else:
+        bulk_q = generate_bulk_query(_newly_records)
+        es.bulk(bulk_q)
+
+
+    # part below is insert a single doc one time
+    # _newly_ids = []
+    # for record in _newly_cursor:
+    #     _newly_ids.append(record['_id'])
+    #     record = {'abstrct':record['abstract'],'title':record['title']}
+    #     es.index(index = 'test-index',doc_type='paper',body = record)
+    #     if len(_newly_ids) == 500:
+    #         _filter_query,_update_query = mark_added_query(_newly_ids)
+    #         arxiv.update_many(_filter_query,_update_query)
+    #         _newly_ids = []
+    # else:
+    #     _filter_query,_update_query = mark_added_query(_newly_ids)
+    #     arxiv.update_many(_filter_query,_update_query)
+
+
+
+
+if __name__ == '__main__':
+    update_ES_from_arxiv()        

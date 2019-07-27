@@ -14,10 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 import air_ES.views as aes
+import air_ES
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('test_query/',aes.get_query_result,name='test_query')
+    path('login/', admin.site.urls,name= 'login'),
+    path('test_query/',aes.RecView.as_view())
+
 ]
