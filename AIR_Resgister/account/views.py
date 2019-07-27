@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponseRedirect
-from django.urls import reverse
+# from django.urls import reverse
 
 
 from .models import UserProfile
@@ -44,6 +44,10 @@ class RegisterView(View):
             password = form.cleaned_data['password']
             initial_tag_0 = form.cleaned_data['initial_tag_0']
             initial_tag_1 = form.cleaned_data['initial_tag_1']
+
+            is_repeated = User.objects.filter(username=username)
+            if is_repeated:
+                return render(request,'account/register.html',{'form': form,'msg':u'用户名已经存在'})
             user = User.objects.create_user(
                 username=username,
                 # email=form.cleaned_data['email'],
@@ -56,7 +60,7 @@ class RegisterView(View):
             user_profile.save()
             # TODO: 查重 
             print('save success!!!!')
-            return render(request, 'account/register_success.html', {'form': form})
+            return render(request, 'account/register_success.html', {'form':form})
         return render(request, self.template_name, {'form': form})
 
         # return JsonResponse(__get_response_json_dict(data={}))
