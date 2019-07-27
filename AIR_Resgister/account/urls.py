@@ -1,5 +1,5 @@
 from django.urls import path
-
+from django.contrib.auth.decorators import login_required
 from account import views
 
 # namespace
@@ -9,6 +9,6 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('register_success/', views.IndexView.as_view(), name='register_success'),
-    path('index/',views.LogoutView.as_view(), name='index')
+    path('index/',login_required(views.IndexView.as_view()), name='index')
     # path('detail/', views.user_detail),
 ]

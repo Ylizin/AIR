@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponseRedirect
-# from django.urls import reverse
+from django.utils.decorators import method_decorator
 
 
 from .models import UserProfile
@@ -22,7 +22,6 @@ import json
 
 
 class RegisterView(View):
-    # form_class = UserForm  # models.py中自定义的表单
     template_name = 'account/register.html'
 
     def get(self,request):
@@ -37,17 +36,16 @@ class RegisterView(View):
         form = RegisterForm(request.POST)
         
         if form.is_valid():
-            for item in form.cleaned_data:
-                print(form.cleaned_data[item])
-            print("!!!!!!!!!!!!")
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             initial_tag_0 = form.cleaned_data['initial_tag_0']
             initial_tag_1 = form.cleaned_data['initial_tag_1']
-
-            is_repeated = User.objects.filter(username=username)
-            if is_repeated:
-                return render(request,'account/register.html',{'form': form,'msg':u'用户名已经存在'})
+            
+            #judge if the username is replicated
+            is_duplicated = User.objects.filter(username=username)
+            if is_duplicated:
+                return render(request,'account/register.html',{'form': form,'msg':'This name has existed.'})
+            # initial a user object
             user = User.objects.create_user(
                 username=username,
                 # email=form.cleaned_data['email'],
@@ -55,12 +53,14 @@ class RegisterView(View):
                 # initial_tag_0=initial_tag_0,
                 # initial_tag_1=form.cleaned_data['initial_tag_1'],
             )
+            # initial user profile
             user_profile = UserProfile(user=user,initial_tag_0=initial_tag_0,initial_tag_1=initial_tag_1)
-            # 保存到数据库中
+            # write to db
             user_profile.save()
-            # TODO: 查重 
-            print('save success!!!!')
+ 
+            print('save success.')
             return render(request, 'account/register_success.html', {'form':form})
+
         return render(request, self.template_name, {'form': form})
 
         # return JsonResponse(__get_response_json_dict(data={}))
@@ -113,11 +113,12 @@ class LogoutView(View):
         return HttpResponseRedirect('/account/login')
         # return JsonResponse(__get_response_json_dict(data={}))
 
+@method_decorator(login_required, name='dispatch')
 class IndexView(View):
     # form_class = UserForm  # models.py中自定义的表单
-
     def get(self,request):
         # form = LoginForm(None)
         # return render(request,'account/login.html', {'form': form,'message': 'Logout success.'})
-        return HttpResponseRedirect("account/index.html")
+        return render(request, 'account/index.html')
+        # return HttpResponseRedirect("account/index.html")
         # return JsonResponse(__get_response_json_dict(data={}))

@@ -52,6 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+LOGIN_URL ='/account/login' #redirect the guest user to login page 
 ROOT_URLCONF = 'AIR_Resgister.urls'
 
 TEMPLATES = [
