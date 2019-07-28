@@ -87,7 +87,10 @@ WSGI_APPLICATION = 'AIR_Register.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'my_mongodb_42',
+        'NAME': 'mongodb_42',
+        'HOST': 'mongodb://root:boyu42@106.75.229.123:27017/admin',
+
+        'AUTH_MECHANISM': 'SCRAM-SHA-1',#'SCRAM-SHA-256',
         
     }
 }
