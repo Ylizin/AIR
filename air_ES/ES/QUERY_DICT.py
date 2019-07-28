@@ -41,7 +41,7 @@ def get_weighted_query(fields_texts_w):
 def get_newly_added_query():
     '''for records in mongo, we add a mark to represent if it has been added into ES
     '''
-    query = {'updated':{'$exists':False}}
+    query = {'$and':[{'updated':{'$exists':False}},{'abstract':{'$exists':True}}]}
     return query
   
 def mark_added_query(id_list):
@@ -62,4 +62,8 @@ def generate_bulk_query(to_index_list):
 
 def get_paper_info_query(titles):
     _query = {'title':{'$in':titles}}
+    return _query
+
+def get_user_tags_query(user_id):
+    _query = {'id':user_id}
     return _query

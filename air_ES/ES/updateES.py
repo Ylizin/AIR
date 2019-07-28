@@ -1,11 +1,8 @@
 from pymongo import MongoClient
-from .ES_connector import get_es_conn
+from .ES_connector import *
 from .QUERY_DICT import get_newly_added_query,mark_added_query,generate_bulk_query
 
-conn = MongoClient()
-db = conn.paper
-arxiv = db.arxiv
-
+arxiv = get_arxiv_collection()
 
 def update_ES_from_arxiv():
     es = get_es_conn()
