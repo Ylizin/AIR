@@ -21,14 +21,14 @@ def update_ES_from_arxiv():
             # insert into ES
             bulk_q = generate_bulk_query(_newly_records,'arxiv')
             es.bulk(bulk_q)
-            _newly_records=[]
             #update the mongo mark
             _filter_query,_update_query = mark_added_query(_newly_ids)
             arxiv.update_many(_filter_query,_update_query)
+            _newly_records=[]
             _newly_ids = []    
             print('insert 2000 record.')        
     else:
-        bulk_q = generate_bulk_query(_newly_records)
+        bulk_q = generate_bulk_query(_newly_records,'arxiv')
         if bulk_q:
             es.bulk(bulk_q)
             _filter_query,_update_query = mark_added_query(_newly_ids)
