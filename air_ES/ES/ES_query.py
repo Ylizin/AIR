@@ -1,9 +1,7 @@
 from .ES_connector import get_es_conn
 from .QUERY_DICT import get_weighted_query
 import logging
-logging.basicConfig(level=logging.DEBUG)
-
-
+# logging.basicConfig(level=logging.DEBUG)
 
 def query_text(text:str , _index:str='test-index'):
     '''do query in es, the index param figures the index we gonna search
