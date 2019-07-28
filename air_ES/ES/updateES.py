@@ -9,7 +9,7 @@ def update_ES_from_arxiv():
     _QUERY = get_newly_added_query()
 
     # _newly_cursor = arxiv.find(_QUERY,limit = 500)
-    _newly_cursor = arxiv.find(_QUERY).batch_size(500) #set baatch_size, the cursor will get 500 each time access the mongo
+    _newly_cursor = arxiv.find(_QUERY).batch_size(1000) #set baatch_size, the cursor will get 500 each time access the mongo
 
     #maintain the ids and the field we needed
     _newly_ids = []
@@ -17,7 +17,7 @@ def update_ES_from_arxiv():
     for record in _newly_cursor:
         _newly_ids.append(record['_id'])
         _newly_records.append(record)
-        if len(_newly_records) == 500:
+        if len(_newly_records) == 1000:
             # insert into ES
             bulk_q = generate_bulk_query(_newly_records,'arxiv')
             es.bulk(bulk_q)
@@ -26,7 +26,7 @@ def update_ES_from_arxiv():
             _filter_query,_update_query = mark_added_query(_newly_ids)
             arxiv.update_many(_filter_query,_update_query)
             _newly_ids = []    
-            print('insert 500 record.')        
+            print('insert 1000 record.')        
     else:
         bulk_q = generate_bulk_query(_newly_records)
         if bulk_q:
