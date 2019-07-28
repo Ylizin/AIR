@@ -4,6 +4,15 @@ from .QUERY_DICT import get_newly_added_query,mark_added_query,generate_bulk_que
 
 arxiv = get_arxiv_collection()
 
+def insert_ES_mark_mongo(_newly_records,_newly_ids):
+    bulk_q = generate_bulk_query(_newly_records,'arxiv')
+    if bulk_q:
+        es.bulk(bulk_q)
+        _filter_query,_update_query = mark_added_query(_newly_ids)
+        arxiv.update_many(_filter_query,_update_query)
+        print('insert {} record.'.format(len(_newly_records)))
+    
+
 def update_ES_from_arxiv():
     es = get_es_conn()
     _QUERY = get_newly_added_query()
@@ -19,21 +28,12 @@ def update_ES_from_arxiv():
         _newly_records.append(record)
         if len(_newly_records) == 2000:
             # insert into ES
-            bulk_q = generate_bulk_query(_newly_records,'arxiv')
-            es.bulk(bulk_q)
             #update the mongo mark
-            _filter_query,_update_query = mark_added_query(_newly_ids)
-            arxiv.update_many(_filter_query,_update_query)
+            insert_ES_mark_mongo(_newly_records,_newly_ids)
             _newly_records=[]
             _newly_ids = []    
-            print('insert 2000 record.')        
     else:
-        bulk_q = generate_bulk_query(_newly_records,'arxiv')
-        if bulk_q:
-            es.bulk(bulk_q)
-            _filter_query,_update_query = mark_added_query(_newly_ids)
-            arxiv.update_many(_filter_query,_update_query)
-            print('insert {} record.'.format(len(_newly_records)))
+        insert_ES_mark_mongo(_newly_records,_newly_ids)
             
     # part below is insert a single doc one time
     # _newly_ids = []
