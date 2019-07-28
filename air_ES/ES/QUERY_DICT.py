@@ -1,10 +1,11 @@
 
 
-def get_weighted_query(fields_texts_w):
+def get_weighted_query(fields_texts_w,slop=2):
     '''generate the QUERY for the field and text and weighted
-    
+        slop is how many intervals between a phrase is allowed
     Arguments:
         fields_texts {[type]} -- [description]
+        
     '''
     TEXT_QUERY={  
     "query": 
@@ -17,9 +18,10 @@ def get_weighted_query(fields_texts_w):
     
     for field,text,weighted in fields_texts_w:
         _f_t_w = {}
-        _f_t_w[field] = {'query':text,'boost':weighted}
-        should.append({'match':_f_t_w})
+        _f_t_w[field] = {'query':text,'boost':weighted,'slop':slop}
+        should.append({'match_phrase':_f_t_w})
     return TEXT_QUERY
+
 
 def get_newly_added_query():
     '''for records in mongo, we add a mark to represent if it has been added into ES
