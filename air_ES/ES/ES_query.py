@@ -1,6 +1,5 @@
 from .ES_connector import get_es_conn
 from .QUERY_DICT import get_weighted_query
-from elasticsearch_dsl import Search
 import logging
 
 def query_text(text:str , _index:str='test-index'):

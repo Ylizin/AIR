@@ -34,7 +34,7 @@ def get_weighted_query(fields_texts_w):
     for field,text,weighted in fields_texts_w:
         _f_t_w = {}
         _f_t_w['weight'] = str(weighted)
-        _f_t_w['filter'] = {'match':{field:text}}
+        _f_t_w['filter'] = {'match_phrase':{field:text}}
         func.append(_f_t_w)
     return TEXT_QUERY
 
@@ -55,7 +55,7 @@ def generate_bulk_query(to_index_list,_index='test-index'):
     _index_q = {'index':{'_index':_index}}
     for record in to_index_list:
         _query.append(_index_q)
-        record = {'abstrct':record['abstract'],'title':record['title']}
+        record = {'abstract':record['abstract'],'title':record['title']}
         _query.append(record)
     # print(_query)
     return _query

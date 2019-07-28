@@ -1,8 +1,9 @@
 from elasticsearch import Elasticsearch as ELS
 from pymongo import MongoClient
 
+__conn = MongoClient('mongodb://root:boyu42@localhost')
 
-__conn = MongoClient('mongodb://root:boyu42@106.75.229.123')
+# __conn = MongoClient('mongodb://root:boyu42@106.75.229.123')
 __spider = __conn.spider
 __user = __conn.mongodb_42
 __ARXIV = __spider.arxiv
