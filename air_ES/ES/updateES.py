@@ -2,6 +2,7 @@ from pymongo import MongoClient
 from .ES_connector import *
 from .QUERY_DICT import get_newly_added_query,mark_added_query,generate_bulk_query
 
+es = get_es_conn()
 arxiv = get_arxiv_collection()
 
 def insert_ES_mark_mongo(_newly_records,_newly_ids):
@@ -14,7 +15,6 @@ def insert_ES_mark_mongo(_newly_records,_newly_ids):
     
 
 def update_ES_from_arxiv():
-    es = get_es_conn()
     _QUERY = get_newly_added_query()
 
     # _newly_cursor = arxiv.find(_QUERY,limit = 500)
