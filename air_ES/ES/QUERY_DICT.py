@@ -50,9 +50,9 @@ def mark_added_query(id_list):
     return query,update
 
 
-def generate_bulk_query(to_index_list):
+def generate_bulk_query(to_index_list,_index='test-index'):
     _query = []
-    _index_q = {'index':{'_index':'test-index'}}
+    _index_q = {'index':{'_index':_index}}
     for record in to_index_list:
         _query.append(_index_q)
         record = {'abstrct':record['abstract'],'title':record['title']}

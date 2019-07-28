@@ -6,8 +6,10 @@ from .ES.ES_connector import *
 def get_user_tags(user_id):
     user = get_user_collection()
     _query = get_user_tags_query(user_id)
-    user_record = user.findOne(_query)
-
+    user_record = user.find_one(_query)
+    tag_0 = user_record['initial_tag_0']
+    tag_1 = user_record['initial_tag_1']
+    return tag_0,tag_1
 
 def get_rough_query_result(request,text='Data'):
     arxiv = get_arxiv_collection()
