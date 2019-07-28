@@ -9,21 +9,16 @@ def get_weighted_query(fields_texts_w):
     TEXT_QUERY={  
     "query": 
     {
-      "function_score": {
-        "functions": [
-        ],
-        "score_mode": "sum"
-        }
-      }
+      'bool':
+      {'should':[]}
     }
-    
-    func = TEXT_QUERY['query']['function_score']['functions']
+    }
+    should = TEXT_QUERY['query']['bool']['should']
     
     for field,text,weighted in fields_texts_w:
         _f_t_w = {}
-        _f_t_w['weight'] = str(weighted)
-        _f_t_w['filter'] = {'match_phrase':{field:text}}
-        func.append(_f_t_w)
+        _f_t_w[field] = {'query':text,'boost':weighted}
+        should.append({'match':_f_t_w})
     return TEXT_QUERY
 
 def get_newly_added_query():
