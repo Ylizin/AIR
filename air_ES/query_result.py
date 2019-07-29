@@ -11,10 +11,21 @@ def get_user_tags(user_id):
     tag_1 = user_record['initial_tag_1']
     return tag_0,tag_1
 
-def get_rough_query_result(request,text='Data'):
+def get_rough_query_result(text,_index='arxiv',fields=None):
+    '''we can get the rough search by this method, by passing three param
+    
+    Keyword Arguments:
+        text {list((str),weight)} -- [description] (default: {'Data'})
+        _index {str} -- [description] (default: {'arxiv'})
+        fields {[type]} -- [description] (default: {None})
+    
+    Returns:
+        [type] -- [description]
+    '''
     arxiv = get_arxiv_collection()
-    fields = [('abstract',4),('title',10)]
-    _search_res = query_text(text,fields=fields,_index='arxiv')
+    if not fields:
+        fields = [('abstract',4),('title',10)]
+    _search_res,_ = query_text(text,fields=fields,_index=_index)
     titles = []
     for t in _search_res:
         _title = t['title']

@@ -15,7 +15,7 @@ def query_text(text:list , fields:list=None, _index:str='test-index'):
     #abstract and title have different weight in scoring
     if not fields:
         fields = [('abstract',4),('title',10)]
-        
+
     fields_text_w=[]
     for tup in fields:
         fields_text_w.append((tup[0],text,tup[1]))
@@ -30,5 +30,5 @@ def query_text(text:list , fields:list=None, _index:str='test-index'):
     else:
         raise Exception('Index shouldnt be None')
     logging.debug([x['_score'] for x in res])
-    return [x['_source'] for x in res]
+    return [x['_source'] for x in res],[x['_score'] for x in res]
     

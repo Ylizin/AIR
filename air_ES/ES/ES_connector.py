@@ -9,6 +9,11 @@ __user = __conn.mongodb_42
 __ARXIV = __spider.arxiv
 __USER = __user.account_userprofile
 
+collection_dicts={
+    'arxiv':__ARXIV,
+    'user':__USER
+}
+
 def get_arxiv_collection():
     return __ARXIV
 
@@ -17,3 +22,6 @@ def get_user_collection():
 
 def get_es_conn():
     return ELS()
+
+def get_collection(index):
+    return collection_dicts.get(index,None)
