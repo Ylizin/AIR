@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
+from rest_framework.decorators import api_view
 
 
 from .models import UserProfile
@@ -27,16 +28,21 @@ class RegisterView(View):
     def get(self,request):
         form = RegisterForm(request.POST)
         return render(request, self.template_name, {'form': form}) #TODO:form清空？
-
+    
     def post(self,request):
-        received_data = json.loads(request.body.decode('utf-8'))
-        # username = received_data["username"]
-        # password = received_data["password"]
-        # interests = received_data["password"]
+        # received_data = json.loads(request.body.decode('utf-8'))
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
 
-        username = request.POST['username']
-        password = request.POST['password']
+        # print(request.POST)
+        # username = request.POST.get("username")
+        # password = request.POST.get("password")
+        username = body['username']
+        password = body['password']
+        
+        print(username)
         interests = "[{'CV':['object detection']},{'NLP':['object detection']"
+        interests = body['interests']
         # form = RegisterForm(request.POST)
         
         # if form.is_valid():
@@ -71,6 +77,39 @@ class RegisterView(View):
 
         # return JsonResponse(__get_response_json_dict(data={}))
 
+class RegisterInterestsView(View):
+
+    # def get(self,request):
+    #     form = RegisterForm(request.POST)
+    #     return render(request, self.template_name, {'form': form}) #TODO:form清空？
+    
+    def post(self,request):
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        uid = body['uid']
+        # interests = "[{'CV':['object detection']},{'NLP':['object detection']"
+        interests = body['interests']
+        degree = body['degree']
+
+        user = UserProfile.objects.get(id=uid)
+        # if is_duplicated:
+        #     return render(request,'account/register.html',{'form': form,'msg':'This name has existed.'})
+        # initial a user object
+ 
+        # initial user profile
+        user.interests = interests
+        user.degree = degree
+        # write to db
+        user.save()
+        # uid = User.objects.get(username=username).pk
+        print('save success.')
+        data = {'status':'success','message':'Register interets success!','data':{}}
+        return JsonResponse(data)
+
+        # return JsonResponse(data={'message':'hi react from remote server.kiddding?'})
+        # return render(request, 'account/register_success.html', {'form':form})
+
+        # return render(request, self.template_name, {'form': form})
 class LoginView(View):
     template_name = 'account/login.html'
     
