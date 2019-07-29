@@ -29,16 +29,28 @@ class RegisterView(View):
         return render(request, self.template_name, {'form': form}) #TODO:form清空？
 
     def post(self,request):
-        received_data = json.loads(request.body.decode('utf-8'))
+        # received_data = json.loads(request.body.decode('utf-8'))
         # username = received_data["username"]
         # password = received_data["password"]
         # interests = received_data["password"]
-
-        username = request.POST['username']
-        password = request.POST['password']
+        username = 'keyerror'
+        print(request.POST)
+        # username = request.POST['username']
+        # password = request.POST['password']
+        print(username)
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        # username = received_data["username"]
+        # password = received_data["password"]
+        # interests = received_data["password"]
+        print(request.POST)
+        # username = request.POST.get("username")
+        # password = request.POST.get("password")
+        username = body['username']
+        password = body['password']
         interests = "[{'CV':['object detection']},{'NLP':['object detection']"
         # form = RegisterForm(request.POST)
-        
+        interests = body['interests']
         # if form.is_valid():
             # username = form.cleaned_data['username']
             # password = form.cleaned_data['password']
