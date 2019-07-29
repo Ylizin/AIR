@@ -4,9 +4,13 @@ from .ES.QUERY_DICT import *
 from .ES.ES_connector import *
 
 def get_user_tags(user_id):
+    if not user_id:
+        return None,None
     user = get_user_collection()
     _query = get_user_tags_query(user_id)
     user_record = user.find_one(_query)
+    if not user_record :
+        return None,None
     tag_0 = user_record['initial_tag_0']
     tag_1 = user_record['initial_tag_1']
     return tag_0,tag_1
