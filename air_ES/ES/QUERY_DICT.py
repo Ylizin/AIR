@@ -16,8 +16,8 @@ def get_weighted_query(fields_texts_w,slop=2):
     should = TEXT_QUERY['query']['bool']['should']
     
     for field,text,weighted in fields_texts_w:
-        _f_t_w = {}
         for _tag,_score in text:
+            _f_t_w = {}
             _f_t_w[field] = {'query':_tag,'boost':weighted*_score,'slop':slop}
             should.append({'match_phrase':_f_t_w})
     return TEXT_QUERY
