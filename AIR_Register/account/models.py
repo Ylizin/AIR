@@ -9,7 +9,7 @@ class UserProfile(models.Model):
 
     initial_tag_0 = models.CharField('initial domain tag',max_length=500) # store tags as json array, which means in the database, it will be just a string that can be easily dumped into a json array [Django: List field in model? - Stack Overflow](https://stackoverflow.com/questions/22340258/django-list-field-in-model)
     
-    initial_tag_1 = models.CharField('initial subdomain tag',max_length=500)
+    # initial_tag_1 = models.CharField('initial subdomain tag',max_length=500)
 
     class Meta:
         verbose_name='User Profile'
