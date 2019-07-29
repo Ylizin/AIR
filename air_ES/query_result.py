@@ -13,9 +13,9 @@ def get_user_tags(user_id):
 
 def get_rough_query_result(request,text='Data'):
     arxiv = get_arxiv_collection()
-    _text_abs_url = query_text(text)
+    _search_res = query_text(text)
     titles = []
-    for t in _text_abs_url:
+    for t in _search_res:
         _title = t['title']
         titles.append(_title)
     _q = get_paper_info_query(titles)

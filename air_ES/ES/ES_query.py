@@ -7,7 +7,7 @@ def query_text(text:str , _index:str='test-index'):
     '''do query in es, the index param figures the index we gonna search
     
     Arguments:
-        text {str} -- the string to be searched, it will be tokenized
+        text {list of str,weighted} -- the list of string to be searched, and the score they correspond
     
     Keyword Arguments:
         index {str} -- [description] (default: {'paper':str})

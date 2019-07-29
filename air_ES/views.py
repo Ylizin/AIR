@@ -9,7 +9,8 @@ from .query_result import get_rough_query_result as get_query_result
 
 
 
-
+# TODO: the first page invokation calculation
+# TODO: encapsulation of the session access
 class RecView(View):
     def get(self,request,*args,**kwargs):
         # if not request.session.get('is_logined',False):
