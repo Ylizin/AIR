@@ -96,10 +96,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         
-        'NAME': 'mongodb_42_local',
+        'NAME': 'mongodb_42_debug',
         # uncomment next line to use remote db in server
         # 'NAME': 'mongodb_42',
-        # 'HOST': 'mongodb://root:boyu42@106.75.229.123:27017/admin',
+        'HOST': 'mongodb://root:boyu42@106.75.229.123:27017/admin',
 
         # 'AUTH_MECHANISM': 'SCRAM-SHA-1',#'SCRAM-SHA-256',
         
