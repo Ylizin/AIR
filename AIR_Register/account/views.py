@@ -103,7 +103,7 @@ class RegisterInterestsView(View):
         user.save()
         # uid = User.objects.get(username=username).pk
         print('save success.')
-        data = {'status':'success','message':'Register interets success!','data':{}}
+        data = {'status':'success','message':'Register interests success!','data':{}}
         return JsonResponse(data)
 
         # return JsonResponse(data={'message':'hi react from remote server.kiddding?'})
