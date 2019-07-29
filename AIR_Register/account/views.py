@@ -70,8 +70,8 @@ class LoginView(View):
     
     def get(self,request):
         form = LoginForm(None)
-        # render(request, self.template_name, {'form': form})
-        return JsonResponse(data={'message':'hi react'})
+        #return render(request, self.template_name, {'form': form})
+        return JsonResponse(data={'message':'hi react from remote server'})
 
     def post(self,request):
         # received_data = json.loads(request.body.decode('utf-8'))
