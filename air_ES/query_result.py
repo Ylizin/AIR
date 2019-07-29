@@ -13,7 +13,8 @@ def get_user_tags(user_id):
 
 def get_rough_query_result(request,text='Data'):
     arxiv = get_arxiv_collection()
-    _search_res = query_text(text)
+    fields = [('abstract',4),('title',10)]
+    _search_res = query_text(text,fields=fields,_index='arxiv')
     titles = []
     for t in _search_res:
         _title = t['title']
