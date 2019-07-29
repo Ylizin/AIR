@@ -20,6 +20,6 @@ class RecView(View):
         _usr_id = request.GET.get('_id',None)
         user_tag0,user_tag1 = get_user_tags(_usr_id)
         _dummy_user_text = [('word embedding',1.0),('graph embedding',2.0)]
-        return JsonResponse(get_query_result(_dummy_user_text))
+        return JsonResponse({'texts':get_query_result(_dummy_user_text)})
 
 

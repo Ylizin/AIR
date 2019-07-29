@@ -35,7 +35,7 @@ def get_rough_query_result(text,_index='arxiv',fields=None):
         _title = t['title']
         titles.append(_title)
     _q = get_paper_info_query(titles)
-    result = arxiv.find(_q)[:20]
+    result = list(arxiv.find(_q,{'fields':{'abstract':1,'title':1}})[:20])
     return result
 
 def get_acc_query_result(user_info,rough_info):
