@@ -29,39 +29,45 @@ class RegisterView(View):
         return render(request, self.template_name, {'form': form}) #TODO:form清空？
 
     def post(self,request):
-        # received_data = json.loads(request.body.decode('utf-8'))
+        received_data = json.loads(request.body.decode('utf-8'))
         # username = received_data["username"]
         # password = received_data["password"]
+        # interests = received_data["password"]
 
-        form = RegisterForm(request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        interests = "[{'CV':['object detection']},{'NLP':['object detection']"
+        # form = RegisterForm(request.POST)
         
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            initial_tag_0 = form.cleaned_data['initial_tag_0']
-            initial_tag_1 = form.cleaned_data['initial_tag_1']
+        # if form.is_valid():
+            # username = form.cleaned_data['username']
+            # password = form.cleaned_data['password']
+            # interests = form.cleaned_data['interests']
+            # initial_tag_1 = form.cleaned_data['initial_tag_1']
             
             #judge if the username is replicated
-            is_duplicated = User.objects.filter(username=username)
-            if is_duplicated:
-                return render(request,'account/register.html',{'form': form,'msg':'This name has existed.'})
-            # initial a user object
-            user = User.objects.create_user(
-                username=username,
-                # email=form.cleaned_data['email'],
-                password=password,
-                # initial_tag_0=initial_tag_0,
-                # initial_tag_1=form.cleaned_data['initial_tag_1'],
-            )
-            # initial user profile
-            user_profile = UserProfile(user=user,initial_tag_0=initial_tag_0,initial_tag_1=initial_tag_1)
-            # write to db
-            user_profile.save()
- 
-            print('save success.')
-            return render(request, 'account/register_success.html', {'form':form})
+        is_duplicated = User.objects.filter(username=username)
+        # if is_duplicated:
+        #     return render(request,'account/register.html',{'form': form,'msg':'This name has existed.'})
+        # initial a user object
+        user = User.objects.create_user(
+            username=username,
+            # email=form.cleaned_data['email'],
+            password=password,
+        )
+        # initial user profile
+        user_profile = UserProfile(user=user,interests=interests)
+        # write to db
+        user_profile.save()
+        uid = User.objects.get(username=username).pk
+        print('save success.')
+        data = {'status':'success','message':'Register success!','data':{'uid':uid}}
+        return JsonResponse(data)
 
-        return render(request, self.template_name, {'form': form})
+        # return JsonResponse(data={'message':'hi react from remote server.kiddding?'})
+        # return render(request, 'account/register_success.html', {'form':form})
+
+        # return render(request, self.template_name, {'form': form})
 
         # return JsonResponse(__get_response_json_dict(data={}))
 
@@ -69,9 +75,9 @@ class LoginView(View):
     template_name = 'account/login.html'
     
     def get(self,request):
-        form = LoginForm(None)
+        # form = LoginForm(None)
         #return render(request, self.template_name, {'form': form})
-        return JsonResponse(data={'message':'hi react from remote server'})
+        return JsonResponse(data={'message':'hi react from remote server.kiddding?'})
 
     def post(self,request):
         # received_data = json.loads(request.body.decode('utf-8'))

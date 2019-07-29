@@ -25,9 +25,13 @@ SECRET_KEY = '_4k6*qw^))c=+1_by@8x!+b^%o_2bh0d@k4g_7)rcsnzymtsa2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-CORS_ORIGIN_ALLOW_ALL=True
+ALLOWED_HOSTS = [
+'localhost',
+'127.0.0.1',
+'*',
+]
 
+CORS_ORIGIN_ALLOW_ALL=True
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -91,10 +95,13 @@ WSGI_APPLICATION = 'AIR_Register.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'mongodb_42',
-        'HOST': 'mongodb://root:boyu42@106.75.229.123:27017/admin',
+        
+        'NAME': 'mongodb_42_local',
+        # uncomment next line to use remote db in server
+        # 'NAME': 'mongodb_42',
+        # 'HOST': 'mongodb://root:boyu42@106.75.229.123:27017/admin',
 
-        'AUTH_MECHANISM': 'SCRAM-SHA-1',#'SCRAM-SHA-256',
+        # 'AUTH_MECHANISM': 'SCRAM-SHA-1',#'SCRAM-SHA-256',
         
     }
 }
@@ -136,3 +143,33 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+    'VIEW',
+)
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'XMLHttpRequest',
+    'X_FILENAME',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Pragma',
+    'X-Custom-Header',
+)
