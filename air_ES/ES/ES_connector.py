@@ -7,10 +7,12 @@ __conn = MongoClient('mongodb://root:boyu42@localhost')
 __spider = __conn.spider
 __user = __conn.mongodb_42
 __ARXIV = __spider.arxiv
+__NEWS = __spider.news
 __USER = __user.account_userprofile
 
 collection_dicts={
     'arxiv':__ARXIV,
+    'news':__NEWS,
     'user':__USER
 }
 

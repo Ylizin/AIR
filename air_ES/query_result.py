@@ -26,16 +26,15 @@ def get_rough_query_result(text,_index='arxiv',fields=None):
     Returns:
         [type] -- [description]
     '''
-    arxiv = get_arxiv_collection()
+    collection = get_collection(_index)
+    # this is for test case
     if not fields:
         fields = [('abstract',4),('title',10)]
+
     _search_res,_ = query_text(text,fields=fields,_index=_index)
-    titles = []
-    for t in _search_res:
-        _title = t['title']
-        titles.append(_title)
-    _q = get_paper_info_query(titles)
-    result = list(arxiv.find(_q,projection={'_id':False,'updated':False})[:20])
+    ids = list(map(lambda x: x['_id'],_search_res))
+    _q = get_record_info_query(ids)
+    result = list(collection.find(_q,projection={'_id':False,'updated':False})[:20])
     return result
 
 def get_acc_query_result(user_info,rough_info):
@@ -46,3 +45,4 @@ def get_acc_query_result(user_info,rough_info):
     '''
     pass
 
+ids

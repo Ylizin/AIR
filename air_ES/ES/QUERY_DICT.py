@@ -1,4 +1,19 @@
+from bson import ObjectId
 
+
+#this file is for generated the querys
+
+TYPE_FIELDS_MAP={
+    'arxiv':['title','abstract','_id'],
+    'news':['title','content','tag','_id'],
+    'github':['description','readme_content','_id']
+}
+
+# INDEX_FIELDS_MAP={
+#     'arxiv':'_id',
+#     'news':'_id',
+#     'github':'_id'
+# }
 
 def get_weighted_query(fields_texts_w,slop=2):
     '''generate the QUERY for the field and text and weighted
@@ -23,10 +38,11 @@ def get_weighted_query(fields_texts_w,slop=2):
     return TEXT_QUERY
 
 
-def get_newly_added_query():
+def get_newly_added_query(index:str):
     '''for records in mongo, we add a mark to represent if it has been added into ES
     '''
-    query = {'$and':[{'updated':{'$exists':False}},{'abstract':{'$exists':True}}]}
+    field = TYPE_FIELDS_MAP[index][0]
+    query = {'$and':[{'updated':{'$exists':False}},{field:{'$exists':True}}]}
     return query
   
 def mark_added_query(id_list):
@@ -34,19 +50,25 @@ def mark_added_query(id_list):
     update = {'$set':{'updated':True}}
     return query,update
 
-
 def generate_bulk_query(to_index_list,_index='test-index'):
     _query = []
     _index_q = {'index':{'_index':_index}}
+    if _index not in TYPE_FIELDS_MAP:
+        return None
+    _type_field = TYPE_FIELDS_MAP[_index]
     for record in to_index_list:
         _query.append(_index_q)
-        record = {'abstract':record['abstract'],'title':record['title']}
+        # make sure the _id of each record is indexable
+        record['_id'] = str(record['_id'])
+        record = {field:record[field] for field in _type_field}
+        # record = {'abstract':record['abstract'],'title':record['title']}
         _query.append(record)
     # print(_query)
     return _query
 
-def get_paper_info_query(titles):
-    _query = {'title':{'$in':titles}}
+def get_record_info_query(ids):
+    ids = list(map(ObjectId,ids))
+    _query = {'_id':{'$in':ids}}
     return _query
 
 def get_user_tags_query(user_id):
