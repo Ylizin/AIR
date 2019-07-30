@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
-from rest_framework.decorators import api_view
+#from rest_framework.decorators import api_view
 
 
 from .models import UserProfile
@@ -31,17 +31,23 @@ class RegisterView(View):
     
     def post(self,request):
         # received_data = json.loads(request.body.decode('utf-8'))
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
+        print(request.body)
         
+        body_unicode = request.body.decode('utf-8')
+        print(body_unicode)
+        body = json.loads(body_unicode)
+        # body = request.POST
+        print(body)
+        print('!!!!!!!!!!!!')
         # username = request.POST.get("username")
         # password = request.POST.get("password")
         username = body['username']
         password = body['password']
-        
+        print(body)
         print(username)
-        interests = "[{'CV':['object detection']},{'NLP':['object detection']"
-        interests = body['interests']
+        #interests = "[{'CV':['object detection']},{'NLP':['object detection']"
+        interests = ""
+        # interests = body['interests']
         # form = RegisterForm(request.POST)
       
         # if form.is_valid():
@@ -61,7 +67,8 @@ class RegisterView(View):
             password=password,
         )
         # initial user profile
-        user_profile = UserProfile(user=user,interests=interests)
+        degree='no degree'
+        user_profile = UserProfile(user=user,interests=interests,degree=degree)
         # write to db
         user_profile.save()
         uid = User.objects.get(username=username).pk
@@ -84,10 +91,11 @@ class RegisterInterestsView(View):
     
     def post(self,request):
         body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
+        # body = json.loads(body_unicode)
+        # body=request.POST
         uid = body['uid']
-        # interests = "[{'CV':['object detection']},{'NLP':['object detection']"
-        interests = body['interests']
+        interests = "[{'CV':['object detection']},{'NLP':['object detection']"
+        # interests = body['interests']
         degree = body['degree']
 
         user = UserProfile.objects.get(id=uid)
