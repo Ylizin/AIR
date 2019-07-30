@@ -5,8 +5,8 @@ from .QUERY_DICT import get_newly_added_query,mark_added_query,generate_bulk_que
 es = get_es_conn()
 collection = None
 
-def __insert_ES_mark_mongo(_newly_records,_newly_ids):
-    bulk_q = generate_bulk_query(_newly_records,'arxiv')
+def __insert_ES_mark_mongo(_newly_records,_newly_ids,_index):
+    bulk_q = generate_bulk_query(_newly_records,_index)
     if bulk_q:
         es.bulk(bulk_q)
         _filter_query,_update_query = mark_added_query(_newly_ids)
@@ -31,11 +31,11 @@ def update_ES_from_arxiv(index:str):
         if len(_newly_records) == 2000:
             # insert into ES
             #update the mongo mark
-            __insert_ES_mark_mongo(_newly_records,_newly_ids)
+            __insert_ES_mark_mongo(_newly_records,_newly_ids,_index)
             _newly_records=[]
             _newly_ids = []    
     else:
-        __insert_ES_mark_mongo(_newly_records,_newly_ids)
+        __insert_ES_mark_mongo(_newly_records,_newly_ids,_index)
             
     # part below is insert a single doc one time
     # _newly_ids = []
