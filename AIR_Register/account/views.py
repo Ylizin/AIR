@@ -29,7 +29,6 @@ class RegisterView(View):
     
     def post(self,request):
         # received_data = json.loads(request.body.decode('utf-8'))
-        print(request.body)
         #use request.body to accommodate front end's axios
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
