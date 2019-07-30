@@ -171,7 +171,7 @@ class LogoutView(View):
         # return HttpResponseRedirect('/account/login')
         return gen_json_response(status="success",message="Logout success!")
 
-@method_decorator(login_required, name='dispatch')
+# @method_decorator(login_required, name='dispatch')
 class IndexView(View):
     # form_class = UserForm  # models.py中自定义的表单
     def get(self,request):
@@ -182,5 +182,15 @@ class IndexView(View):
         # return JsonResponse(__get_response_json_dict(data={}))
 
 
-# class FeedsView(View):
-#     def 
+class FeedsView(View):
+    def get(self,request):
+        body_unicode = request.body.decode('utf-8')
+        # body = json.loads(body_unicode)
+        
+        print(body_unicode)
+        return gen_json_response(status="successs",message="Return your get.",data=body_unicode)
+
+    def post(self,request):
+        body_unicode = request.body.decode('utf-8')
+        print(body_unicode)
+        return gen_json_response(status="successs",message="Return your post.",data=body_unicode)
