@@ -8,12 +8,14 @@ __spider = __conn.spider
 __user = __conn.mongodb_42
 __ARXIV = __spider.arxiv
 __NEWS = __spider.news
+__GITHUB = __spider.github
 __USER = __user.account_userprofile
 
 collection_dicts={
     'arxiv':__ARXIV,
     'news':__NEWS,
-    'user':__USER
+    'user':__USER,
+    'github':__GITHUB
 }
 
 def get_arxiv_collection():
