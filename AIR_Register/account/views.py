@@ -32,7 +32,7 @@ class RegisterView(View):
     def post(self,request):
         # received_data = json.loads(request.body.decode('utf-8'))
         print(request.body)
-        
+        #use request.body to accommodate front end's axios
         body_unicode = request.body.decode('utf-8')
         print(body_unicode)
         body = json.loads(body_unicode)
@@ -56,10 +56,11 @@ class RegisterView(View):
             # interests = form.cleaned_data['interests']
             # initial_tag_1 = form.cleaned_data['initial_tag_1']
             
-            #judge if the username is replicated
+        #judge if the username is replicated
         is_duplicated = User.objects.filter(username=username)
-        # if is_duplicated:
-        #     return render(request,'account/register.html',{'form': form,'msg':'This name has existed.'})
+        if is_duplicated:
+            data = {'status':'error','message':'Duplicate username!','data':{}}
+            return JsonResponse(data)
         # initial a user object
         user = User.objects.create_user(
             username=username,
@@ -71,6 +72,7 @@ class RegisterView(View):
         user_profile = UserProfile(user=user,interests=interests,degree=degree)
         # write to db
         user_profile.save()
+        # get user id
         uid = User.objects.get(username=username).pk
         print('save success.')
         data = {'status':'success','message':'Register success!','data':{'uid':uid}}
@@ -81,8 +83,6 @@ class RegisterView(View):
 
         # return render(request, self.template_name, {'form': form})
 
-        # return JsonResponse(__get_response_json_dict(data={}))
-
 class RegisterInterestsView(View):
 
     # def get(self,request):
@@ -91,23 +91,28 @@ class RegisterInterestsView(View):
     
     def post(self,request):
         body_unicode = request.body.decode('utf-8')
-        # body = json.loads(body_unicode)
+        body = json.loads(body_unicode)
         # body=request.POST
         uid = body['uid']
-        interests = "[{'CV':['object detection']},{'NLP':['object detection']"
-        # interests = body['interests']
+        print("!!!!!!!!!!!!!!")
+        print(uid)
+        interests = "[[{'CV':1.2},{'object detection':0.8},{'SLAM':0.4}],[{'NLP':1.3},{'word embedding':0.7}，{'SVD':0.8}]]"
+        interests = body['interests']
         degree = body['degree']
+        print(degree)
 
-        user = UserProfile.objects.get(id=uid)
+        user = UserProfile.objects.filter(user_id=uid).update(interests=interests,degree=degree)
         # if is_duplicated:
         #     return render(request,'account/register.html',{'form': form,'msg':'This name has existed.'})
         # initial a user object
  
         # initial user profile
-        user.interests = interests
-        user.degree = degree
-        # write to db
-        user.save()
+        print("@@@@@@@@@@@@@")
+        print(interests)
+        # user.interests = interests
+        # user.degree = degree
+        # # write to db
+        # user.save()
         # uid = User.objects.get(username=username).pk
         print('save success.')
         data = {'status':'success','message':'Register interests success!','data':{}}
@@ -126,24 +131,30 @@ class LoginView(View):
         return JsonResponse(data={'message':'hi react from remote server.kiddding?'})
 
     def post(self,request):
-        # received_data = json.loads(request.body.decode('utf-8'))
-        # username = received_data["username"]
-        # password = received_data["password"]
-        user_form = LoginForm(request.POST)
+        body = json.loads(request.body.decode('utf-8'))
+        username = body["username"]
+        password = body["password"]
+        # user_form = LoginForm(request.POST)
 
-        if user_form.is_valid():
-            username = user_form.cleaned_data['username']
-            password = user_form.cleaned_data['password']
+        # if user_form.is_valid():
+            # username = user_form.cleaned_data['username']
+            # password = user_form.cleaned_data['password']
 
-            user = authenticate(username=username, password=password)
-            if user:
-                login(request, user)
-                # return JsonResponse(__get_response_json_dict(data={}))
-                # response.set_cookie('username',username,3600)
-                return render(request, 'account/index.html', {'username':username})
-            else:
-                # return JsonResponse(__get_response_json_dict(data={}, err_code=-1, message="Invalid username or password"))
-                return render(request, self.template_name, {'form': user_form,'message': 'Wrong password or account. Please try again.'})
+        user = authenticate(username=username, password=password)
+        if user:
+            login(request, user)
+            # uid = User.objects.get(username=username).pk
+            uid = user.pk # need tests
+            query_text = user.interests
+            feeds = get_rough_query_result
+            data = {"status":"success","message":"Login success!","data":{"uid":uid}}
+            return JsonResponse(data)
+            # response.set_cookie('username',username,3600)
+            # return render(request, 'account/index.html', {'username':username})
+        else:
+            data = {'status':'error','message':'Wrong username or password!','data':{'uid':uid}}
+            return JsonResponse(data)
+            # return render(request, self.template_name, {'form': user_form,'message': 'Wrong password or account. Please try again.'})
 
         # return HttpResponseRedirect("/account/login")
 
@@ -152,19 +163,19 @@ class LogoutView(View):
     def get(self,request):
         logout(request)
         print('log out ..............')
-        username = request.POST.get('username')
-        print("dsd"+str(username))
+        # username = request.POST.get('username')
+        # print("dsd"+str(username))
         # return render(request,'account/login.html', {'message': 'Logout success.'})
-        return HttpResponseRedirect('/account/login')
+        # return HttpResponseRedirect('/account/login')
+        data = {'status':'success','message':'Logout success!','data':{}}
+        return JsonResponse(data)
     def post(self,request):
-        # form = LoginForm(None)
         logout(request)
         print('log out ..............')
-        username = request.POST.get('username')
-        print("dsd"+str(username))
         # return render(request,'account/login.html', {'form': form,'message': 'Logout success.'})
-        return HttpResponseRedirect('/account/login')
-        # return JsonResponse(__get_response_json_dict(data={}))
+        # return HttpResponseRedirect('/account/login')
+        data = {'status':'success','message':'Logout success!','data':{}}
+        return JsonResponse(data)
 
 @method_decorator(login_required, name='dispatch')
 class IndexView(View):
@@ -175,3 +186,7 @@ class IndexView(View):
         return render(request, 'account/index.html')
         # return HttpResponseRedirect("account/index.html")
         # return JsonResponse(__get_response_json_dict(data={}))
+
+
+# class FeedsView(View):
+#     def 
