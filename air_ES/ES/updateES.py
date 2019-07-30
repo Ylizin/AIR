@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from .ES_connector import *
-from .QUERY_DICT import get_newly_added_query,mark_added_query,get_collection,generate_bulk_query
+from .QUERY_DICT import get_newly_added_query,mark_added_query,generate_bulk_query
 
 es = get_es_conn()
 collection = None
