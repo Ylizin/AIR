@@ -99,14 +99,21 @@ class RegisterInterestsView(View):
                 
         
         degree = body['degree']
+        print(degree)
 
-        user = UserProfile.objects.get(id=uid)
+        user = UserProfile.objects.filter(user_id=uid).update(interests=interests,degree=degree)
+        # if is_duplicated:
+        #     return render(request,'account/register.html',{'form': form,'msg':'This name has existed.'})
+        # initial a user object
  
-        # update user profile
-        user.interests = interests_insert
-        user.degree = degree
-        user.save()
-
+        # initial user profile
+        print("@@@@@@@@@@@@@")
+        print(interests)
+        # user.interests = interests
+        # user.degree = degree
+        # # write to db
+        # user.save()
+        # uid = User.objects.get(username=username).pk
         print('save success.')
         return gen_json_response(status="success",message="Register interests success!")
 
