@@ -31,11 +31,11 @@ def update_ES_from_arxiv(index:str):
         if len(_newly_records) == 2000:
             # insert into ES
             #update the mongo mark
-            __insert_ES_mark_mongo(_newly_records,_newly_ids,_index)
+            __insert_ES_mark_mongo(_newly_records,_newly_ids,index)
             _newly_records=[]
             _newly_ids = []    
     else:
-        __insert_ES_mark_mongo(_newly_records,_newly_ids,_index)
+        __insert_ES_mark_mongo(_newly_records,_newly_ids,index)
             
     # part below is insert a single doc one time
     # _newly_ids = []

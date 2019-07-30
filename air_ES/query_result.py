@@ -5,7 +5,7 @@ from .ES.ES_connector import *
 
 def get_user_tags(user_id):
     if not user_id:
-        return None,None
+        None,None
     user = get_user_collection()
     _query = get_user_tags_query(user_id)
     user_record = user.find_one(_query)
@@ -44,5 +44,3 @@ def get_acc_query_result(user_info,rough_info):
         user_vec {[type]} -- [description]
     '''
     pass
-
-ids
