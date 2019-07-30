@@ -96,7 +96,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         
-        'NAME': 'mongodb_42_debug',
+        'NAME': '42_redesign',
         # uncomment next line to use remote db in server
         # 'NAME': 'mongodb_42',
         'HOST': 'mongodb://root:boyu42@106.75.229.123:27017/admin',
