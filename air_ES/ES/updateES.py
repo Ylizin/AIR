@@ -14,13 +14,13 @@ def __insert_ES_mark_mongo(_newly_records,_newly_ids,_index):
         print('insert {} record.'.format(len(_newly_records)))
     
 
-def update_ES_from_arxiv(index:str):
+def update_ES_from_mongo(index:str):
     _QUERY = get_newly_added_query(index)
     global collection
     collection = get_collection(index)
 
     # _newly_cursor = arxiv.find(_QUERY,limit = 500)
-    _newly_cursor = collection.find(_QUERY).batch_size(2000) #set baatch_size, the cursor will get 500 each time access the mongo
+    _newly_cursor = collection.find(_QUERY).batch_size(10000) #set baatch_size, the cursor will get 500 each time access the mongo
 
     #maintain the ids and the field we needed
     _newly_ids = []
@@ -28,7 +28,7 @@ def update_ES_from_arxiv(index:str):
     for record in _newly_cursor:
         _newly_ids.append(record['_id'])
         _newly_records.append(record)
-        if len(_newly_records) == 2000:
+        if len(_newly_records) == 10000:
             # insert into ES
             #update the mongo mark
             __insert_ES_mark_mongo(_newly_records,_newly_ids,index)
@@ -55,6 +55,6 @@ def update_ES_from_arxiv(index:str):
 
 
 if __name__ == '__main__':
-    collections = ['github']
+    collections = ['arxiv','news','github']
     for _index in collections:
-        update_ES_from_arxiv(_index)        
+        update_ES_from_mongo(_index)        

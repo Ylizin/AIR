@@ -3,7 +3,7 @@ from .QUERY_DICT import get_weighted_query
 import logging
 # logging.basicConfig(level=logging.DEBUG)
 
-def query_text(text:list , fields:list=None, index:str='test-index'):
+def query_text(text:list , fields:list=None, index:str='arxiv'):
     '''do query in es, the index param figures the index we gonna search
     
     Arguments:

@@ -15,7 +15,7 @@ def get_user_tags(user_id):
     tag_1 = user_record['initial_tag_1']
     return tag_0,tag_1
 
-def get_rough_query_result(text,_index='arxiv',fields=None):
+def get_rough_query_result(text,index='arxiv',fields=None):
     '''we can get the rough search by this method, by passing three param
     
     Keyword Arguments:
@@ -26,13 +26,13 @@ def get_rough_query_result(text,_index='arxiv',fields=None):
     Returns:
         [type] -- [description]
     '''
-    collection = get_collection(_index)
+    collection = get_collection(index)
     # this is for test case
     if not fields:
         fields = [('abstract',4),('title',10)]
 
-    _search_res,_ = query_text(text,fields=fields,_index=_index)
-    ids = list(map(lambda x: x['_id'],_search_res))
+    _search_res,_ = query_text(text,fields=fields,index=index)
+    ids = list(map(lambda x: x['id'],_search_res))
     _q = get_record_info_query(ids)
     result = list(collection.find(_q,projection={'_id':False,'updated':False})[:20])
     return result

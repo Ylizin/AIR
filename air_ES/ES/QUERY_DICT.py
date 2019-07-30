@@ -4,9 +4,9 @@ from bson import ObjectId
 #this file is for generated the querys
 
 TYPE_FIELDS_MAP={
-    'arxiv':['title','abstract','_id'],
-    'news':['title','content','tag','_id'],
-    'github':['description','readme_content','_id']
+    'arxiv':['title','abstract','id'],
+    'news':['title','content','tag','id'],
+    'github':['description','readme_content','id']
 }
 
 # INDEX_FIELDS_MAP={
@@ -59,9 +59,8 @@ def generate_bulk_query(to_index_list,_index='test-index'):
     for record in to_index_list:
         _query.append(_index_q)
         # make sure the _id of each record is indexable
-        record['_id'] = str(record['_id'])
+        record['id'] = str(record['_id'])
         record = {field:record[field] for field in _type_field}
-        # record = {'abstract':record['abstract'],'title':record['title']}
         _query.append(record)
     # print(_query)
     return _query
