@@ -7,17 +7,15 @@ from django.contrib.auth.models import User
 
 class Interests(models.Model):
     domain = models.CharField('user domain',max_length=50) # store tags as json 
-    weight = models.FloatField('user weight for this domain')
-class InterestsArray(models.Model):
-    interest = models.ArrayModelField(
-        model_container=Interests,
-    )
+    weight = models.FloatField()
+    class Meta:
+        abstract = True
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='profile')
     degree = models.CharField('user degree',max_length=50) # store tags as json 
     interests = models.ArrayModelField(
-        model_container=InterestsArray,
+        model_container=Interests,
     )
     # interests = models.CharField('initial interets',max_length=500) # store tags as json array, which means in the database, it will be just a string that can be easily dumped into a json array [Django: List field in model? - Stack Overflow](https://stackoverflow.com/questions/22340258/django-list-field-in-model)
     
