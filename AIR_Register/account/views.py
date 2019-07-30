@@ -9,7 +9,7 @@ from django.utils.decorators import method_decorator
 
 
 from .models import UserProfile
-
+from .models import Interests
 import json
 
 # generate json response for front end
@@ -30,19 +30,28 @@ class RegisterView(View):
     def post(self,request):
         # received_data = json.loads(request.body.decode('utf-8'))
         #use request.body to accommodate front end's axios
-        body_unicode = request.body.decode('utf-8')
-        body = json.loads(body_unicode)
-        # body = request.POST
+        # body_unicode = request.body.decode('utf-8')
+        # body = json.loads(body_unicode)
+        body = request.POST
         print(body)
         print('!!!!!!!!!!!!')
-        # username = request.POST.get("username")
-        # password = request.POST.get("password")
-        username = body['username']
-        password = body['password']
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        # username = body['username']
+        # password = body['password']
 
-        interests = "Nothing"
+        # interests = "Nothing"
         # interests = body['interests']
-      
+        # interests_raw = body['interests']
+        
+        # if interests_raw is None:
+        interests_raw = json.loads('[{"CV":1.2},{"object detection":0.8},{"SLAM":0.4},{"NLP":1.3},{"word embedding":0.7},{"SVD":0.8}]')
+
+        interests_insert=[]
+        for x in interests_raw:
+            key,value = next(iter(x.items()))
+            interests_insert.append(Interests(domain=key,weight=value))
+            # Interests(domain=key,weight=value)
 
         #judge if the username is duplicated
         is_duplicated = User.objects.filter(username=username)
@@ -56,7 +65,12 @@ class RegisterView(View):
         )
         # initial user profile
         degree='No degree'
-        user_profile = UserProfile(user=user,interests=interests,degree=degree)
+        # interests = 
+        d1 = Interests(domain='asd',weight=2)
+        d2 = Interests(domain='asddd',weight=3)
+        # print(d1)
+        # Interests(domain='asd',weight=2),Interests(domain='asddd',weight=3)
+        user_profile = UserProfile(user=user,interests=interests_insert,degree=degree)
         # write to db
         user_profile.save()
         # get user id
@@ -75,9 +89,15 @@ class RegisterInterestsView(View):
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         uid = body['uid']
-        interests = body['interests']
-        if interests is None:
-            interests = "[[{'CV':1.2},{'object detection':0.8},{'SLAM':0.4}],[{'NLP':1.3},{'word embedding':0.7},{'SVD':0.8}]]"
+        interests_raw = body['interests']
+        if interests_raw is None:
+            interests_insert = "[{'CV':1.2},{'object detection':0.8},{'SLAM':0.4},{'NLP':1.3},{'word embedding':0.7},{'SVD':0.8}]"
+        interests_insert=[]
+        for x in interests_raw:
+            key,value = next(iter(x.items()))
+            interests_insert.append([key,value])
+                
+        
         degree = body['degree']
         print(degree)
 

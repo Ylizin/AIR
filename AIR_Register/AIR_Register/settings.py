@@ -101,7 +101,7 @@ DATABASES = {
         # 'NAME': 'mongodb_42',
         'HOST': 'mongodb://root:boyu42@106.75.229.123:27017/admin',
 
-        # 'AUTH_MECHANISM': 'SCRAM-SHA-1',#'SCRAM-SHA-256',
+        'AUTH_MECHANISM': 'SCRAM-SHA-1',#'SCRAM-SHA-256',
         
     }
 }
