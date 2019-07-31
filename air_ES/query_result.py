@@ -4,11 +4,11 @@ from .ES.QUERY_DICT import *
 from .ES.ES_connector import *
 from airs.rsfunction import get_rs_result
 
-def get_user_tags(user_id):
-    if not user_id:
+def get_user_tags(uid):
+    if not uid:
         return None,None,None
     user = get_user_collection()
-    _query = get_user_tags_query(user_id)
+    _query = get_user_tags_query(uid)
     user_record = user.find_one(_query)
     if not user_record :
         return None,None,None

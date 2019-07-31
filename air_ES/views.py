@@ -17,7 +17,7 @@ class RecView(View):
             # return HttpResponseRedirect('/login') 
 
         #get user id in GET
-        _usr_id = request.GET.get('_id',None)
+        _usr_id = request.GET.get('uid',None)
         text_w,use_info = get_user_tags(_usr_id)
         _dummy_user_text = [('word embedding',1.0),('graph embedding',2.0)]
         rough_info = get_rough_query_result(_dummy_user_text)
