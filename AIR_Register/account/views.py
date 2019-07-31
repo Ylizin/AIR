@@ -94,8 +94,9 @@ class RegisterInterestsView(View):
         degree = body['degree']
         # print(degree)
         # if interests_raw is None:
+        print(interests_raw)
         interests_insert=[]
-        interests_raw = json.loads(interests_raw)
+        interests_raw = interests_raw
         for x in interests_raw:
             
             key,value = next(iter(x.items()))
