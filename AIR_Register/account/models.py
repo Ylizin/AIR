@@ -34,8 +34,14 @@ class UserProfile(models.Model):
     interests = models.ArrayModelField(
         model_container=Interests,
     )
-    collections = models.ArrayModelField(
-        model_container=models.IntegerField()
+    paper_collections = models.ArrayModelField(
+        model_container=models.CharField(max_length=50)
+    )
+    news_collections = models.ArrayModelField(
+        model_container=models.CharField(max_length=50)
+    )
+    github_collections = models.ArrayModelField(
+        model_container=models.CharField(max_length=50)
     )
 
     def __str__(self):
