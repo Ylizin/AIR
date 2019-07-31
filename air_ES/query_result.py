@@ -29,9 +29,10 @@ def get_rough_query_result(text,index='arxiv',fields=None):
     _search_res,_scores = query_text(text,fields=fields,index=index)
     ids = list(map(lambda x: x['id'],_search_res))
     _q = get_record_info_query(ids)
-    result = list(collection.find(_q,projection={'_id':False,'updated':False})[:20])
+    result = list(collection.find(_q,projection={'updated':False})[:20])
     for i in result:
-        result['type']=index
+        i['type']=index
+        i['id'] = str(i['_id'])
     return result,_scores
 
 def get_acc_query_result(user_info,rough_info):
