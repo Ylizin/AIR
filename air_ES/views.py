@@ -22,6 +22,9 @@ class RecView(View):
         _dummy_user_text = [('word embedding',1.0),('graph embedding',2.0)]
         rough_info = get_rough_query_result(_dummy_user_text)
         recommends = get_acc_query_result(use_info,rough_info)
+        for rec in recommends: 
+            del rec['_id']
+            del rec['updated']
         return JsonResponse({'texts':recommends})
 
 
