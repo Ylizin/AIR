@@ -12,6 +12,10 @@ class Interests(models.Model):
         abstract = True
     def __str__(self):
         return self.domain.__str__()
+class StringField(models.Model):
+    text = models.CharField('user domain',max_length=50) # store tags as json 
+    def __str__(self):
+        return self.text.__str__()
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='profile')
@@ -35,13 +39,13 @@ class UserProfile(models.Model):
         model_container=Interests,
     )
     paper_collections = models.ArrayModelField(
-        model_container=models.CharField(max_length=50)
+        model_container=StringField,
     )
     news_collections = models.ArrayModelField(
-        model_container=models.CharField(max_length=50)
+        model_container=StringField,
     )
     github_collections = models.ArrayModelField(
-        model_container=models.CharField(max_length=50)
+        model_container=StringField,
     )
 
     def __str__(self):
