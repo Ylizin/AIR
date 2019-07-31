@@ -20,6 +20,7 @@ import air_ES
 
 urlpatterns = [
     path('login/', admin.site.urls,name= 'login'),
-    path('test_query/',aes.RecView.as_view())
+    path('paper_query/',aes.RecView.as_view()),
+    path('news_query/',aes.RecView_News.as_view())
 
 ]

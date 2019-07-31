@@ -159,11 +159,12 @@ class LoginView(View):
             
             # Get recommended papers
             # expected input: [("CV",1.0),("nlp",10.0)]
-            paper_list = get_rough_query_result(query_text)
+            query_text = [("机器学习",10.0),("nlp",10.0)]
+            paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
             
             # paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
             print(paper_list[0][1])
-            data = {"uid":uid,"paper_list":paper_list}
+            data = {"uid":uid,"paper_list":paper_list[0]}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
             return gen_json_response(status="success",message="Login success!",data=data)
 
