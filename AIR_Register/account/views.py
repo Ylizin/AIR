@@ -12,6 +12,10 @@ from .models import UserProfile,UserInfo
 from .models import Interests
 import json
 
+import sys
+sys.path.append("../")
+from air_ES.query_result import get_rough_query_result
+
 # generate json response for front end
 def gen_json_response(status='success', message="success",data={}):
     res = {
@@ -137,7 +141,7 @@ class LoginView(View):
         if user:
             login(request, user)
             # uid = User.objects.get(username=username).pk
-            uid = user.user_id # todo: need tests
+            uid = user.pk # todo: need tests
             # expected interests from front end:
             # "'interests':[
             #     [{'CV':1.2},{'CV object detection':0.8},{'CV SLAM':0.4}],
@@ -150,13 +154,15 @@ class LoginView(View):
             print(interests_raw)
             # interests = json.loads()
             # mytuple = next(iter(interests[0][0].items()))
-            # query_text_raw = user.interests
+            query_text = [[x.domain, x.weight] for x in interests_raw.interests]
             # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
             
+            # Get recommended papers
             # expected input: [("CV",1.0),("nlp",10.0)]
-            # paper_list = get_rough_query_result(query_text)
-            paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
-            print(type(paper_list))
+            paper_list = get_rough_query_result(query_text)
+            
+            # paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
+            print(paper_list[0][1])
             data = {"uid":uid,"paper_list":paper_list}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
             return gen_json_response(status="success",message="Login success!",data=data)
