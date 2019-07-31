@@ -6,9 +6,9 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 #from rest_framework.decorators import api_view
+from djongo.models import IntegerField
 
-
-from .models import UserProfile
+from .models import UserProfile,UserInfo
 from .models import Interests
 import json
 
@@ -30,33 +30,25 @@ class RegisterView(View):
     def post(self,request):
         # received_data = json.loads(request.body.decode('utf-8'))
         #use request.body to accommodate front end's axios
-        # body_unicode = request.body.decode('utf-8')
-        # body = json.loads(body_unicode)
-        body = request.POST
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        # body = request.POST
         print(body)
         print('!!!!!!!!!!!!')
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        # username = body['username']
-        # password = body['password']
-
+        username = body['username']
+        password = body['password']
+        print(username)
+        print(password)
         # interests = "Nothing"
         # interests = body['interests']
         # interests_raw = body['interests']
         
-        # if interests_raw is None:
-        interests_raw = json.loads('[{"CV":1.2},{"object detection":0.8},{"SLAM":0.4},{"NLP":1.3},{"word embedding":0.7},{"SVD":0.8}]')
-
-        interests_insert=[]
-        for x in interests_raw:
-            key,value = next(iter(x.items()))
-            interests_insert.append(Interests(domain=key,weight=value))
-            # Interests(domain=key,weight=value)
-
         #judge if the username is duplicated
         is_duplicated = User.objects.filter(username=username)
+        print('############')
         if is_duplicated:
             return gen_json_response(status='error',message='Duplicate username!')
+        print('############')
         # initial a user object
         user = User.objects.create_user(
             username=username,
@@ -66,15 +58,17 @@ class RegisterView(View):
         # initial user profile
         degree='No degree'
         # interests = 
-        d1 = Interests(domain='asd',weight=2)
-        d2 = Interests(domain='asddd',weight=3)
+        # d1 = Interests(domain='asd',weight=2)
+        # d2 = Interests(domain='asddd',weight=3)
         # print(d1)
         # Interests(domain='asd',weight=2),Interests(domain='asddd',weight=3)
-        user_profile = UserProfile(user=user,interests=interests_insert,degree=degree)
+        user_info = UserInfo(user=user)
         # write to db
-        user_profile.save()
+        user_info.save()
         # get user id
-        uid = User.objects.get(username=username).pk
+        uid = user.pk
+        print('!!!!!!!!!!!!')
+        print(uid)
         print('save success.')
         data ={'uid':uid}
         return gen_json_response(status='success',message='Register success!',data=data)
@@ -90,35 +84,41 @@ class RegisterInterestsView(View):
         body = json.loads(body_unicode)
         uid = body['uid']
         interests_raw = body['interests']
-        if interests_raw is None:
-            interests_insert = "[{'CV':1.2},{'object detection':0.8},{'SLAM':0.4},{'NLP':1.3},{'word embedding':0.7},{'SVD':0.8}]"
-        interests_insert=[]
-        for x in interests_raw:
-            key,value = next(iter(x.items()))
-            interests_insert.append([key,value])
-                
+        # if interests_raw is None:
+        # interests_raw = json.loads('[{"CV":1.22}]')
+        # interests_insert=[]
+        # for x in interests_raw:
+        #     key,value = next(iter(x.items()))
+        #     interests_insert.append([key,value])
         
         degree = body['degree']
-        print(degree)
+        # print(degree)
+        # if interests_raw is None:
+        interests_insert=[]
+        interests_raw = json.loads(interests_raw)
+        for x in interests_raw:
+            
+            key,value = next(iter(x.items()))
+            interests_insert.append(Interests(domain=key,weight=value))
 
-        user = UserProfile.objects.filter(user_id=uid).update(interests=interests,degree=degree)
-        # if is_duplicated:
-        #     return render(request,'account/register.html',{'form': form,'msg':'This name has existed.'})
-        # initial a user object
+        # debug
+        
+        # method 1 to update
+        # user = UserProfile.objects.filter(user_id=uid).update(interests=interests_insert,degree=degree)
  
-        # initial user profile
         print("@@@@@@@@@@@@@")
-        print(interests)
-        # user.interests = interests
-        # user.degree = degree
-        # # write to db
-        # user.save()
-        # uid = User.objects.get(username=username).pk
+        # method 2 to update
+        user_profile = UserProfile(
+            uid = uid,#unique=True,primary_key = True
+            degree = degree,
+            interests = interests_insert,
+            collections=[]
+                )
+        # write to db
+        user_profile.save()
+
         print('save success.')
         return gen_json_response(status="success",message="Register interests success!")
-
-        # return JsonResponse(data={'message':'hi react from remote server.kiddding?'})
-        # return render(request, self.template_name, {'form': form})
 
 
 class LoginView(View):
@@ -142,16 +142,20 @@ class LoginView(View):
             #     [{'CV':1.2},{'CV object detection':0.8},{'CV SLAM':0.4}],
             #     [{'NLP':1.3},{'NLP object detection':0.7}，{'NLP SLAM':0.8}]
             # ]"
-            
+            print(uid)
             # todo: if speed is too slow, we can redesign the models.py for database
             # reformat input for query 
-            interests = json.loads(user.interests)
-            mytuple = next(iter(interests[0][0].items()))
-            query_text_raw = user.interests
-            query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
+            interests_raw = UserProfile.objects.get(uid=uid)
+            print(interests_raw)
+            # interests = json.loads()
+            # mytuple = next(iter(interests[0][0].items()))
+            # query_text_raw = user.interests
+            # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
             
             # expected input: [("CV",1.0),("nlp",10.0)]
-            paper_list = get_rough_query_result(query_text)
+            # paper_list = get_rough_query_result(query_text)
+            paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
+            print(type(paper_list))
             data = {"uid":uid,"paper_list":paper_list}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
             return gen_json_response(status="success",message="Login success!",data=data)
