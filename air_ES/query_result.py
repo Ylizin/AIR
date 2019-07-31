@@ -4,17 +4,18 @@ from .ES.QUERY_DICT import *
 from .ES.ES_connector import *
 from airs.rsfunction import get_rs_result
 
-def get_user_tags(user_id):
-    if not user_id:
+def get_user_tags(uid):
+    if not uid:
         return None,None,None
     user = get_user_collection()
-    _query = get_user_tags_query(user_id)
+    _query = get_user_tags_query(uid)
     user_record = user.find_one(_query)
     if not user_record :
         return None,None,None
-    tag_0 = user_record['initial_tag_0']
-    tag_1 = user_record['initial_tag_1']
-    return tag_0,tag_1,user_record
+    # tag_0 = user_record['initial_tag_0']
+    interests = user_record['interests']
+    text_w = [(di['domain'],di['weight']) for di in interests]
+    return text_w,user_record
 
 def get_rough_query_result(text,index='arxiv',fields=None):
     '''
@@ -28,7 +29,10 @@ def get_rough_query_result(text,index='arxiv',fields=None):
     _search_res,_scores = query_text(text,fields=fields,index=index)
     ids = list(map(lambda x: x['id'],_search_res))
     _q = get_record_info_query(ids)
-    result = list(collection.find(_q,projection={'_id':False,'updated':False})[:20])
+    result = list(collection.find(_q,projection={'updated':False})[:20])
+    for i in result:
+        i['type']=index
+        i['id'] = str(i['_id'])
     return result,_scores
 
 def get_acc_query_result(user_info,rough_info):

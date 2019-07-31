@@ -5,7 +5,7 @@ __conn = MongoClient('mongodb://root:boyu42@localhost')
 
 # __conn = MongoClient('mongodb://root:boyu42@106.75.229.123')
 __spider = __conn.spider
-__user = __conn.mongodb_42
+__user = __conn.get_database('42_db')
 __ARXIV = __spider.arxiv
 __NEWS = __spider.news
 __GITHUB = __spider.github
