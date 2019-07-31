@@ -18,7 +18,7 @@ class RecView(View):
 
         #get user id in GET
         _usr_id = request.GET.get('_id',None)
-        user_tag0,user_tag1,use_info = get_user_tags(_usr_id)
+        text_w,use_info = get_user_tags(_usr_id)
         _dummy_user_text = [('word embedding',1.0),('graph embedding',2.0)]
         rough_info = get_rough_query_result(_dummy_user_text)
         recommends = get_acc_query_result(use_info,rough_info)
