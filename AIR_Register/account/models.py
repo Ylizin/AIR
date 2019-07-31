@@ -11,7 +11,7 @@ class Interests(models.Model):
     class Meta:
         abstract = True
 
-class UserProfile(models.Model):
+class UserInfo(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='profile')
     degree = models.CharField('user degree',max_length=50) # store tags as json 
     interests = models.ArrayModelField(
@@ -26,7 +26,15 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.__str__()
 
-
+class UserProfile(models.Model):
+    uid = models.UUIDField()#unique=True,primary_key = True
+    degree = models.CharField('user degree',max_length=50) # store tags as json 
+    interests = models.ArrayModelField(
+        model_container=Interests,
+    )
+    collections = models.ArrayModelField(
+        model_container=models.IntegerField()
+    )
 
 # class UserForm(forms.ModelForm):
 #     username = forms.CharField(widget=forms.TextInput({

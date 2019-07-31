@@ -42,7 +42,6 @@ class RegisterView(View):
         # interests = body['interests']
         # interests_raw = body['interests']
         
-
         #judge if the username is duplicated
         is_duplicated = User.objects.filter(username=username)
         if is_duplicated:
@@ -81,22 +80,24 @@ class RegisterInterestsView(View):
         uid = body['uid']
         interests_raw = body['interests']
         # if interests_raw is None:
-        interests_raw = json.loads('[{"CV":1.22}]')
-        interests_insert=[]
-        for x in interests_raw:
-            key,value = next(iter(x.items()))
-            interests_insert.append([key,value])
+        # interests_raw = json.loads('[{"CV":1.22}]')
+        # interests_insert=[]
+        # for x in interests_raw:
+        #     key,value = next(iter(x.items()))
+        #     interests_insert.append([key,value])
         
         degree = body['degree']
         # print(degree)
         # if interests_raw is None:
         interests_insert=[]
+        interests_raw = json.loads(interests_raw)
         for x in interests_raw:
+            
             key,value = next(iter(x.items()))
             interests_insert.append(Interests(domain=key,weight=value))
 
         # debug
-        uid = 5
+
         # method 1 to update
         # user = UserProfile.objects.filter(user_id=uid).update(interests=interests_insert,degree=degree)
  
