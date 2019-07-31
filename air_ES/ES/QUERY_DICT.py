@@ -71,5 +71,5 @@ def get_record_info_query(ids):
     return _query
 
 def get_user_tags_query(user_id):
-    _query = {'id':user_id}
+    _query = {'uid':user_id}
     return _query

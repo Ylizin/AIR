@@ -33,6 +33,7 @@ def get_rough_query_result(text,index='arxiv',fields=None):
     for i in result:
         i['type']=index
         i['id'] = str(i['_id'])
+        def i['_id']
     return result,_scores
 
 def get_acc_query_result(user_info,rough_info):
