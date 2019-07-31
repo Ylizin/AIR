@@ -136,7 +136,7 @@ class LoginView(View):
         if user:
             login(request, user)
             # uid = User.objects.get(username=username).pk
-            uid = user.pk # todo: need tests
+            uid = user.user_id # todo: need tests
             # expected interests from front end:
             # "'interests':[
             #     [{'CV':1.2},{'CV object detection':0.8},{'CV SLAM':0.4}],
