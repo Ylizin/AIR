@@ -98,11 +98,11 @@ class RegisterInterestsView(View):
         degree = body['degree']
         # print(degree)
         # if interests_raw is None:
-        print(interests_raw)
+        # print(interests_raw[0])
+        # print(type(interests_raw[0]))
         interests_insert=[]
-        interests_raw = interests_raw
+        interests_raw = json.loads(interests_raw)
         for x in interests_raw:
-            
             key,value = next(iter(x.items()))
             interests_insert.append(Interests(domain=key,weight=value))
 
@@ -117,7 +117,9 @@ class RegisterInterestsView(View):
             uid = uid,#unique=True,primary_key = True
             degree = degree,
             interests = interests_insert,
-            collections=[]
+            paper_collections=[],
+            news_collections=[],
+            github_collections=[]
                 )
         # write to db
         user_profile.save()
@@ -150,6 +152,7 @@ class LoginView(View):
             print(uid)
             # todo: if speed is too slow, we can redesign the models.py for database
             # reformat input for query 
+            print("------------------")
             interests_raw = UserProfile.objects.get(uid=uid)
             print(interests_raw)
             # interests = json.loads()
@@ -160,7 +163,8 @@ class LoginView(View):
             # Get recommended papers
             # expected input: [("CV",1.0),("nlp",10.0)]
             query_text = [("机器学习",10.0),("nlp",10.0)]
-            paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
+            # paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
+            paper_list = get_rough_query_result(query_text)
             
             # paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
             print(paper_list[0][1])
@@ -214,3 +218,31 @@ class FeedsView(View):
         body_unicode = request.body.decode('utf-8')
         print(body_unicode)
         return gen_json_response(status="successs",message="Return your post.",data=body_unicode)
+
+
+class CollectView(View):
+    def get(self,request):
+        body_unicode = request.body.decode('utf-8')
+        
+        print(body_unicode)
+        return gen_json_response(status="successs",message="Return your get.",data=body_unicode)
+
+    def post(self,request):
+        body = json.loads(request.body.decode('utf-8'))
+        print(body)
+        uid = body['uid']
+        iid = body['iid']
+        item_type = body['type']
+        user_profile = UserProfile.objects.get(uid=uid)
+        if item_type == 'paper':
+            user_profile.paper_collections.append(iid)
+            user_profile.save()
+        elif item_type == 'news':
+            user_profile.news_collections.append(iid)
+            user_profile.save()
+        elif item_type == 'github':
+            user_profile.github_collections.append(iid)
+            user_profile.save()
+        else :
+            return gen_json_response(status="error",message="Wrong type for collection!")
+        return gen_json_response(status="successs",message="Collect success.")
