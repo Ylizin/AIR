@@ -2,6 +2,7 @@ from django.shortcuts import render,reverse
 from django.http import JsonResponse,HttpResponseRedirect
 from django.views import View
 from .query_result import *
+import json
 from .query_result import get_rough_query_result as get_query_result
 # from django.contrib.auth import login_required
 # Create your views here.
@@ -18,19 +19,28 @@ class RecView(View):
         #get user id in GET
         _usr_id = request.GET.get('uid',None)
         text_w,use_info = get_user_tags(_usr_id)
-        _dummy_user_text = [('word embedding',1.0),('graph embedding',2.0)]
-        rough_info = get_rough_query_result(_dummy_user_text)
-        recommends = get_acc_query_result(use_info,rough_info)
+        '''--------------for debug---------------------'''
+        text_w = [('word embedding',1.0),('graph embedding',2.0)]
+
+        arxiv_info = get_rough_query_result(text_w,index='arxiv')
+        news_info = get_rough_query_result(text_w,index = 'news')
+        github_info = get_rough_query_result(text_w,index = 'github')
+
+        arxiv_info = get_acc_query_result(use_info,arxiv_info)
+        news_info = get_acc_query_result(use_info,news_info)
+        github_info = get_acc_query_result(use_info,github_info)
+        recommends = arxiv_info+news_info+github_info
         return JsonResponse({'texts':recommends})
 
 class SearchView(View):
-    def get(self,request,*args,**kwargs):
+    def post(self,request,*args,**kwargs):
         # if not request.session.get('is_logined',False):
             # return HttpResponseRedirect('/login') 
 
         #get keyword and give it a weight 
-        keyword = request.GET.get('keyword',None)
-        text_w = [(word,1) for word in keyword]
+        post = json.loads(request.body)
+        keywords = post.get('keywords',None)
+        text_w = [(word,1) for word in keywords]
         arxiv_info = get_rough_query_result(text_w,index='arxiv')
         news_info = get_rough_query_result(text_w,index = 'news')
         github_info = get_rough_query_result(text_w,index = 'github')
