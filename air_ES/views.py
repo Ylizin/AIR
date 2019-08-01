@@ -9,7 +9,6 @@ from .query_result import get_rough_query_result as get_query_result
 
 
 
-# TODO: the first page invokation calculation
 # TODO: encapsulation of the session access
 class RecView(View):
     def get(self,request,*args,**kwargs):
@@ -24,6 +23,19 @@ class RecView(View):
         recommends = get_acc_query_result(use_info,rough_info)
         return JsonResponse({'texts':recommends})
 
+class SearchView(View):
+    def get(self,request,*args,**kwargs):
+        # if not request.session.get('is_logined',False):
+            # return HttpResponseRedirect('/login') 
+
+        #get keyword and give it a weight 
+        keyword = request.GET.get('keyword',None)
+        text_w = [(word,1) for word in keyword]
+        arxiv_info = get_rough_query_result(text_w,index='arxiv')
+        news_info = get_rough_query_result(text_w,index = 'news')
+        github_info = get_rough_query_result(text_w,index = 'github')
+        recommends = arxiv_info+news_info+github_info
+        return JsonResponse({'texts':recommends})
 
 class RecView_News(View):
     def get(self,request,*args,**kwargs):

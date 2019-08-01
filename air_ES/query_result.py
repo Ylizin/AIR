@@ -38,16 +38,17 @@ def get_rough_query_result(text,index='arxiv',fields=None):
     ids = list(map(lambda x: x['id'],_search_res))
     _q = get_record_info_query(ids)
     result = list(collection.find(_q,projection={'updated':False})[:20])
-    for i in result:
-        i['type']=index
-        i['id'] = str(i['_id'])
-        del i['_id']
+    # add the type info to each record
+    # the '_id' is the id in mongodb, here parse it to a str then send it through a json in 'id'
+    _ = [d.update({'type':index}) for d in result]
+    _ = [d.update({'id':str(d.pop('_id'))}) for d in result]
+
     return result,_scores
-    
+
 def get_acc_query_result(user_info,rough_info):
     '''this function pass the user_vec and the result of rough seach to the accurate search
-    
     Arguments:
         user_vec {[type]} -- [description]
     '''
-    return get_rs_result(rough_info[0],rough_info[1],user_info)
+    result = get_rs_result(rough_info[0],rough_info[1],user_info)
+    return result
