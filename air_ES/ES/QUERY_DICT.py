@@ -3,6 +3,7 @@ from bson import ObjectId
 
 #this file is for generated the querys
 
+#map index type to the fields in index,'id' is the field in ES
 TYPE_FIELDS_MAP={
     'arxiv':['title','abstract','id'],
     'news':['title','content','tag','id'],
