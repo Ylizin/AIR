@@ -6,13 +6,15 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 #from rest_framework.decorators import api_view
-from djongo.models import IntegerField
+from djongo.models import IntegerField,CharField
 
-from .models import UserProfile,UserInfo
+from .models import UserProfile,UserInfo,StringField
 from .models import Interests
 import json
-
+import bson
 import sys
+
+# import djongo
 sys.path.append("../")
 from air_ES.query_result import get_rough_query_result
 
@@ -101,7 +103,7 @@ class RegisterInterestsView(View):
         # print(interests_raw[0])
         # print(type(interests_raw[0]))
         interests_insert=[]
-        interests_raw = json.loads(interests_raw)
+        # interests_raw = json.loads(interests_raw)
         for x in interests_raw:
             key,value = next(iter(x.items()))
             interests_insert.append(Interests(domain=key,weight=value))
@@ -231,17 +233,23 @@ class CollectView(View):
         body = json.loads(request.body.decode('utf-8'))
         print(body)
         uid = body['uid']
-        iid = body['iid']
-        item_type = body['type']
+        iid = body['data']['iid']
+        # iid = bson.ObjectId(body['iid'])
+        item_type = body['data']['type']
         user_profile = UserProfile.objects.get(uid=uid)
-        if item_type == 'paper':
-            user_profile.paper_collections.append(iid)
+        if item_type == 'arxiv':
+            print(type(iid))
+            # temp = CharField('sadsdd')
+            print(type(user_profile.paper_collections))
+            user_profile.paper_collections.append(StringField(text=iid))
+            # UserProfile.objects.filter(uid=uid).update(paper_collections=[CharField(iid)]) 
+            print(user_profile.paper_collections[0])
             user_profile.save()
         elif item_type == 'news':
-            user_profile.news_collections.append(iid)
+            user_profile.news_collections.append(StringField(text=iid))
             user_profile.save()
         elif item_type == 'github':
-            user_profile.github_collections.append(iid)
+            user_profile.github_collections.append(StringField(text=iid))
             user_profile.save()
         else :
             return gen_json_response(status="error",message="Wrong type for collection!")
