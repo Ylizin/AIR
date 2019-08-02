@@ -58,7 +58,7 @@ class RecView_News(View):
 
         #get user id in GET
         _usr_id = request.GET.get('_id',None)
-        user_tag0,user_tag1,use_info = get_user_tags(_usr_id)
+        text_w,use_info = get_user_tags(_usr_id)
         _dummy_user_text = [('机器学习',1.0),('nlp',2.0)]
         rough_info = get_rough_query_result(_dummy_user_text,index='news',fields=[('content',4),('title',10)])
         print("############")

@@ -50,7 +50,7 @@ def get_acc_query_result(user_info,rough_info,index):
     Arguments:
         user_vec {[type]} -- [description]
     '''
-    if not user_info or not rough_info:
-        return [{'error':1,'message':'No result found in index: '+index}]
+    # if not user_info or not rough_info:
+        # return [{'error':1,'message':'No result found in index: '+index}]
     result = get_rs_result(rough_info[0],rough_info[1],user_info,index)
     return result
