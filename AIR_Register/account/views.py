@@ -7,6 +7,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 #from rest_framework.decorators import api_view
 from djongo.models import IntegerField,CharField
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
 
 from .models import UserProfile,UserInfo,StringField, ActionLog
 from .models import Interests
@@ -125,7 +126,7 @@ class LoginView(View):
     
     def get(self,request):
         return gen_json_response(status='error',message='No get for this page.kiddding?')
-
+    
     def post(self,request):
         body = json.loads(request.body.decode('utf-8'))
         username = body["username"]
@@ -134,13 +135,9 @@ class LoginView(View):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
+            
             # uid = User.objects.get(username=username).pk
             uid = user.pk # todo: need tests
-            # expected interests from front end:
-            # "'interests':[
-            #     [{'CV':1.2},{'CV object detection':0.8},{'CV SLAM':0.4}],
-            #     [{'NLP':1.3},{'NLP object detection':0.7}，{'NLP SLAM':0.8}]
-            # ]"
             print(uid)
             # todo: if speed is too slow, we can redesign the models.py for database
             # reformat input for query 
@@ -148,6 +145,7 @@ class LoginView(View):
             try:
                 interests_raw = UserProfile.objects.get(uid=uid)
             except:
+                print("???")
                 return gen_json_response(status='error',message='Wrong username or password!')
             print(interests_raw)
             degree = interests_raw.degree
@@ -158,25 +156,27 @@ class LoginView(View):
             total_collections.append([ str(item) for item in paper_collections])
             total_collections.append([str(item) for item in news_collections])
             total_collections.append([ str(item) for item in github_collections])
-            # interests = json.loads()
-            # mytuple = next(iter(interests[0][0].items()))
             query_text = [[x.domain, x.weight] for x in interests_raw.interests]
-            # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
-            
-            # Get recommended papers
-            # expected input: [("CV",1.0),("nlp",10.0)]
-            # query_text = [("机器学习",10.0),("nlp",10.0)]
-            # paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
-            paper_list = get_rough_query_result(query_text)
-            
-            # paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
-            print(paper_list[0][1])
-
-            # {'uid':123,'username':'kaizige','degree':'master','interests':[ ['CV',1.2],['object detection,0.8],['slam',0.4],['NLP',1.3],['word embedding',0.7]],‘collections’:[{‘type’:‘arxiv’(or ‘news’,‘github’),type对应的字段},…]}
-
+ 
+            paper_list = [['oooooooo']]
+ 
             data = {"uid":uid,"username":username,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":paper_list[0]}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
-            return gen_json_response(status="success",message="Login success!",data=data)
+            request.session['nb'] ='hbnb'
+
+            response = gen_json_response(status="success",message="Login success!",data=data)
+            response.session['uid'] = 1
+            print(response.session.keys())
+            response["Access-Control-Allow-Origin"] = "null" 
+            response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS" 
+            response["Access-Control-Max-Age"] = "1000" 
+            response["Access-Control-Allow-Headers"] = "*"
+            return response
+
+            
+            
+            
+            # return gen_json_response(status="success",message="Login success!",data=data)
 
             # response.set_cookie('username',username,3600)
         else:
@@ -240,7 +240,7 @@ class FeedsView(View):
         return gen_json_response(status='error',message='No get for this page.kiddding?')
 
     def post(self,request):
-
+        print(request.session['nb'])
         body = json.loads(request.body.decode('utf-8'))
         uid = body["uid"]
         # Expected Input
@@ -267,8 +267,8 @@ class FeedsView(View):
         # expected input: [("CV",1.0),("nlp",10.0)]
         # query_text = [("机器学习",10.0),("nlp",10.0)]
         # paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
-        paper_list = get_rough_query_result(query_text)
-        
+        # paper_list = get_rough_query_result(query_text)
+        paper_list = [['ooooooo']]
         # paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
         
         random.shuffle(paper_list[0]) # just for testing interface
