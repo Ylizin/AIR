@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 airs/
 'airs copy'/
-
+.vscode/
 # C extensions
 *.so
 

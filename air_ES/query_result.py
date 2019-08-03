@@ -4,14 +4,15 @@ from .ES.QUERY_DICT import *
 from .ES.ES_connector import *
 from airs.rsfunction import get_rs_result
 
+
 def get_user_tags(uid):
     if not uid:
-        return None,None,None
+        return None,None
     user = get_user_collection()
     _query = get_user_tags_query(uid)
     user_record = user.find_one(_query)
     if not user_record :
-        return None,None,None
+        return None,None
     # tag_0 = user_record['initial_tag_0']
     interests = user_record['interests']
     text_w = [(di['domain'],di['weight']) for di in interests]
@@ -20,26 +21,36 @@ def get_user_tags(uid):
 def get_rough_query_result(text,index='arxiv',fields=None):
     '''
         we can get the rough search by this method, by passing three param
+        the text is a list of tuples of (tag,weight)
+        the index is the index in ES
+        the fields is the (field,weight) to be searched in ES
+        if the fields is None then this method will search each field except 'id' with weigth 1
+        
     '''
     collection = get_collection(index)
     # this is for test case
     if not fields:
-        fields = [('abstract',4),('title',10)]
+        fields = TYPE_FIELDS_MAP[index]
+        fields = filter(lambda x: not x == 'id',fields)
+        fields = [(field,1) for field in fields]
 
     _search_res,_scores = query_text(text,fields=fields,index=index)
     ids = list(map(lambda x: x['id'],_search_res))
     _q = get_record_info_query(ids)
-    result = list(collection.find(_q,projection={'updated':False})[:20])
-    for i in result:
-        i['type']=index
-        i['iid'] = str(i['_id'])
-        del i['_id']
+    result = list(collection.find(_q,projection={'updated':False}))
+    # add the type info to each record
+    # the '_id' is the id in mongodb, here parse it to a str then send it through a json in 'id'
+    _ = [d.update({'type':index}) for d in result]
+    _ = [d.update({'id':str(d.pop('_id'))}) for d in result]
+
     return result,_scores
 
-def get_acc_query_result(user_info,rough_info):
+def get_acc_query_result(user_info,rough_info,index):
     '''this function pass the user_vec and the result of rough seach to the accurate search
-    
     Arguments:
         user_vec {[type]} -- [description]
     '''
-    return get_rs_result(rough_info[0],rough_info[1],user_info)
+    # if not user_info or not rough_info:
+        # return [{'error':1,'message':'No result found in index: '+index}]
+    result = get_rs_result(rough_info[0],rough_info[1],user_info,index)
+    return result
