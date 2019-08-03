@@ -32,7 +32,7 @@ def get_rough_query_result(text,index='arxiv',fields=None):
     result = list(collection.find(_q,projection={'updated':False})[:20])
     for i in result:
         i['type']=index
-        i['id'] = str(i['_id'])
+        i['iid'] = str(i['_id'])
         del i['_id']
     return result,_scores
 

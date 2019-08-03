@@ -8,11 +8,12 @@ from django.utils.decorators import method_decorator
 #from rest_framework.decorators import api_view
 from djongo.models import IntegerField,CharField
 
-from .models import UserProfile,UserInfo,StringField
+from .models import UserProfile,UserInfo,StringField, ActionLog
 from .models import Interests
 import json
 import bson
 import sys
+import random
 
 # import djongo
 sys.path.append("../")
@@ -43,11 +44,6 @@ class RegisterView(View):
         print('!!!!!!!!!!!!')
         username = body['username']
         password = body['password']
-        print(username)
-        print(password)
-        # interests = "Nothing"
-        # interests = body['interests']
-        # interests_raw = body['interests']
         
         #judge if the username is duplicated
         is_duplicated = User.objects.filter(username=username)
@@ -63,11 +59,8 @@ class RegisterView(View):
         )
         # initial user profile
         degree='No degree'
-        # interests = 
-        # d1 = Interests(domain='asd',weight=2)
-        # d2 = Interests(domain='asddd',weight=3)
+
         # print(d1)
-        # Interests(domain='asd',weight=2),Interests(domain='asddd',weight=3)
         user_info = UserInfo(user=user)
         # write to db
         user_info.save()
@@ -98,10 +91,7 @@ class RegisterInterestsView(View):
         #     interests_insert.append([key,value])
         
         degree = body['degree']
-        # print(degree)
-        # if interests_raw is None:
-        # print(interests_raw[0])
-        # print(type(interests_raw[0]))
+
         interests_insert=[]
         # interests_raw = json.loads(interests_raw)
         for x in interests_raw:
@@ -140,7 +130,7 @@ class LoginView(View):
         body = json.loads(request.body.decode('utf-8'))
         username = body["username"]
         password = body["password"]
-
+        
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
@@ -155,8 +145,19 @@ class LoginView(View):
             # todo: if speed is too slow, we can redesign the models.py for database
             # reformat input for query 
             print("------------------")
-            interests_raw = UserProfile.objects.get(uid=uid)
+            try:
+                interests_raw = UserProfile.objects.get(uid=uid)
+            except:
+                return gen_json_response(status='error',message='Wrong username or password!')
             print(interests_raw)
+            degree = interests_raw.degree
+            paper_collections = interests_raw.paper_collections
+            news_collections = interests_raw.news_collections
+            github_collections = interests_raw.github_collections
+            total_collections = []
+            total_collections.append([ str(item) for item in paper_collections])
+            total_collections.append([str(item) for item in news_collections])
+            total_collections.append([ str(item) for item in github_collections])
             # interests = json.loads()
             # mytuple = next(iter(interests[0][0].items()))
             query_text = [[x.domain, x.weight] for x in interests_raw.interests]
@@ -164,13 +165,16 @@ class LoginView(View):
             
             # Get recommended papers
             # expected input: [("CV",1.0),("nlp",10.0)]
-            query_text = [("机器学习",10.0),("nlp",10.0)]
+            # query_text = [("机器学习",10.0),("nlp",10.0)]
             # paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
             paper_list = get_rough_query_result(query_text)
             
             # paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
             print(paper_list[0][1])
-            data = {"uid":uid,"paper_list":paper_list[0]}
+
+            # {'uid':123,'username':'kaizige','degree':'master','interests':[ ['CV',1.2],['object detection,0.8],['slam',0.4],['NLP',1.3],['word embedding',0.7]],‘collections’:[{‘type’:‘arxiv’(or ‘news’,‘github’),type对应的字段},…]}
+
+            data = {"uid":uid,"username":username,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":paper_list[0]}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
             return gen_json_response(status="success",message="Login success!",data=data)
 
@@ -180,48 +184,21 @@ class LoginView(View):
 
         # return HttpResponseRedirect("/account/login")
 
+@method_decorator(login_required, name='dispatch')
 class LogoutView(View):
     # form_class = UserForm  # models.py中自定义的表单
     def get(self,request):
         logout(request)
         print('log out ..............')
-        # username = request.POST.get('username')
-        # return render(request,'account/login.html', {'message': 'Logout success.'})
-        # return HttpResponseRedirect('/account/login')
         return gen_json_response(status="success",message="Logout success!")
         
     def post(self,request):
         logout(request)
         print('log out ..............')
-        # return render(request,'account/login.html', {'form': form,'message': 'Logout success.'})
-        # return HttpResponseRedirect('/account/login')
         return gen_json_response(status="success",message="Logout success!")
 
-# @method_decorator(login_required, name='dispatch')
-class IndexView(View):
-    # form_class = UserForm  # models.py中自定义的表单
-    def get(self,request):
-        # form = LoginForm(None)
-        # return render(request,'account/login.html', {'form': form,'message': 'Logout success.'})
-        return render(request, 'account/index.html')
-        # return HttpResponseRedirect("account/index.html")
-        # return JsonResponse(__get_response_json_dict(data={}))
 
-
-class FeedsView(View):
-    def get(self,request):
-        body_unicode = request.body.decode('utf-8')
-        # body = json.loads(body_unicode)
-        
-        print(body_unicode)
-        return gen_json_response(status="successs",message="Return your get.",data=body_unicode)
-
-    def post(self,request):
-        body_unicode = request.body.decode('utf-8')
-        print(body_unicode)
-        return gen_json_response(status="successs",message="Return your post.",data=body_unicode)
-
-
+@method_decorator(login_required, name='dispatch')
 class CollectView(View):
     def get(self,request):
         body_unicode = request.body.decode('utf-8')
@@ -254,3 +231,117 @@ class CollectView(View):
         else :
             return gen_json_response(status="error",message="Wrong type for collection!")
         return gen_json_response(status="successs",message="Collect success.")
+
+@method_decorator(login_required, name='dispatch')
+class FeedsView(View):
+    # template_name = 'account/login.html'
+    
+    def get(self,request):
+        return gen_json_response(status='error',message='No get for this page.kiddding?')
+
+    def post(self,request):
+
+        body = json.loads(request.body.decode('utf-8'))
+        uid = body["uid"]
+        # Expected Input
+        # [{"uid":213,"iid":"12dwdaswas22","action":1,"start_time":,"end_time":},...]
+        feedback=body["data"]["feedback"]
+        print(uid)
+        # todo: if speed is too slow, we can redesign the models.py for database
+        # reformat input for query 
+        for item in feedback:
+            action_log = ActionLog(uid=uid,iid=item['iid'],action=item['action'],start_time=item['start_time'],end_time=['end_time'] )
+            action_log.save()
+        print("------------------")
+        try:
+            interests_raw = UserProfile.objects.get(uid=uid)
+        except:
+            return gen_json_response(status='error',message='Please login first!')
+        print(interests_raw)
+        # interests = json.loads()
+        # mytuple = next(iter(interests[0][0].items()))
+        query_text = [[x.domain, x.weight] for x in interests_raw.interests]
+        # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
+        
+        # Get recommended papers
+        # expected input: [("CV",1.0),("nlp",10.0)]
+        # query_text = [("机器学习",10.0),("nlp",10.0)]
+        # paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
+        paper_list = get_rough_query_result(query_text)
+        
+        # paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
+        
+        random.shuffle(paper_list[0]) # just for testing interface
+        print(paper_list[0][1])
+        data = {"uid":uid,"paper_list":paper_list[0]}
+        # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
+        return gen_json_response(status="success",message="Send feeds success!",data=data)
+
+@method_decorator(login_required, name='dispatch')
+class ProfileView(View):
+    pass
+
+# @method_decorator(login_required, name='dispatch')
+class TrendingView(View):
+    def get(self,request):
+        body = json.loads(request.body.decode('utf-8'))
+        uid = body['uid']
+        iid = body['iid']
+        start_time = body['start_time']
+        end_time = body['end_time']
+        
+        data = {"uid":uid,"iid":iid,"start_time" : start_time,"end_time":end_time}
+        # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
+        return gen_json_response(status="success",message="Search success!",data=data)
+    
+
+    def post(self,request):
+        body = json.loads(request.body.decode('utf-8'))
+        print("############")
+        print(body)
+        uid = body['uid']
+        iid = body['iid']
+        start_time = body['start_time']
+        end_time = body['end_time']
+        
+        data = {"uid":uid,"iid":iid,"start_time" : start_time,"end_time":end_time}
+        # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
+        return gen_json_response(status="success",message="Search success!",data=data)
+    
+    
+@method_decorator(login_required, name='dispatch')
+class SubscribeView(View):
+    def post(self,request):
+        body = json.loads(request.body.decode('utf-8'))
+        uid = body['uid']
+        interests_raw = body['interests']
+        uid = body['uid']
+
+        interests_insert=[]
+        # interests_raw = json.loads(interests_raw)
+        user_profile = UserProfile.objects.get(uid=uid)
+        for x in interests_raw:
+            key,value = next(iter(x.items()))
+            user_profile.interests.append(Interests(domain=key,weight=value))
+
+        print("@@@@@@@@@@@@@")
+        user_profile.save()
+
+        print('save success.')
+        return gen_json_response(status="success",message="Subscribe interests success!")
+
+class SearchView(View):
+    # form_class = UserForm  # models.py中自定义的表单
+    def get(self,request):
+        body = json.loads(request.body.decode('utf-8'))
+        uid = body['uid']
+        query_raw = body['data']['keywords']
+        query_text = [[x, 1.0] for x in query_raw]
+
+        paper_list = get_rough_query_result(query_text)
+        
+        print(paper_list[0][1])
+        data = {"uid":uid,"paper_list":paper_list[0]}
+        # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
+        return gen_json_response(status="success",message="Search success!",data=data)
+
