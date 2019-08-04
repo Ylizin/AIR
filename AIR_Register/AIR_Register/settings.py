@@ -31,7 +31,10 @@ ALLOWED_HOSTS = [
 '*',
 ]
 
+<<<<<<< HEAD
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
+=======
+>>>>>>> d6e8fdb6ec7079531a2a014c9447cbfcfd51f333
 
 # Application definition
 

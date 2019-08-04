@@ -33,6 +33,7 @@ class RecView(View):
         
         recommends = arxiv_info+news_info+github_info
         texts['texts'] = recommends
+        
         return JsonResponse(texts)
 
 class SearchView(View):
@@ -64,5 +65,4 @@ class RecView_News(View):
         print("############")
         
         recommends = get_acc_query_result(use_info,rough_info,index='news')
-        print(recommends)
         return JsonResponse({'type':'news','texts':recommends})

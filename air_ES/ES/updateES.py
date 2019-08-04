@@ -36,7 +36,7 @@ def update_ES_from_mongo(index:str):
             _newly_ids = []    
     else:
         __insert_ES_mark_mongo(_newly_records,_newly_ids,index)
-            
+    _newly_cursor.close()
     # part below is insert a single doc one time
     # _newly_ids = []
     # for record in _newly_cursor:

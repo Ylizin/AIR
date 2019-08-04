@@ -7,6 +7,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 #from rest_framework.decorators import api_view
 from djongo.models import IntegerField,CharField
+from django.views.decorators.csrf import csrf_exempt,csrf_protect
 
 from .models import UserProfile,UserInfo,StringField, ActionLog
 from .models import Interests
@@ -135,7 +136,7 @@ class LoginView(View):
         # session_id=request.session.session_key
 
         return gen_json_response(status='error',message='No get for this page.kiddding?')
-
+    
     def post(self,request):
         body = json.loads(request.body.decode('utf-8'))
         username = body["username"]
@@ -178,8 +179,6 @@ class LoginView(View):
             total_collections.append([ str(item) for item in paper_collections])
             total_collections.append([str(item) for item in news_collections])
             total_collections.append([ str(item) for item in github_collections])
-            # interests = json.loads()
-            # mytuple = next(iter(interests[0][0].items()))
             query_text = [[x.domain, x.weight] for x in interests_raw.interests]
             # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
             
@@ -347,8 +346,8 @@ class FeedsView(View):
         # expected input: [("CV",1.0),("nlp",10.0)]
         # query_text = [("机器学习",10.0),("nlp",10.0)]
         # paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
-        paper_list = get_rough_query_result(query_text)
-        
+        # paper_list = get_rough_query_result(query_text)
+        paper_list = [['ooooooo']]
         # paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
         
         random.shuffle(paper_list[0]) # just for testing interface
