@@ -52,12 +52,20 @@ def get_session_data(request):
 
 # record new user's username and password
 class RegisterView(View):
-
+    '''Only accept post request for register
+    '''
     def get(self,request):
         # session_id=request.session.session_key
         return gen_json_response(status='error',message='No get for this page.')
     
     def post(self,request):
+        '''Args:
+            username: string
+            password: string
+           Returns:
+            success
+            error status when duplication detected
+        '''
         # received_data = json.loads(request.body.decode('utf-8'))
         #use request.body to accommodate front end's axios
         body_unicode = request.body.decode('utf-8')
@@ -94,7 +102,8 @@ class RegisterView(View):
 
 # record new user's interests and degree
 class RegisterInterestsView(View):
-    
+    '''collect user interest when registration
+    '''
     def get(self,request):
         return gen_json_response(status='error',message='No get for this page.')
     
@@ -199,7 +208,7 @@ class LoginView(View):
 
             # {'uid':123,'username':'kaizige','degree':'master','interests':[ ['CV',1.2],['object detection,0.8],['slam',0.4],['NLP',1.3],['word embedding',0.7]],‘collections’:[{‘type’:‘arxiv’(or ‘news’,‘github’),type对应的字段},…]}
 
-            data = {"uid":uid,"username":username,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":paper_list[0]}
+            data = {"uid":uid,"username":username,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":paper_list[0][0:10]}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
             print(request.session['uid'])
             request.session.modified = True
@@ -230,7 +239,7 @@ class LogoutView(View):
         return gen_json_response(status="success",message="Logout success!")
 
 
-@method_decorator(login_required, name='dispatch')
+# @method_decorator(login_required, name='dispatch')
 class CollectView(View):
     def get(self,request):
         body_unicode = request.body.decode('utf-8')
@@ -244,6 +253,7 @@ class CollectView(View):
         uid = body['uid']
         iid = body['data']['iid']
         # iid = bson.ObjectId(body['iid'])
+        print(body['data'])
         item_type = body['data']['type']
         user_profile = UserProfile.objects.get(uid=uid)
         if item_type == 'arxiv':
@@ -304,10 +314,10 @@ class FeedsView(View):
         # Expected Input
         # [{"uid":213,"iid":"12dwdaswas22","action":1,"start_time":,"end_time":},...]
         
-        # feedback=body["data"]["feedback"]
-        # print(uid)
-        # todo: if speed is too slow, we can redesign the models.py for database
-        # reformat input for query 
+        # # feedback=body["data"]["feedback"]
+        # # print(uid)
+        # # todo: if speed is too slow, we can redesign the models.py for database
+        # # reformat input for query 
         # for item in feedback:
         #     action_log = ActionLog(uid=uid,iid=item['iid'],action=item['action'],start_time=item['start_time'],end_time=['end_time'] )
         #     action_log.save()
@@ -321,13 +331,10 @@ class FeedsView(View):
         query_text = [[x.domain, x.weight] for x in interests_raw.interests]
         # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
         
-        # Get recommended papers
-        # expected input: [("CV",1.0),("nlp",10.0)]
-        # query_text = [("机器学习",10.0),("nlp",10.0)]
-        # paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
+        # rough query result
         paper_list = get_rough_query_result(query_text)        
         random.shuffle(paper_list[0]) # just for testing interface
-        data = {"uid":uid,"paper_list":paper_list[0]}
+        data = {"uid":uid,"paper_list":paper_list[0][0:10]}
         return gen_json_response(session_id,status="success",message="Send feeds success!",data=data)
 
 # @method_decorator(login_required, name='dispatch')
