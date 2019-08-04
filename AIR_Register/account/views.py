@@ -14,17 +14,24 @@ import json
 import bson
 import sys
 import random
+from django.contrib.sessions.models import Session
 
 # import djongo
 sys.path.append("../")
 from air_ES.query_result import get_rough_query_result
 
+SESSION_KEY = '_auth_user_id'
+BACKEND_SESSION_KEY = '_auth_user_backend'
+HASH_SESSION_KEY = '_auth_user_hash'
+REDIRECT_FIELD_NAME = 'next'
+
 # generate json response for front end
-def gen_json_response(status='success', message="success",data={}):
+def gen_json_response(session_id,status='success', message="success",data={},):
     res = {
     "status": status,
     "message": message,
-    "data": data
+    "data": data,
+    "session_id":session_id
     }
     return JsonResponse(res)
 
@@ -32,6 +39,7 @@ def gen_json_response(status='success', message="success",data={}):
 class RegisterView(View):
 
     def get(self,request):
+        # session_id=request.session.session_key
         return gen_json_response(status='error',message='No get for this page.')
     
     def post(self,request):
@@ -124,6 +132,8 @@ class LoginView(View):
     # template_name = 'account/login.html'
     
     def get(self,request):
+        # session_id=request.session.session_key
+
         return gen_json_response(status='error',message='No get for this page.kiddding?')
 
     def post(self,request):
@@ -134,8 +144,18 @@ class LoginView(View):
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            # uid = User.objects.get(username=username).pk
             uid = user.pk # todo: need tests
+            request.session['uid'] = uid
+            request.session['test'] = 'hbnb'
+        
+            print(request.session['uid'])
+            print(request.session.keys())
+            if not request.session.session_key:
+                request.session.save()
+            session_id =request.session.session_key
+            print(request.user)
+            # uid = User.objects.get(username=username).pk
+            
             # expected interests from front end:
             # "'interests':[
             #     [{'CV':1.2},{'CV object detection':0.8},{'CV SLAM':0.4}],
@@ -148,8 +168,8 @@ class LoginView(View):
             try:
                 interests_raw = UserProfile.objects.get(uid=uid)
             except:
-                return gen_json_response(status='error',message='Wrong username or password!')
-            print(interests_raw)
+                return gen_json_response(session_id,status='error',message='Wrong username or password!')
+            # print(interests_raw)
             degree = interests_raw.degree
             paper_collections = interests_raw.paper_collections
             news_collections = interests_raw.news_collections
@@ -170,15 +190,42 @@ class LoginView(View):
             paper_list = get_rough_query_result(query_text)
             
             # paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
-            print(paper_list[0][1])
+            # print(paper_list[0][1])
 
             # {'uid':123,'username':'kaizige','degree':'master','interests':[ ['CV',1.2],['object detection,0.8],['slam',0.4],['NLP',1.3],['word embedding',0.7]],‘collections’:[{‘type’:‘arxiv’(or ‘news’,‘github’),type对应的字段},…]}
 
             data = {"uid":uid,"username":username,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":paper_list[0]}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
-            return gen_json_response(status="success",message="Login success!",data=data)
+            print(request.session['uid'])
+            request.session.modified = True
 
-            # response.set_cookie('username',username,3600)
+            response = gen_json_response(session_id,status="success",message="Login success!",data=data)
+            # response.set_cookie('session_id','8bnncdah79b55wn2gnz0jh3bah3937bf')
+            response.set_cookie('my_cookie','cookie value')
+            response.set_cookie('my_cookie2','cookie value2')
+            response.set_cookie('session_id',session_id)
+            
+            
+            hello=response.cookies.keys()
+            
+
+
+            print(hello)
+                        # response.set_cookie('username',username,3600)
+            # response["Access-Control-Allow-Origin"] = "*" 
+            # response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS" 
+            # response["Access-Control-Allow-Credentials"] = "true"
+            
+            # # response["Access-Control-Max-Age"] = "1000" 
+            # response["Access-Control-Allow-Headers"] = "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+            # print(response._headers)
+            request.session['test2'] = 'hbnb'
+            request.session.modified = True
+
+            # print(request.session.keys())
+            return response
+
+
         else:
             return gen_json_response(status='error',message='Wrong username or password!')
 
@@ -232,29 +279,62 @@ class CollectView(View):
             return gen_json_response(status="error",message="Wrong type for collection!")
         return gen_json_response(status="successs",message="Collect success.")
 
-@method_decorator(login_required, name='dispatch')
+# @method_decorator(login_required, name='dispatch')
 class FeedsView(View):
     # template_name = 'account/login.html'
     
     def get(self,request):
+        # session_id =request.session.session_key
         return gen_json_response(status='error',message='No get for this page.kiddding?')
 
     def post(self,request):
+        print("$$$$$$$$$$$$$$$$$$$$$$$")
+        print(request.COOKIES.keys())
+        session_id =request.COOKIES['session_id']
+        sess = Session.objects.get(pk=session_id)
+        print(sess.session_data)
+        print(sess.get_decoded())
 
+        
+        print(request.session.keys())
+        # for key, value in sess.items():
+        #     print('{} => {}'.format(key, value))
+        # request.session['test']='dddd'
+        print(sess.session_key)
+        # if not request.session.session_key:
+        #     request.session.save()
+        # print(request.session.session_key)
+        # print(request.session[SESSION_KEY])
+        # print(request.session[BACKEND_SESSION_KEY])
+        # print(request.session[HASH_SESSION_KEY])
+        print("@@@@@@@@@@@@@")
+        sess_data = sess.get_decoded()
+        hello=type(sess_data)
+        print(hello)
+        print(sess_data['test'])
         body = json.loads(request.body.decode('utf-8'))
         uid = body["uid"]
+        print(uid)
+        try:
+            if sess_data["uid"] == uid:
+                print('only for login')
+        except KeyError:
+            print("why!!!")
+            return gen_json_response(session_id,status='error',message='Please login first!')
         # Expected Input
         # [{"uid":213,"iid":"12dwdaswas22","action":1,"start_time":,"end_time":},...]
-        feedback=body["data"]["feedback"]
+        
+        # feedback=body["data"]["feedback"]
         print(uid)
         # todo: if speed is too slow, we can redesign the models.py for database
         # reformat input for query 
-        for item in feedback:
-            action_log = ActionLog(uid=uid,iid=item['iid'],action=item['action'],start_time=item['start_time'],end_time=['end_time'] )
-            action_log.save()
-        print("------------------")
+        # for item in feedback:
+        #     action_log = ActionLog(uid=uid,iid=item['iid'],action=item['action'],start_time=item['start_time'],end_time=['end_time'] )
+        #     action_log.save()
+        # print("------------------")
         try:
             interests_raw = UserProfile.objects.get(uid=uid)
+            print(interests_raw)
         except:
             return gen_json_response(status='error',message='Please login first!')
         print(interests_raw)
@@ -275,7 +355,7 @@ class FeedsView(View):
         print(paper_list[0][1])
         data = {"uid":uid,"paper_list":paper_list[0]}
         # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
-        return gen_json_response(status="success",message="Send feeds success!",data=data)
+        return gen_json_response(session_id,status="success",message="Send feeds success!",data=data)
 
 @method_decorator(login_required, name='dispatch')
 class ProfileView(View):

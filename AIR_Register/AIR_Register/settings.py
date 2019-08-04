@@ -31,7 +31,8 @@ ALLOWED_HOSTS = [
 '*',
 ]
 
-CORS_ORIGIN_ALLOW_ALL=True
+CSRF_COOKIE_NAME = "XSRF-TOKEN"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,11 +49,15 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    # 'django.middleware.security.SecurityMiddleware',
+    
+    
     # 'django.middleware.csrf.CsrfViewMiddleware',
+    # 'corsheaders.middleware.CorsPostCsrfMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -144,9 +149,23 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
+# SESSION_COOKIE_HTTPONLY =False
+# CSRF_COOKIE_HTTPONLY = False
+SESSION_COOKIE_AGE = 60 * 20
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_SAVE_EVERY_REQUEST = True
+# SESSION_COOKIE_DOMAIN = "106.75.229.123"
+# SESSION_SAVE_EVERY_REQUEST = True
+# SESSION_COOKIE_HTTPONLY=False
+CORS_ORIGIN_ALLOW_ALL=False
 CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = (
+    '*',
+    # 'http://58.247.200.42:3000',
+    'http://localhost:3000',
+    'http://127.0.0.1',
+)
+
 
 CORS_ALLOW_METHODS = (
     'DELETE',
@@ -157,8 +176,9 @@ CORS_ALLOW_METHODS = (
     'PUT',
     'VIEW',
 )
-CORS_ALLOW_CREDENTIALS = True
-
+# CORS_EXPOSE_HEADERS = (
+#     'Access-Control-Allow-Origin: *',
+# )
 CORS_ALLOW_HEADERS = (
     'accept',
     'XMLHttpRequest',
@@ -174,3 +194,4 @@ CORS_ALLOW_HEADERS = (
     'Pragma',
     'X-Custom-Header',
 )
+
