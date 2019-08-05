@@ -1,5 +1,5 @@
 from djongo import models
-
+# import django.contrib.sessions.middleware.SessionMiddleware
 # Create your models here.
 from django import forms
 from django.contrib.auth.models import User
@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 class Interests(models.Model):
     domain = models.CharField('user domain',max_length=50) # store tags as json 
     weight = models.FloatField()
+    father = models.CharField('father domain',max_length=50) # store tags as json 
     class Meta:
         abstract = True
     def __str__(self):
