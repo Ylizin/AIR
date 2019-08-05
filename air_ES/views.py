@@ -21,7 +21,7 @@ class RecView(View):
         _usr_id = request.GET.get('uid',None)
         text_w,use_info = get_user_tags(_usr_id)
         '''--------------for debug---------------------'''
-        text_w = [('word embedding',1.0),('graph embedding',2.0)]
+        # text_w = [('word embedding',1.0),('graph embedding',2.0)]
 
         arxiv_info = get_rough_query_result(text_w,index='arxiv')
         news_info = get_rough_query_result(text_w,index = 'news')
