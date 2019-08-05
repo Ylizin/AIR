@@ -392,9 +392,10 @@ class SearchView(View):
     def get(self,request):
         body = json.loads(request.body.decode('utf-8'))
         uid = body['uid']
+        print("search uid:"+str(uid))
         query_raw = body['data']['keywords']
         query_text = [[x, 1.0] for x in query_raw]
-
+        print("search text:"+str(query_text))
         paper_list = get_rough_query_result(query_text)
         
         # print(paper_list[0][1])
