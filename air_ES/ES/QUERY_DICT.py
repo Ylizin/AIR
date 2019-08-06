@@ -6,7 +6,7 @@ from bson import ObjectId
 #map index type to the fields in index,'id' is the field in ES
 TYPE_FIELDS_MAP={
     'arxiv':['title','abstract','id'],
-    'news':['title','content','tag','id'],
+    'news':['title','content','id'],
     'github':['description','readme_content','id']
 }
 
