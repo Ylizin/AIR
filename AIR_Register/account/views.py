@@ -19,7 +19,7 @@ from django.contrib.sessions.models import Session
 # import django.contrib.sessions.middleware.SessionMiddleware
 
 sys.path.append("../")
-from air_ES.query_result import get_rough_query_result
+from air_ES.query_result import get_rough_query_result,get_acc_query_result
 
 SESSION_KEY = '_auth_user_id'
 BACKEND_SESSION_KEY = '_auth_user_backend'
@@ -52,7 +52,7 @@ def get_session_data(request):
 
 # record new user's username and password
 class RegisterView(View):
-    '''Only accept post request for register
+    '''Only accept post request with username and password for register
     '''
     def get(self,request):
         # session_id=request.session.session_key
@@ -72,7 +72,6 @@ class RegisterView(View):
         body = json.loads(body_unicode)
         # body = request.POST
         print(body)
-        print('!!!!!!!!!!!!')
         username = body['username']
         password = body['password']
         
@@ -202,13 +201,35 @@ class LoginView(View):
             # expected input: [("CV",1.0),("nlp",10.0)]
             # query_text = [("机器学习",10.0),("nlp",10.0)]
             # paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
-            paper_list = get_rough_query_result(query_text)
+            paper_info_score,_ = get_rough_query_result(query_text,index='arxiv')
+        # paper_info = []
+            news_info_score,_ = get_rough_query_result(query_text,index = 'news')
+            github_info_score,_ = get_rough_query_result(query_text,index = 'github')
+
+            try:
+                use_info = dict(interests_raw)
+                print(use_info)
+            except:
+                use_info = []
+                print("user info can not be directly changed to dict.")
+
+            # print('################################')
+            # paper_info = get_acc_query_result(use_info,paper_info_score,index='arxiv')
+            # print('################################')
+            # news_info = get_acc_query_result(use_info,news_info_score,index = 'news')
+            # print('################################')
+            # github_info = get_acc_query_result(use_info,github_info_score,index = 'github') 
+            paper_info = paper_info_score
+            news_info = news_info_score
+            github_info = github_info_score
+            paper_list = paper_info + news_info +github_info      
             
-
-
             # {'uid':123,'username':'kaizige','degree':'master','interests':[ ['CV',1.2],['object detection,0.8],['slam',0.4],['NLP',1.3],['word embedding',0.7]],‘collections’:[{‘type’:‘arxiv’(or ‘news’,‘github’),type对应的字段},…]}
-
-            data = {"uid":uid,"username":username,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":paper_list[0][0:10]}
+            # paper_list = paper_info+news_info+github_info
+            random.shuffle(paper_list) 
+                 
+    
+            data = {"uid":uid,"username":username,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":paper_list[0:10]}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
             print(request.session['uid'])
             request.session.modified = True
@@ -332,14 +353,40 @@ class FeedsView(View):
         # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
         
         # rough query result
-        paper_list = get_rough_query_result(query_text)        
-        random.shuffle(paper_list[0]) # just for testing interface
-        data = {"uid":uid,"paper_list":paper_list[0][0:10]}
+         
+        # paper_info,_ = get_rough_query_result(query_text,index='arxiv')
+        # # paper_info = []
+        # news_info,_ = get_rough_query_result(query_text,index = 'news')
+        # github_info,_ = get_rough_query_result(query_text,index = 'github')
+        
+        # arxiv_info = get_acc_query_result(use_info,arxiv_info,index='arxiv')
+        # news_info = get_acc_query_result(use_info,news_info,index = 'news')
+        # github_info = get_acc_query_result(use_info,github_info,index = 'github')
+        paper_info_score,_ = get_rough_query_result(query_text,index='arxiv')
+        news_info_score,_ = get_rough_query_result(query_text,index = 'news')
+        github_info_score,_ = get_rough_query_result(query_text,index = 'github')
+        
+        print('################################')
+        try:
+            use_info = dict(interests_raw)
+            print(use_info)
+        except:
+            use_info = []
+            print('################################')
+            print("user info can not be directly changed to dict.")
+        # paper_info = []#get_acc_query_result(use_info,paper_info_score,index='arxiv')
+        # print('################################')
+        # news_info = get_acc_query_result(use_info,news_info_score,index = 'news')
+        # print('################################')
+        # github_info = get_acc_query_result(use_info,github_info_score,index = 'github')
+        paper_info = paper_info_score
+        news_info = news_info_score
+        github_info = github_info
+        paper_list = paper_info + news_info +github_info      
+        random.shuffle(paper_list) # just for testing interface
+        data = {"uid":uid,"paper_list":paper_list[0:100]}
         return gen_json_response(session_id,status="success",message="Send feeds success!",data=data)
 
-# @method_decorator(login_required, name='dispatch')
-class ProfileView(View):
-    pass
 
 # @method_decorator(login_required, name='dispatch')
 class TrendingView(View):
@@ -389,16 +436,36 @@ class SubscribeView(View):
         return gen_json_response(status="success",message="Subscribe interests success!")
 
 class SearchView(View):
-    def get(self,request):
+    def post(self,request):
         body = json.loads(request.body.decode('utf-8'))
-        uid = body['uid']
-        print("search uid:"+str(uid))
-        query_raw = body['data']['keywords']
-        query_text = [[x, 1.0] for x in query_raw]
-        print("search text:"+str(query_text))
-        paper_list = get_rough_query_result(query_text)
-        
-        # print(paper_list[0][1])
-        data = {"uid":uid,"paper_list":paper_list[0]}
-        return gen_json_response(status="success",message="Search success!",data=data)
+        print(body)
+        # uid = body['uid']
+        # print("search uid:"+str(uid))
+        keywords = body['keywords']
+        if not keywords:
+            return JsonResponse({'message':'Nothing to search.','flag':0})
+        text_w = [(keywords,1)]
+        # text_w = [(word,1) for word in keywords]
+        arxiv_info = get_rough_query_result(text_w,index='arxiv')
+        news_info = get_rough_query_result(text_w,index = 'news')
+        github_info = get_rough_query_result(text_w,index = 'github')
+        recommends = arxiv_info+news_info+github_info
+        # texts['texts'] = recommends
+        # return JsonResponse(texts)
 
+        # query_text = [[x, 1.0] for x in keywords.split(" ")]
+        # print("search text:"+str(query_text))
+        # paper_list = get_rough_query_result(query_text)
+        paper_list = recommends
+        # print(paper_list[0][1])
+        data = {"paper_list":paper_list[0][0:100]}
+        return gen_json_response(status="success",message="Search success!",data=data)
+    # def get(self,request,*args,**kwargs):
+    #     # if not request.session.get('is_logined',False):
+    #         # return HttpResponseRedirect('/login') 
+        # texts = {}
+        #get keyword and give it a weight 
+        # post = json.loads(request.body)
+        
+        # keywords = request.GET.get('keywords',None)
+        
