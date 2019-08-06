@@ -14,9 +14,9 @@ urlpatterns = [
     # login required
     path('collect/',views.CollectView.as_view(), name='collect'),
     path('feeds/', views.FeedsView.as_view(),name='feeds'),
-    path('profile/',views.ProfileView.as_view(), name='profile'),
+    # path('profile/',views.ProfileView.as_view(), name='profile'),
     path('trending/',views.TrendingView.as_view(), name='trending'),
-    path('subscribe/',views.SubscribeView.as_view(), name='search')
+    path('subscribe/',views.SubscribeView.as_view(), name='subscribe')
     
     
 ]
