@@ -160,12 +160,12 @@ SESSION_SAVE_EVERY_REQUEST = True
 # SESSION_COOKIE_HTTPONLY=False
 CORS_ORIGIN_ALLOW_ALL= True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    '*',
-    # 'http://58.247.200.42:3000',
-    # 'http://localhost:3000',
-    # 'http://127.0.0.1',
-)
+# CORS_ORIGIN_WHITELIST = (
+#     '*',
+#     # 'http://58.247.200.42:3000',
+#     # 'http://localhost:3000',
+#     # 'http://127.0.0.1',
+# )
 
 
 CORS_ALLOW_METHODS = (

@@ -16,6 +16,9 @@ import bson
 import sys
 import random
 from django.contrib.sessions.models import Session
+
+import time
+import datetime
 # import django.contrib.sessions.middleware.SessionMiddleware
 
 sys.path.append("../")
@@ -60,13 +63,13 @@ class RegisterView(View):
     
     def post(self,request):
         '''Args:
+            request(
             username: string
-            password: string
+            password: string)
            Returns:
-            success
+            success status
             error status when duplication detected
         '''
-        # received_data = json.loads(request.body.decode('utf-8'))
         #use request.body to accommodate front end's axios
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
@@ -101,12 +104,19 @@ class RegisterView(View):
 
 # record new user's interests and degree
 class RegisterInterestsView(View):
-    '''collect user interest when registration
+    '''collect user interests/degree when registration
     '''
     def get(self,request):
         return gen_json_response(status='error',message='No get for this page.')
     
     def post(self,request):
+        '''Args:
+            interests:
+            password: string
+           Returns:
+            success
+            error status when duplication detected
+        '''
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         uid = body['uid']
@@ -119,14 +129,17 @@ class RegisterInterestsView(View):
         #     interests_insert.append([key,value])
         
         degree = body['degree']
-
+        print(interests_raw)
         interests_insert=[]
         # interests_raw = json.loads(interests_raw)
+        total_weight = 0.0
+        # nomarlize weigt of each interest
         for x in interests_raw:
-            key,value = next(iter(x.items()))
-            interests_insert.append(Interests(domain=key,weight=value))
-
-        # debug
+            total_weight+=x['weight']
+        print(total_weight)
+        for x in interests_raw:
+            domain,weight,father = x['domain'],x['weight'],x['father']
+            interests_insert.append(Interests(domain=domain,weight=weight/total_weight,father=father))
         
         # method 1 to update
         # user = UserProfile.objects.filter(user_id=uid).update(interests=interests_insert,degree=degree)
@@ -201,10 +214,14 @@ class LoginView(View):
             # expected input: [("CV",1.0),("nlp",10.0)]
             # query_text = [("机器学习",10.0),("nlp",10.0)]
             # paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
-            paper_info_score,_ = get_rough_query_result(query_text,index='arxiv')
+        #     paper_info_score,_ = get_rough_query_result(query_text,index='arxiv')
+        # # paper_info = []
+        #     news_info_score,_ = get_rough_query_result(query_text,index = 'news')
+        #     github_info_score,_ = get_rough_query_result(query_text,index = 'github')
+            paper_info_score = get_rough_query_result(query_text,index='arxiv')
         # paper_info = []
-            news_info_score,_ = get_rough_query_result(query_text,index = 'news')
-            github_info_score,_ = get_rough_query_result(query_text,index = 'github')
+            news_info_score = get_rough_query_result(query_text,index = 'news')
+            github_info_score = get_rough_query_result(query_text,index = 'github')
 
             try:
                 use_info = dict(interests_raw)
@@ -213,23 +230,30 @@ class LoginView(View):
                 use_info = []
                 print("user info can not be directly changed to dict.")
 
-            # print('################################')
-            # paper_info = get_acc_query_result(use_info,paper_info_score,index='arxiv')
-            # print('################################')
-            # news_info = get_acc_query_result(use_info,news_info_score,index = 'news')
-            # print('################################')
-            # github_info = get_acc_query_result(use_info,github_info_score,index = 'github') 
-            paper_info = paper_info_score
-            news_info = news_info_score
-            github_info = github_info_score
+            print('################################')
+            paper_info = get_acc_query_result(use_info,paper_info_score,index='arxiv')
+            print('################################')
+            news_info = get_acc_query_result(use_info,news_info_score,index = 'news')
+            print('################################')
+            github_info = get_acc_query_result(use_info,github_info_score,index = 'github') 
+            # paper_info = paper_info_score
+            # news_info = news_info_score
+            # github_info = github_info_score
             paper_list = paper_info + news_info +github_info      
             
             # {'uid':123,'username':'kaizige','degree':'master','interests':[ ['CV',1.2],['object detection,0.8],['slam',0.4],['NLP',1.3],['word embedding',0.7]],‘collections’:[{‘type’:‘arxiv’(or ‘news’,‘github’),type对应的字段},…]}
             # paper_list = paper_info+news_info+github_info
             random.shuffle(paper_list) 
                  
-    
-            data = {"uid":uid,"username":username,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":paper_list[0:10]}
+            return_data = paper_list[0:10]
+
+            t = int(round(time.time()* 1000))
+            for item in return_data:
+                action_record = ActionLog(uid=uid,fid=item['id'],action=0,start_time=t,end_time=0)
+                action_record.save()
+                # action_record = {'uid':uid,'fid':item['fid'],'action':0,'start_time':t,'end_time':0}
+
+            data = {"uid":uid,"username":username,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":return_data}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
             print(request.session['uid'])
             request.session.modified = True
@@ -272,24 +296,24 @@ class CollectView(View):
         body = json.loads(request.body.decode('utf-8'))
         print(body)
         uid = body['uid']
-        iid = body['data']['iid']
-        # iid = bson.ObjectId(body['iid'])
+        fid = body['data']['id']
+        # fid = bson.ObjectId(body['fid'])
         print(body['data'])
         item_type = body['data']['type']
         user_profile = UserProfile.objects.get(uid=uid)
         if item_type == 'arxiv':
-            print(type(iid))
+            print(type(fid))
             # temp = CharField('sadsdd')
             print(type(user_profile.paper_collections))
-            user_profile.paper_collections.append(StringField(text=iid))
-            # UserProfile.objects.filter(uid=uid).update(paper_collections=[CharField(iid)]) 
+            user_profile.paper_collections.append(StringField(text=fid))
+            # UserProfile.objects.filter(uid=uid).update(paper_collections=[CharField(fid)]) 
             print(user_profile.paper_collections[0])
             user_profile.save()
         elif item_type == 'news':
-            user_profile.news_collections.append(StringField(text=iid))
+            user_profile.news_collections.append(StringField(text=fid))
             user_profile.save()
         elif item_type == 'github':
-            user_profile.github_collections.append(StringField(text=iid))
+            user_profile.github_collections.append(StringField(text=fid))
             user_profile.save()
         else :
             return gen_json_response(status="error",message="Wrong type for collection!")
@@ -333,14 +357,14 @@ class FeedsView(View):
             print("why!!!")
             return gen_json_response(session_id,status='error',message='Please login first!')
         # Expected Input
-        # [{"uid":213,"iid":"12dwdaswas22","action":1,"start_time":,"end_time":},...]
+        # [{"uid":213,"fid":"12dwdaswas22","action":1,"start_time":,"end_time":},...]
         
         # # feedback=body["data"]["feedback"]
         # # print(uid)
         # # todo: if speed is too slow, we can redesign the models.py for database
         # # reformat input for query 
         # for item in feedback:
-        #     action_log = ActionLog(uid=uid,iid=item['iid'],action=item['action'],start_time=item['start_time'],end_time=['end_time'] )
+        #     action_log = ActionLog(uid=uid,fid=item['fid'],action=item['action'],start_time=item['start_time'],end_time=['end_time'] )
         #     action_log.save()
         try:
             interests_raw = UserProfile.objects.get(uid=uid)
@@ -381,10 +405,18 @@ class FeedsView(View):
         # github_info = get_acc_query_result(use_info,github_info_score,index = 'github')
         paper_info = paper_info_score
         news_info = news_info_score
-        github_info = github_info
-        paper_list = paper_info + news_info +github_info      
+        github_info = github_info_score
+        paper_list = paper_info + news_info + github_info      
         random.shuffle(paper_list) # just for testing interface
-        data = {"uid":uid,"paper_list":paper_list[0:100]}
+        return_data = paper_list[0:10]
+        for x in return_data:
+            x["fid"] = x.pop("id")
+        t = int(round(time.time()* 1000))
+        for item in return_data:
+            action_record = ActionLog(uid=uid,fid=item['fid'],action=0,start_time=t,end_time=0)
+            action_record.save()
+            # action_record = {'uid':uid,'fid':item['fid'],'action':0,'start_time':t,'end_time':0}
+        data = {"uid":uid,"paper_list":return_data}
         return gen_json_response(session_id,status="success",message="Send feeds success!",data=data)
 
 
@@ -393,11 +425,11 @@ class TrendingView(View):
     def get(self,request):
         body = json.loads(request.body.decode('utf-8'))
         uid = body['uid']
-        iid = body['iid']
+        fid = body['fid']
         start_time = body['start_time']
         end_time = body['end_time']
         
-        data = {"uid":uid,"iid":iid,"start_time" : start_time,"end_time":end_time}
+        data = {"uid":uid,"fid":fid,"start_time" : start_time,"end_time":end_time}
         return gen_json_response(status="success",message="Search success!",data=data)
     
 
@@ -406,11 +438,11 @@ class TrendingView(View):
         print("############")
         print(body)
         uid = body['uid']
-        iid = body['iid']
+        fid = body['fid']
         start_time = body['start_time']
         end_time = body['end_time']
         
-        data = {"uid":uid,"iid":iid,"start_time" : start_time,"end_time":end_time}
+        data = {"uid":uid,"fid":fid,"start_time" : start_time,"end_time":end_time}
         return gen_json_response(status="success",message="Search success!",data=data)
     
     
@@ -468,4 +500,15 @@ class SearchView(View):
         # post = json.loads(request.body)
         
         # keywords = request.GET.get('keywords',None)
-        
+
+class ClickView(View):
+    def post(self,request):
+        body = json.loads(request.body.decode('utf-8'))
+        print(body)
+
+        action_record = ActionLog(uid=body['uid'],fid=body['fid'],action=body['action'],start_time=body['start_time'],end_time=0)
+        action_record.save()
+        # print(paper_list[0][1])
+        # data = {"paper_list":paper_list[0][0:100]}
+        data = {}
+        return gen_json_response(status="success",message="Search success!",data=data)

@@ -35,9 +35,14 @@ def get_rough_query_result(text,index='arxiv',fields=None):
         fields = [(field,1) for field in fields]
 
     _search_res,_scores = query_text(text,fields=fields,index=index)
+    print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
     ids = list(map(lambda x: x['id'],_search_res))
+    print(len(ids))
     _q = get_record_info_query(ids)
+    print(len(_q))
     result = list(collection.find(_q,projection={'updated':False}))
+    print(len(result))
+    print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
     # add the type info to each record
     # the '_id' is the id in mongodb, here parse it to a str then send it through a json in 'id'
     _ = [d.update({'type':index}) for d in result]
