@@ -30,5 +30,6 @@ def query_text(text:list , fields:list=None, index:str='arxiv'):
     else:
         raise Exception('Index shouldnt be None')
     logging.debug([x['_score'] for x in res])
+
     return [x['_source'] for x in res],[x['_score'] for x in res]
     

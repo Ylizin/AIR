@@ -241,8 +241,8 @@ class ClickView(View):
     def post(self,request):
         body = json.loads(request.body.decode('utf-8'))
         print(body)
-
-        action_record = ActionLog(uid=body['uid'],fid=body['fid'],action=body['action'],start_time=body['start_time'],end_time=0)
+        t = int(round(time.time()* 1000))
+        action_record = ActionLog(uid=body['uid'],fid=body['fid'],action=body['fav_action'],start_time=t,end_time=0)
         action_record.save()
 
         if USE_ACC_QUERY:

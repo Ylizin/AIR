@@ -109,7 +109,7 @@ class RegisterInterestsView(View):
         print(total_weight)
         for x in interests_raw:
             domain, father = list(x.keys())[0],x['father']
-            interests_insert.append(Interests(domain=domain,weight=1/length,father=father))
+            interests_insert.append(Interests(domain=domain.lower(),weight=1/length,father=father))
         
         # method 1 to update
         # user = UserProfile.objects.filter(user_id=uid).update(interests=interests_insert,degree=degree)
