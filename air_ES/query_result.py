@@ -4,7 +4,7 @@ from .ES.QUERY_DICT import *
 from .ES.ES_connector import *
 from airs.rsfunction import get_rs_result
 import pickle 
-en_to_cn_dict = pickle.load(open('./air_ES/en_to_cn.pkl','rb'))
+en_to_cn_dict = pickle.load(open('./en_to_cn.pkl','rb'))
 
 def get_user_tags(uid):
     if not uid:
