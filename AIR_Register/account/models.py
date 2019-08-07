@@ -16,7 +16,10 @@ class Interests(models.Model):
 class StringField(models.Model):
     text = models.CharField('user domain',max_length=50) # store tags as json 
     def __str__(self):
-        return self.text.__str__()
+        return self.text
+    def __eq__(self,other):
+        return self.text == other.text
+
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='profile')

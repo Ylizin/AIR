@@ -222,11 +222,13 @@ class LoginView(View):
 
             t = int(round(time.time()* 1000))
             for item in return_data:
-                action_record = ActionLog(uid=uid,fid=item['id'],action=0,start_time=t,end_time=0)
+
+                item['fid'] = item.pop('id')
+                action_record = ActionLog(uid=uid,fid=item['fid'],action=0,start_time=t,end_time=0)
                 
                 action_record.save()
                 # action_record = {'uid':uid,'fid':item['fid'],'action':0,'start_time':t,'end_time':0}
-
+            # print(return_data)
             data = {"uid":uid,"username":username,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":return_data}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
             print(request.session['uid'])
@@ -256,7 +258,13 @@ class LogoutView(View):
         print('log out ..............')
         return gen_json_response(status="success",message="Logout success!")
 
+# class CollectionsView(View):
 
+#     def post(self,request):
+#         '''Input: uid, collection_list, 
+
+#         '''
+#     pass
 
 # class CollectView(View):
 #     def get(self,request):

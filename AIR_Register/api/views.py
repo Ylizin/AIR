@@ -24,6 +24,8 @@ USE_ACC_QUERY = False
 
 
 class CollectView(View):
+    '''
+    '''
     def get(self,request):
         body_unicode = request.body.decode('utf-8')
         
@@ -34,13 +36,16 @@ class CollectView(View):
         body = json.loads(request.body.decode('utf-8'))
         print(body)
         uid = body['uid']
-        fid = body['data']['fid']
-        print(body['data'])
-        item_type = body['data']['type']
+        fid = body['fid']
+        # print(body['data'])
+        item_type = body['type']
         user_profile = UserProfile.objects.get(uid=uid)
         # action=3 means this is a collection action
+        print('############################')
+        print(uid)
+        print(item_type)
         t = int(round(time.time()* 1000))
-        is_favor = body['data']['fav_action']
+        is_favor = body['fav_action']
         if is_favor == 'favor':
             action_record = ActionLog(uid=uid,fid=fid,action=3,start_time=t,end_time=0)
         else:
@@ -53,9 +58,19 @@ class CollectView(View):
         if item_type == 'arxiv':
             # temp = CharField('sadsdd')
             if is_favor == 'favor':
-                user_profile.paper_collections.append(StringField(text=fid))
+                temp = StringField(text=fid)
+                if temp in user_profile.paper_collections:
+                    pass
+                else:
+                    user_profile.paper_collections.append(StringField(text=fid))
             else:
-                user_profile.paper_collections.remove(StringField(text=fid))
+                print("---------collect-----------")
+                print(user_profile.paper_collections)
+                temp = StringField(text=fid)
+                print('------')
+                print(temp)    
+                user_profile.paper_collections.remove(temp)
+                print(user_profile.paper_collections)
                 print("remove success.")
             # UserProfile.objects.filter(uid=uid).update(paper_collections=[CharField(fid)]) 
             print(user_profile.paper_collections[0])
@@ -154,7 +169,7 @@ class FeedsView(View):
         paper_list = paper_info + news_info + github_info      
         random.shuffle(paper_list) # just for testing interface
         return_data = paper_list[0:10]
-        print(return_data[0])
+        # print(return_data[0])
         for x in return_data:
             x["fid"] = x.pop("id")
         t = int(round(time.time()* 1000))
@@ -220,20 +235,18 @@ class SearchView(View):
         if not keywords:
             return JsonResponse({'message':'Nothing to search.','flag':0})
         text_w = [(keywords,1)]
-        # text_w = [(word,1) for word in keywords]
-        paper_info = get_rough_query_result(text_w,index='arxiv')
-        news_info = get_rough_query_result(text_w,index = 'news')
-        github_info = get_rough_query_result(text_w,index = 'github')
-        paper_list = paper_info+news_info+github_info
-        # texts['texts'] = recommends
-        # return JsonResponse(texts)
-
-        # query_text = [[x, 1.0] for x in keywords.split(" ")]
-        # print("search text:"+str(query_text))
-        # paper_list = get_rough_query_result(query_text)
         
-        # print(paper_list[0][1])
-        data = {"paper_list":paper_list[0][0:100]}
+        # text_w = [(word,1) for word in keywords]
+        paper_info,_ = get_rough_query_result(text_w,index='arxiv')
+        news_info,_ = get_rough_query_result(text_w,index = 'news')
+        github_info,_ = get_rough_query_result(text_w,index = 'github')
+        paper_list = paper_info+news_info+github_info
+        print("-------debug search------------")
+        print(paper_list[0])
+        for x in paper_list:
+            x["fid"] = x.pop("id")
+
+        data = {"paper_list":paper_list[0:100]}
         return gen_json_response(status="success",message="Search success!",data=data)
 
 
@@ -242,7 +255,7 @@ class ClickView(View):
         body = json.loads(request.body.decode('utf-8'))
         print(body)
         t = int(round(time.time()* 1000))
-        action_record = ActionLog(uid=body['uid'],fid=body['fid'],action=body['fav_action'],start_time=t,end_time=0)
+        action_record = ActionLog(uid=body['uid'],fid=body['fid'],action=body['action'],start_time=t,end_time=0)
         action_record.save()
 
         if USE_ACC_QUERY:
@@ -312,7 +325,7 @@ class TabView(View):
         print('################################')    
         random.shuffle(result_info) # just for testing interface
         return_data = result_info[0:10]
-        print(return_data[0])
+        # print(return_data[0])
         for x in return_data:
             x["fid"] = x.pop("id")
         t = int(round(time.time()* 1000))
