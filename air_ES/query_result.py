@@ -3,7 +3,8 @@ from .ES.ES_query import query_text
 from .ES.QUERY_DICT import *
 from .ES.ES_connector import *
 from airs.rsfunction import get_rs_result
-
+import pickle 
+en_to_cn_dict = pickle.load(open('./air_ES/en_to_cn.pkl','rb'))
 
 def get_user_tags(uid):
     if not uid:
@@ -27,12 +28,16 @@ def get_rough_query_result(text,index='arxiv',fields=None):
         if the fields is None then this method will search each field except 'id' with weigth 1
         
     '''
+    # convert en to cn if tag in en_to_cn_dict
+    if index == 'news':
+        text = [(en_to_cn_dict.get(tag,tag),w) for tag,w in text]
     collection = get_collection(index)
     # this is for test case
     if not fields:
         fields = TYPE_FIELDS_MAP[index]
         fields = filter(lambda x: not x == 'id',fields)
         fields = [(field,1) for field in fields]
+    
     # print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
     # print(text)
     _search_res,_scores = query_text(text,fields=fields,index=index)
@@ -62,7 +67,7 @@ def get_acc_query_result(user_info,rough_info,index):
     return result
 
 
-def get_paper_info(f_ids,index = 'arxiv'):
+def get_feeds_info(f_ids,index = 'arxiv'):
     '''
         get paper/news/github info from ids
         return a list
