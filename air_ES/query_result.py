@@ -60,3 +60,9 @@ def get_acc_query_result(user_info,rough_info,index):
         # return [{'error':1,'message':'No result found in index: '+index}]
     result = get_rs_result(rough_info[0],rough_info[1],user_info,index)
     return result
+
+
+def get_paper_info(f_ids,index = 'arxiv'):
+    collection = get_collection(index)
+    _q = get_record_info_query(f_ids)
+    return list(collection.find(_q,projection={'updated':False}))
