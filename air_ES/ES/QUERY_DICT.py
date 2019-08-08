@@ -28,7 +28,7 @@ def get_weighted_query(fields_texts_w,slop=2):
       'bool':
       {'should':[]}
     },
-    '_source':['id']
+        '_source':['id']
     }
     should = TEXT_QUERY['query']['bool']['should']
     
