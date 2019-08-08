@@ -128,7 +128,7 @@ class FeedsView(View):
             # print(interests_raw)
         except:
             return gen_json_response(status='error',message='Please login first!')
-        print(interests_raw)
+        # print(interests_raw)
         # interests = json.loads()
         query_text = [[x.domain, x.weight] for x in interests_raw.interests]
         # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
@@ -249,16 +249,16 @@ class SearchView(View):
         # text_w = [(word,1) for word in keywords]
         index = ['arxiv','news','github']
         total_info_score = get_rough_query_result(text_w,index=index)
-
-        # paper_info_score = total_info_score['arxiv']
+        # print(total_info_score)
+        paper_info = total_info_score['arxiv'][0]
         # # # paper_info = []
-        # news_info_score = total_info_score['news']
-        # github_info_score = total_info_score['github']
+        news_info = total_info_score['news'][0]
+        github_info = total_info_score['github'][0]
 
         # paper_info,_ = get_rough_query_result(text_w,index='arxiv')
         # news_info,_ = get_rough_query_result(text_w,index = 'news')
         # github_info,_ = get_rough_query_result(text_w,index = 'github')
-        paper_list = total_info_score[0]#paper_info+news_info+github_info
+        paper_list = paper_info + news_info+github_info#paper_info+news_info+github_info
         # print("-------debug search------------")
         # print(paper_list[0])
         for x in paper_list:

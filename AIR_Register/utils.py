@@ -4,10 +4,10 @@ from django.contrib.sessions.models import Session
 
 def gen_json_response(session_id=0,status='success', message="success",data={},):
     res = {
-    "status": status,
-    "message": message,
-    "data": data,
-    "session_id":session_id
+        "status": status,
+        "message": message,
+        "data": data,
+        "session_id":session_id
     }
     return JsonResponse(res)
 def get_session_data(session_id):
