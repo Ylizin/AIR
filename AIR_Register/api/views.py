@@ -14,11 +14,11 @@ import time
 import datetime
 
 sys.path.append("../")
-from air_ES.query_result import get_rough_query_result,get_acc_query_result
+from air_ES.query_result import get_rough_query_result,get_acc_query_result,get_feeds_info
 from airs import rsfunction
 from utils import gen_json_response,get_session_data,action_record_to_dict
 
-USE_ACC_QUERY = False
+USE_ACC_QUERY = True
 # generate json response for front end
 
 
@@ -73,7 +73,7 @@ class CollectView(View):
                 print(user_profile.paper_collections)
                 print("remove success.")
             # UserProfile.objects.filter(uid=uid).update(paper_collections=[CharField(fid)]) 
-            print(user_profile.paper_collections[0])
+            # print(user_profile.paper_collections[0])
             user_profile.save()
         elif item_type == 'news':
             user_profile.news_collections.append(StringField(text=fid))
@@ -93,24 +93,22 @@ class FeedsView(View):
         return gen_json_response(status='error',message='No get for this page.kiddding?')
 
     def post(self,request):
+        _start_time = time.perf_counter()
         # print(request.COOKIES.keys())
         try :
             session_id =request.COOKIES['session_id']
-            print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-            print(session_id)
+            # print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+            # print(session_id)
         except KeyError:
             return gen_json_response(status='error',message='Your cookie is lost! Please login again!')
         sess = Session.objects.get(pk=session_id) 
         sess_data = sess.get_decoded()# get_session_data(session_id)
-        print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-        print(sess_data)
+        # print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+        # print(sess_data)
         # print(sess.get_decoded())
         if sess_data is None:
             return gen_json_response(session_id,status='error',message='Your cookie is lost! Please login again!')
 
-
-
-        print(sess_data['test'])
         body = json.loads(request.body.decode('utf-8'))
         uid = body["uid"]
         if uid is None or uid != sess_data["uid"]:
@@ -127,35 +125,44 @@ class FeedsView(View):
         # [{"uid":213,"fid":"12dwdaswas22","action":1,"start_time":,"end_time":},...]
         try:
             interests_raw = UserProfile.objects.get(uid=uid)
-            print(interests_raw)
+            # print(interests_raw)
         except:
             return gen_json_response(status='error',message='Please login first!')
         print(interests_raw)
         # interests = json.loads()
-        
         query_text = [[x.domain, x.weight] for x in interests_raw.interests]
         # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
         
-        # rough query result
-         
-        paper_info_score = get_rough_query_result(query_text,index='arxiv')
-        # paper_info = []
-        news_info_score = get_rough_query_result(query_text,index = 'news')
-        github_info_score = get_rough_query_result(query_text,index = 'github')
-        
+        _start_rough= time.perf_counter()
+        # rough query result 
+        index = ['arxiv','news','github']
+        total_info_score = get_rough_query_result(query_text,index=index)
+
+        paper_info_score = total_info_score['arxiv']
+        news_info_score = total_info_score['news']
+        github_info_score = total_info_score['github']
+        # github_info_score = get_rough_query_result(query_text,index = 'github')
+
+        _end_rough = time.perf_counter()
+        print('------------------------rough time-----------')
+        print(_end_rough-_start_rough)
         try:
-            use_info = dict(interests_raw)
+            use_info = uid
             print(use_info)
         except:
             use_info = []
             print("user info can not be directly changed to dict.")
+        
+        _acc_start = time.perf_counter()
         paper_info = get_acc_query_result(use_info,paper_info_score,index='arxiv')
         news_info = get_acc_query_result(use_info,news_info_score,index = 'news')
         github_info = get_acc_query_result(use_info,github_info_score,index = 'github')
         # paper_info_score,_ = get_rough_query_result(query_text,index='arxiv')
         # news_info_score,_ = get_rough_query_result(query_text,index = 'news')
         # github_info_score,_ = get_rough_query_result(query_text,index = 'github')
-        
+        _acc_end = time.perf_counter()
+        print('--------------acc time--------------')
+        print(_acc_end - _acc_start)
         print('################################')
 
         # paper_info = []#get_acc_query_result(use_info,paper_info_score,index='arxiv')
@@ -178,6 +185,9 @@ class FeedsView(View):
             action_record.save()
             # action_record = {'uid':uid,'fid':item['id'],'action':0,'start_time':t,'end_time':0}
         data = {"uid":uid,"paper_list":return_data}
+        _end_time = time.perf_counter()
+        print('-----------------totoal req time---------------')
+        print(_end_time-_start_time)
         return gen_json_response(session_id,status="success",message="Send feeds success!",data=data)
 
 
@@ -237,16 +247,24 @@ class SearchView(View):
         text_w = [(keywords,1)]
         
         # text_w = [(word,1) for word in keywords]
-        paper_info,_ = get_rough_query_result(text_w,index='arxiv')
-        news_info,_ = get_rough_query_result(text_w,index = 'news')
-        github_info,_ = get_rough_query_result(text_w,index = 'github')
-        paper_list = paper_info+news_info+github_info
-        print("-------debug search------------")
-        print(paper_list[0])
+        index = ['arxiv','news','github']
+        total_info_score = get_rough_query_result(text_w,index=index)
+
+        # paper_info_score = total_info_score['arxiv']
+        # # # paper_info = []
+        # news_info_score = total_info_score['news']
+        # github_info_score = total_info_score['github']
+
+        # paper_info,_ = get_rough_query_result(text_w,index='arxiv')
+        # news_info,_ = get_rough_query_result(text_w,index = 'news')
+        # github_info,_ = get_rough_query_result(text_w,index = 'github')
+        paper_list = total_info_score[0]#paper_info+news_info+github_info
+        # print("-------debug search------------")
+        # print(paper_list[0])
         for x in paper_list:
             x["fid"] = x.pop("id")
-
-        data = {"paper_list":paper_list[0:100]}
+        random.shuffle(paper_list)
+        data = {"paper_list":paper_list[0:50]}
         return gen_json_response(status="success",message="Search success!",data=data)
 
 
@@ -275,14 +293,14 @@ class TabView(View):
         
         try :
             session_id =request.COOKIES['session_id']
-            print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-            print(session_id)
+            # print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+            # print(session_id)
         except KeyError:
             return gen_json_response(status='error',message='Your cookie is lost! Please login again!')
         sess = Session.objects.get(pk=session_id) 
         sess_data = sess.get_decoded()# get_session_data(session_id)
-        print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-        print(sess_data)
+        # print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+        # print(sess_data)
 
         if sess_data is None:
             return gen_json_response(session_id,status='error',message='Your cookie is lost! Please login again!')
@@ -304,18 +322,20 @@ class TabView(View):
         # [{"uid":213,"fid":"12dwdaswas22","action":1,"start_time":,"end_time":},...]
         try:
             interests_raw = UserProfile.objects.get(uid=uid)
-            print(interests_raw)
+            # print(interests_raw)
         except:
             return gen_json_response(status='error',message='Please login first!')
-        print(interests_raw)
+        # print(interests_raw)
         
         query_text = [[x.domain, x.weight] for x in interests_raw.interests]
         # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
-        
-        result_info_score = get_rough_query_result(query_text,index=category)
+        index = [category]
+        total_info_score = get_rough_query_result(query_text,index=index)
+
+        result_info_score = total_info_score[category]
         
         try:
-            use_info = dict(interests_raw)
+            use_info = uid
             print(use_info)
         except:
             use_info = []

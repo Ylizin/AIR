@@ -8,7 +8,8 @@ urlpatterns = [
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('register/', views.RegisterView.as_view(), name='register'),
-    path('register_interests/', views.RegisterInterestsView.as_view(), name='register_interests')
+    path('register_interests/', views.RegisterInterestsView.as_view(), name='register_interests'),
+    path('collections/',views.CollectionsView.as_view(),name='collections')
     # path('search/',views.SearchView.as_view(), name='search'),
 
     # # login required

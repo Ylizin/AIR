@@ -27,18 +27,29 @@ def get_weighted_query(fields_texts_w,slop=2):
     {
       'bool':
       {'should':[]}
-    }
+    },
+    '_source':['id']
     }
     should = TEXT_QUERY['query']['bool']['should']
     
-    for field,text,weighted in fields_texts_w:
-        for _tag,_score in text:
+    for field,text_w,weighted in fields_texts_w:
+        for _tag,_score in text_w:
             _f_t_w = {}
             _f_t_w[field] = {'query':_tag,'boost':weighted*_score,'slop':slop}
             should.append({'match_phrase':_f_t_w})
     return TEXT_QUERY
 
-
+def get_msearch_query(raw_query,index=['arxiv'],size = 200):
+    '''
+        the size param is the size for each index
+    '''
+    raw_query.update({'size':size})
+    _q = []
+    for i in index:
+        _q.append({'index':i})
+        _q.append(raw_query)
+    return _q
+        
 def get_newly_added_query(index:str):
     '''for records in mongo, we add a mark to represent if it has been added into ES
     '''
@@ -65,6 +76,8 @@ def generate_bulk_query(to_index_list,_index='test-index'):
         _query.append(record)
     # print(_query)
     return _query
+
+    
 
 def get_record_info_query(ids):
     ids = list(map(ObjectId,ids))
