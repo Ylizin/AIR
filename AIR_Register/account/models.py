@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 class Interests(models.Model):
     domain = models.CharField('user domain',max_length=50) # store tags as json 
     weight = models.FloatField()
-    father = models.CharField('father domain',max_length=50) # store tags as json 
+    father = models.CharField('father domain',max_length=50) # dpreciated field
     class Meta:
         abstract = True
     def __str__(self):

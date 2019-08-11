@@ -29,13 +29,14 @@ def get_rough_query_result(text,index=['arxiv'],fields=None):
 
         it returns a list of records, corresponding to the order passed in 
     '''
-
+    # get a copy of the text since it will be sent to the frontend
+    _text = text.copy()
     if 'news' in index:
         # convert en to cn if tag in en_to_cn_dict and add it into 
-        text += [(en_to_cn_dict[tag],w) for tag,w in text if tag in en_to_cn_dict]
+        _text += [(en_to_cn_dict[tag],w) for tag,w in _text if tag in en_to_cn_dict]
         
     # the result is a dict of {key: list of result},{key: list of scores}
-    search_res,scores = query_text(text,fields=fields,index=index)
+    search_res,scores = query_text(_text,fields=fields,index=index)
     
     _result_scores = {}
     for i in index:    
@@ -68,4 +69,8 @@ def get_feeds_info(f_ids,index = 'arxiv'):
     '''
     collection = get_collection(index)
     _q = get_record_info_query(f_ids)
-    return list(collection.find(_q,projection={'updated':False}))
+
+    collection_records = list(collection.find(_q,projection={'updated':False}))
+    _ = [d.update({'type':index}) for d in collection_records]
+    _ = [d.update({'fid':str(d.pop('_id'))}) for d in collection_records]
+    return  collection_records

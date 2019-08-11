@@ -9,7 +9,9 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('register/', views.RegisterView.as_view(), name='register'),
     path('register_interests/', views.RegisterInterestsView.as_view(), name='register_interests'),
-    path('collections/',views.CollectionsView.as_view(),name='collections')
+    path('collections/',views.CollectionsView.as_view(),name='collections'),
+    path('update_interests/',views.UpdateInterestsView.as_view(),name='update_interests'),
+    path('update_degree/',views.UpdateDegreeView.as_view(),name='update_degree')
     # path('search/',views.SearchView.as_view(), name='search'),
 
     # # login required

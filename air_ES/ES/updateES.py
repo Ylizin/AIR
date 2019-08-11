@@ -55,6 +55,6 @@ def update_ES_from_mongo(index:str):
 
 
 if __name__ == '__main__':
-    collections = ['arxiv','news','github']
+    collections = ['news']
     for _index in collections:
         update_ES_from_mongo(_index)        

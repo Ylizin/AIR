@@ -16,7 +16,7 @@ def query_text(text:list , fields:list=None, index=['arxiv']):
     _m_query = []
     for i in index:
         _fields = []
-        if i not in fields:
+        if not fields or i not in fields:
             # if index not in fields
             _fields = TYPE_FIELDS_MAP[i]
             _fields = filter(lambda x: not x == 'id',_fields)

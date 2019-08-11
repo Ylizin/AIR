@@ -18,14 +18,13 @@ from air_ES.query_result import get_rough_query_result,get_acc_query_result,get_
 from airs import rsfunction
 from utils import gen_json_response,get_session_data,action_record_to_dict
 
-USE_ACC_QUERY = True
-# generate json response for front end
-
+USE_ACC_QUERY = True # decide whether use accurate ranking
 
 
 class CollectView(View):
+    '''Adding or removing feeds(paper/news/github) in corresponding collections
     '''
-    '''
+    # depreciated 
     def get(self,request):
         body_unicode = request.body.decode('utf-8')
         
@@ -35,10 +34,11 @@ class CollectView(View):
     def post(self,request):
         body = json.loads(request.body.decode('utf-8'))
         print(body)
+
         uid = body['uid']
         fid = body['fid']
-        # print(body['data'])
         item_type = body['type']
+        # retrive user profile
         user_profile = UserProfile.objects.get(uid=uid)
         # action=3 means this is a collection action
         print('############################')
@@ -46,17 +46,19 @@ class CollectView(View):
         print(item_type)
         t = int(round(time.time()* 1000))
         is_favor = body['fav_action']
+
+        # add action record; 3:collect -2:cancel collection
         if is_favor == 'favor':
             action_record = ActionLog(uid=uid,fid=fid,action=3,start_time=t,end_time=0)
         else:
             action_record = ActionLog(uid=uid,fid=fid,action=-2,start_time=t,end_time=0)
         action_record.save()
-        
+
+        # update weights of user tags(interests)
         if USE_ACC_QUERY:
             rsfunction.update_interests(action_record_to_dict(action_record))
 
         if item_type == 'arxiv':
-            # temp = CharField('sadsdd')
             if is_favor == 'favor':
                 temp = StringField(text=fid)
                 if temp in user_profile.paper_collections:
@@ -64,22 +66,52 @@ class CollectView(View):
                 else:
                     user_profile.paper_collections.append(StringField(text=fid))
             else:
-                print("---------collect-----------")
-                print(user_profile.paper_collections)
+                # print("---------collect-----------")
+                # print(user_profile.paper_collections)
                 temp = StringField(text=fid)
-                print('------')
-                print(temp)    
+                # print('------')
+                # print(temp)    
                 user_profile.paper_collections.remove(temp)
-                print(user_profile.paper_collections)
-                print("remove success.")
+                # print(user_profile.paper_collections)
+                # print("remove success.")
             # UserProfile.objects.filter(uid=uid).update(paper_collections=[CharField(fid)]) 
             # print(user_profile.paper_collections[0])
             user_profile.save()
         elif item_type == 'news':
-            user_profile.news_collections.append(StringField(text=fid))
+            # user_profile.news_collections.append(StringField(text=fid))
+            if is_favor == 'favor':
+                temp = StringField(text=fid)
+                if temp in user_profile.paper_collections:
+                    pass
+                else:
+                    user_profile.news_collections.append(StringField(text=fid))
+            else:
+                print("---------collect-----------")
+                print(user_profile.news_collections)
+                temp = StringField(text=fid)
+                print('------')
+                print(temp)    
+                user_profile.news_collections.remove(temp)
+                print(user_profile.news_collections)
+                print("remove success.")
             user_profile.save()
         elif item_type == 'github':
-            user_profile.github_collections.append(StringField(text=fid))
+            # user_profile.github_collections.append(StringField(text=fid))
+            if is_favor == 'favor':
+                temp = StringField(text=fid)
+                if temp in user_profile.github_collections:
+                    pass
+                else:
+                    user_profile.github_collections.append(StringField(text=fid))
+            else:
+                print("---------collect-----------")
+                print(user_profile.github_collections)
+                temp = StringField(text=fid)
+                print('------')
+                print(temp)    
+                user_profile.github_collections.remove(temp)
+                print(user_profile.github_collections)
+                print("remove success.")
             user_profile.save()
         else :
             return gen_json_response(status="error",message="Wrong type for collection!")
@@ -194,14 +226,17 @@ class FeedsView(View):
 
 class TrendingView(View):
     def get(self,request):
-        body = json.loads(request.body.decode('utf-8'))
-        uid = body['uid']
-        fid = body['fid']
-        start_time = body['start_time']
-        end_time = body['end_time']
+        # body = json.loads(request.body.decode('utf-8'))
+        # uid = body['uid']
+        # fid = body['fid']
+        # start_time = body['start_time']
+        # end_time = body['end_time']
         
-        data = {"uid":uid,"fid":fid,"start_time" : start_time,"end_time":end_time}
-        return gen_json_response(status="success",message="Search success!",data=data)
+        _trending_list = []
+        trending_feeds = get_feeds_info(_trending_list)
+
+        # data = {"uid":uid,"fid":fid,"start_time" : start_time,"end_time":end_time}
+        return gen_json_response(status="success",message="Trending success!",data=trending_feeds)
     
 
     def post(self,request):
