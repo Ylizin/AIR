@@ -232,7 +232,7 @@ class TrendingView(View):
         # start_time = body['start_time']
         # end_time = body['end_time']
         
-        _trending_list = []
+        _trending_list = ['5d50001a805e098e475d03a6','5d3d3bd91708449067829b2e','5d4fff9cce8068e301858067','5d4fffc79415692c4877c21a']
         trending_feeds = get_feeds_info(_trending_list)
 
         # data = {"uid":uid,"fid":fid,"start_time" : start_time,"end_time":end_time}
@@ -332,6 +332,7 @@ class TabView(View):
             # print(session_id)
         except KeyError:
             return gen_json_response(status='error',message='Your cookie is lost! Please login again!')
+    
         sess = Session.objects.get(pk=session_id) 
         sess_data = sess.get_decoded()# get_session_data(session_id)
         # print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')

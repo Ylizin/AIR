@@ -101,7 +101,7 @@ class RegisterInterestsView(View):
         interests_insert=[]
         # nomarlize weigt of each interest
         for x in interests_raw:
-            domain = list(x.keys())[0]
+            domain = x#list(x.keys())[0]
             interests_insert.append(Interests(domain=domain.lower(),weight=1,father="hbnb"))
         
         # method 1 to update
@@ -135,7 +135,9 @@ class RegisterInterestsView(View):
         print("------------------")
         print("------------------")
         print(total_collections)
-        query_text = [[x.domain, x.weight] for x in user_profile.interests if x.weight > 0]
+        interests = [[x.domain, x.weight] for x in user_profile.interests]
+        _res_interests = [[x[0],x[1]] for x in interests[:100] if x[1]>0]
+        query_text = [[x[0],x[1]] for x in interests if x[1] > 0]
         
        
         index = ['arxiv','news','github']
@@ -172,7 +174,7 @@ class RegisterInterestsView(View):
             action_record.save()
 
         
-        data = {"uid":uid,"degree":degree,"interests":query_text[0:int(len(query_text)/2)],"collections":total_collections,"paper_list":return_data}
+        data = {"uid":uid,"degree":degree,"interests":_res_interests,"collections":total_collections,"paper_list":return_data}
 
         #############3
 
@@ -218,6 +220,7 @@ class LoginView(View):
             except:
                 return gen_json_response(session_id,status='error',message='Wrong username or password!')
             # print(interests_raw)
+            
             degree = user_profile.degree
             paper_collections = user_profile.paper_collections
             news_collections = user_profile.news_collections
@@ -230,9 +233,10 @@ class LoginView(View):
             print("------------------")
             print("------------------")
             print(total_collections)
-            query_text = [[x.domain, x.weight] for x in user_profile.interests if x.weight >= 1]
+            interests = [[x.domain, x.weight] for x in user_profile.interests]
+            query_text = [[x[0], x[1]] for x in interests if x[1] >0]
+            _res_interests = [[x[0],x[1]] for x in interests[:100] if x[1]>0]
             # return_interests = [[x.domain, x.weight] for x in user_profile.interests if x.weight >= 1 ]
-            print(query_text)
             
             # Get recommended papers
             # expected input: [("CV",1.0),("nlp",10.0)]
@@ -287,8 +291,7 @@ class LoginView(View):
                 
                 action_record.save()
                 # action_record = {'uid':uid,'fid':item['fid'],'action':0,'start_time':t,'end_time':0}
-            
-            data = {"uid":uid,"username":username,"degree":degree,"interests":query_text[0:int(len(query_text)/2)],"collections":total_collections,"paper_list":return_data}
+            data = {"uid":uid,"username":username,"degree":degree,"interests":_res_interests,"collections":total_collections,"paper_list":return_data}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
             print('***********debug login')
             print(data['interests'])
@@ -310,14 +313,22 @@ class LoginView(View):
 class LogoutView(View):
     # form_class = UserForm  # models.py中自定义的表单
     def get(self,request):
-        logout(request)
-        print('log out ..............')
+        
         return gen_json_response(status="success",message="Logout success!")
         
     def post(self,request):
+        print('log out ..............')
         logout(request)
         # request
-        print('log out ..............')
+        try :
+            session_id =request.COOKIES['session_id']
+            # print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+            # print(session_id)
+        except KeyError:
+            return gen_json_response(status='error',message='Your cookie is lost! Please login again!')
+    
+        sess = Session.objects.get(pk=session_id) 
+        print(sess) 
         return gen_json_response(status="success",message="Logout success!")
 
 class CollectionsView(View):
