@@ -33,14 +33,17 @@ def get_rough_query_result(text,index=['arxiv'],fields=None):
     _text = text.copy()
     if 'news' in index:
         # convert en to cn if tag in en_to_cn_dict and add it into 
-        _text += [(en_to_cn_dict[tag],w) for tag,w in _text if tag in en_to_cn_dict]
+        #print(_text)
+        _text += [[en_to_cn_dict[tag],w] for tag,w in _text if tag in en_to_cn_dict]
         
     # the result is a dict of {key: list of result},{key: list of scores}
     search_res,scores = query_text(_text,fields=fields,index=index)
+
     
     _result_scores = {}
     for i in index:    
         collection = get_collection(i)
+        #get ids
         ids = list(map(lambda x: x['id'],search_res[i]))
         _q = get_record_info_query(ids)
         result = list(collection.find(_q,projection={'updated':False}))
@@ -48,6 +51,9 @@ def get_rough_query_result(text,index=['arxiv'],fields=None):
         # the '_id' is the id in mongodb, here parse it to a str then send it through a json in 'id'
         _ = [d.update({'type':i}) for d in result]
         _ = [d.update({'id':str(d.pop('_id'))}) for d in result]
+        id_to_record = {x['id']:x for x in result}
+
+        result = [id_to_record[i] for i in ids]
         _result_scores[i] = (result,scores[i])
     return _result_scores
 

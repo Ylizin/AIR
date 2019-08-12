@@ -33,7 +33,7 @@ class CollectView(View):
 
     def post(self,request):
         body = json.loads(request.body.decode('utf-8'))
-        print(body)
+        #print(body)
 
         uid = body['uid']
         fid = body['fid']
@@ -41,9 +41,9 @@ class CollectView(View):
         # retrive user profile
         user_profile = UserProfile.objects.get(uid=uid)
         # action=3 means this is a collection action
-        print('############################')
-        print(uid)
-        print(item_type)
+        #print('############################')
+        #print(uid)
+        #print(item_type)
         t = int(round(time.time()* 1000))
         is_favor = body['fav_action']
 
@@ -86,14 +86,14 @@ class CollectView(View):
                 else:
                     user_profile.news_collections.append(StringField(text=fid))
             else:
-                print("---------collect-----------")
-                print(user_profile.news_collections)
+                #print("---------collect-----------")
+                #print(user_profile.news_collections)
                 temp = StringField(text=fid)
-                print('------')
-                print(temp)    
+                #print('------')
+                #print(temp)    
                 user_profile.news_collections.remove(temp)
-                print(user_profile.news_collections)
-                print("remove success.")
+                #print(user_profile.news_collections)
+                #print("remove success.")
             user_profile.save()
         elif item_type == 'github':
             # user_profile.github_collections.append(StringField(text=fid))
@@ -104,14 +104,14 @@ class CollectView(View):
                 else:
                     user_profile.github_collections.append(StringField(text=fid))
             else:
-                print("---------collect-----------")
-                print(user_profile.github_collections)
+                #print("---------collect-----------")
+                #print(user_profile.github_collections)
                 temp = StringField(text=fid)
-                print('------')
-                print(temp)    
+                #print('------')
+                #print(temp)    
                 user_profile.github_collections.remove(temp)
-                print(user_profile.github_collections)
-                print("remove success.")
+                #print(user_profile.github_collections)
+                #print("remove success.")
             user_profile.save()
         else :
             return gen_json_response(status="error",message="Wrong type for collection!")
@@ -241,8 +241,8 @@ class TrendingView(View):
 
     def post(self,request):
         body = json.loads(request.body.decode('utf-8'))
-        print("############")
-        print(body)
+        #print("############")
+        #print(body)
         uid = body['uid']
         fid = body['fid']
         start_time = body['start_time']
@@ -284,12 +284,13 @@ class SearchView(View):
         # text_w = [(word,1) for word in keywords]
         index = ['arxiv','news','github']
         total_info_score = get_rough_query_result(text_w,index=index)
+        
         # print(total_info_score)
         paper_info = total_info_score['arxiv'][0]
         # # # paper_info = []
         news_info = total_info_score['news'][0]
-        github_info = total_info_score['github'][0]
 
+        github_info = total_info_score['github'][0]
         # paper_info,_ = get_rough_query_result(text_w,index='arxiv')
         # news_info,_ = get_rough_query_result(text_w,index = 'news')
         # github_info,_ = get_rough_query_result(text_w,index = 'github')
@@ -298,7 +299,7 @@ class SearchView(View):
         # print(paper_list[0])
         for x in paper_list:
             x["fid"] = x.pop("id")
-        random.shuffle(paper_list)
+        # random.shuffle(paper_list)
         data = {"paper_list":paper_list[0:50]}
         return gen_json_response(status="success",message="Search success!",data=data)
 
@@ -306,7 +307,7 @@ class SearchView(View):
 class ClickView(View):
     def post(self,request):
         body = json.loads(request.body.decode('utf-8'))
-        print(body)
+        #print(body)
         t = int(round(time.time()* 1000))
         action_record = ActionLog(uid=body['uid'],fid=body['fid'],action=body['action'],start_time=t,end_time=0)
         action_record.save()
@@ -347,7 +348,7 @@ class TabView(View):
         if uid is None or uid != sess_data["uid"]:
             return gen_json_response(session_id,status='error',message='Please login first!')
 
-        print(uid)
+        #print(uid)
         try:
             if sess_data["uid"] == uid:
                 print('only for login')
@@ -372,7 +373,7 @@ class TabView(View):
         
         try:
             use_info = uid
-            print(use_info)
+            #print(use_info)
         except:
             use_info = []
             print("user info can not be directly changed to dict.")

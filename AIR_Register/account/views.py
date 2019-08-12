@@ -72,7 +72,16 @@ class RegisterView(View):
         print(uid)
         print('save success.')
         data ={'uid':uid}
-        return gen_json_response(status='success',message='Register success!',data=data)
+        if not request.session.session_key:
+            request.session.save()
+        request.session['uid'] = uid
+        
+        request.session.modified = True
+        response = gen_json_response(status='success',message='Register success!',data=data)
+        session_id =request.session.session_key
+        response.set_cookie('session_id',session_id)
+        return response
+
 
 # record new user's interests and degree
 class RegisterInterestsView(View):
@@ -97,12 +106,13 @@ class RegisterInterestsView(View):
         print(body)
         degree = body['degree']
         print("*******************")
-        print(interests_raw)
+        #print(interests_raw)
         interests_insert=[]
         # nomarlize weigt of each interest
         for x in interests_raw:
             domain = x#list(x.keys())[0]
-            interests_insert.append(Interests(domain=domain.lower(),weight=1,father="hbnb"))
+            interests_insert.append(Interests(domain=domain,weight=1,father="hbnb"))
+            #interests_insert.append(Interests(domain=domain.lower(),weight=1,father="hbnb"))
         
         # method 1 to update
         # user = UserProfile.objects.filter(user_id=uid).update(interests=interests_insert,degree=degree)
@@ -193,7 +203,7 @@ class LoginView(View):
         body = json.loads(request.body.decode('utf-8'))
         username = body["username"]
         password = body["password"]
-        print('hbnb')
+        #print('hbnb')
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
@@ -294,8 +304,8 @@ class LoginView(View):
             data = {"uid":uid,"username":username,"degree":degree,"interests":_res_interests,"collections":total_collections,"paper_list":return_data}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
             print('***********debug login')
-            print(data['interests'])
-            print(request.session['uid'])
+            #print(data['interests'])
+            #print(request.session['uid'])
             request.session.modified = True
 
             response = gen_json_response(session_id,status="success",message="Login success!",data=data)
@@ -317,18 +327,18 @@ class LogoutView(View):
         return gen_json_response(status="success",message="Logout success!")
         
     def post(self,request):
-        print('log out ..............')
-        logout(request)
-        # request
-        try :
-            session_id =request.COOKIES['session_id']
-            # print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-            # print(session_id)
-        except KeyError:
-            return gen_json_response(status='error',message='Your cookie is lost! Please login again!')
+        # print('log out ..............')
+        # logout(request)
+        # # request
+        # try :
+        #     session_id =request.COOKIES['session_id']
+        #     # print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+        #     # print(session_id)
+        # except KeyError:
+        #     return gen_json_response(status='error',message='Your cookie is lost! Please login again!')
     
-        sess = Session.objects.get(pk=session_id) 
-        print(sess) 
+        # sess = Session.objects.get(pk=session_id) 
+        # print(sess) 
         return gen_json_response(status="success",message="Logout success!")
 
 class CollectionsView(View):
@@ -346,10 +356,9 @@ class CollectionsView(View):
         paper_collections = [ str(item) for item in user_profile.paper_collections]
         news_collections = [ str(item) for item in user_profile.news_collections]
         github_collections = [ str(item) for item in user_profile.github_collections]
-        
-        paper_collections_list = get_feeds_info(paper_collections)
-        news_collections_list = get_feeds_info(news_collections)
-        github_collections_list = get_feeds_info(github_collections)
+        paper_collections_list = get_feeds_info(paper_collections,index='arxiv')
+        news_collections_list = get_feeds_info(news_collections,index='news')
+        github_collections_list = get_feeds_info(github_collections,index='github')
         res = []
         res.append(paper_collections_list)
         res.append(news_collections_list)
@@ -382,7 +391,7 @@ class UpdateInterestsView(View):
         print(body)
         degree = body['degree']
         print("*******************")
-        print(interests_raw)
+        #print(interests_raw)
         interests_insert=[]
 
         for x in interests_raw:
