@@ -24,7 +24,7 @@ def query_text(text:list , fields:list=None, index=['arxiv']):
             for field_weight in _fields:
                 field,_ = field_weight
                 if field == 'title' or field == 'description':
-                    field_weight[1] = 100
+                    field_weight[1] = 20
         else:
             _fields = fields[i]
         fields_text_w = [(f[0],text,f[1]) for f in _fields]
