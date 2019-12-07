@@ -23,4 +23,5 @@ urlpatterns = [
     # path('online/', include('online.urls')),
     # path('user/', include(user.urls, namespace='user')),
     path('account/', include('account.urls')),
+    path('api/', include('api.urls'))
 ]

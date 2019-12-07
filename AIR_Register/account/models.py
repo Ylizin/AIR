@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 class Interests(models.Model):
     domain = models.CharField('user domain',max_length=50) # store tags as json 
     weight = models.FloatField()
-    father = models.CharField('father domain',max_length=50) # store tags as json 
+    father = models.CharField('father domain',max_length=50) # dpreciated field
     class Meta:
         abstract = True
     def __str__(self):
@@ -16,7 +16,10 @@ class Interests(models.Model):
 class StringField(models.Model):
     text = models.CharField('user domain',max_length=50) # store tags as json 
     def __str__(self):
-        return self.text.__str__()
+        return self.text
+    def __eq__(self,other):
+        return self.text == other.text
+
 
 class UserInfo(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name='profile')
@@ -55,10 +58,11 @@ class UserProfile(models.Model):
 
 class ActionLog(models.Model):
     uid = models.IntegerField()#unique=True,primary_key = True
-    iid = models.CharField(max_length=50)
-    action =  models.IntegerField()
-    start_time = models.DateTimeField()#YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]
-    end_time = models.DateTimeField()
+    fid = models.CharField(max_length=50) #feeds id
+    action =  models.IntegerField() # -1: just refresh 0: click 
+    start_time = models.FloatField()#YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]
+    end_time = models.FloatField()
+
 
 # class UserForm(forms.ModelForm):
 #     username = forms.CharField(widget=forms.TextInput({

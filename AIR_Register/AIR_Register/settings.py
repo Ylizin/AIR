@@ -31,10 +31,7 @@ ALLOWED_HOSTS = [
 '*',
 ]
 
-<<<<<<< HEAD
 CSRF_COOKIE_NAME = "XSRF-TOKEN"
-=======
->>>>>>> d6e8fdb6ec7079531a2a014c9447cbfcfd51f333
 
 # Application definition
 
@@ -42,13 +39,13 @@ INSTALLED_APPS = [
     # 'user', 
     'corsheaders',
     'account',
+    'api',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'online',
 ]
 
 MIDDLEWARE = [
@@ -157,17 +154,18 @@ STATIC_URL = '/static/'
 SESSION_COOKIE_AGE = 60 * 20
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 SESSION_SAVE_EVERY_REQUEST = True
-# SESSION_COOKIE_DOMAIN = "106.75.229.123"
+# SESSION_COOKIE_NAME = 'session_id'
+# SESSION_COOKIE_DOMAIN = "127.0.0.1"
 # SESSION_SAVE_EVERY_REQUEST = True
 # SESSION_COOKIE_HTTPONLY=False
-CORS_ORIGIN_ALLOW_ALL=False
+CORS_ORIGIN_ALLOW_ALL= True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = (
-    '*',
-    # 'http://58.247.200.42:3000',
-    'http://localhost:3000',
-    'http://127.0.0.1',
-)
+# CORS_ORIGIN_WHITELIST = (
+#     '*',
+#     # 'http://58.247.200.42:3000',
+#     # 'http://localhost:3000',
+#     # 'http://127.0.0.1',
+# )
 
 
 CORS_ALLOW_METHODS = (

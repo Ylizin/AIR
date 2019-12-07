@@ -1,0 +1,1294 @@
+*** Starting uWSGI 2.0.18 (64bit) on [Tue Aug  6 22:11:52 2019] ***
+compiled with version: 7.3.0 on 22 July 2019 16:35:30
+os: Linux-3.10.0-957.27.2.el7.x86_64 #1 SMP Mon Jul 29 17:46:05 UTC 2019
+nodename: 10-23-179-94
+machine: x86_64
+clock source: unix
+pcre jit disabled
+detected number of CPU cores: 16
+current working directory: /root/codes/AIR/AIR_Register
+detected binary path: /root/anaconda3/bin/uwsgi
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** WARNING: you are running uWSGI without its master process manager ***
+your processes number limit is 127835
+your memory page size is 4096 bytes
+detected max file descriptor number: 1000000
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on :9999 fd 4
+spawned uWSGI http 1 (pid: 25981)
+uwsgi socket 0 bound to TCP address 127.0.0.1:43274 (port auto-assigned) fd 3
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+Python version: 3.7.3 | packaged by conda-forge | (default, Jul  1 2019, 21:52:21)  [GCC 7.3.0]
+*** Python threads support is disabled. You can enable it with --enable-threads ***
+Python main interpreter initialized at 0x5588bdeb3bf0
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 72920 bytes (71 KB) for 1 cores
+*** Operational MODE: single process ***
+WSGI app 0 (mountpoint='') ready in 0 seconds on interpreter 0x5588bdeb3bf0 pid: 25980 (default app)
+uWSGI running as root, you can use --uid/--gid/--chroot options
+*** WARNING: you are running uWSGI as root !!! (use the --uid flag) *** 
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI worker 1 (and the only) (pid: 25980, cores: 1)
+[pid: 25980|app: 0|req: 1/1] 137.110.39.186 () {42 vars in 685 bytes} [Tue Aug  6 14:11:53 2019] OPTIONS /account/login/ => generated 0 bytes in 2 msecs (HTTP/1.1 200) 8 headers in 484 bytes (1 switches on core 0)
+28
+28
+------------------
+------------------
+------------------
+------------------
+[['5d3d3bd9170844906781e6df', '5d3d3bd9170844906781d80d'], ['5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f'], []]
+user info can not be directly changed to dict.
+################################
+[RS] Correct num of ES result 200
+[RS] Start paper Rough Recommend
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 10 Jun 2003 04:40:45 UTC (33 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sun, 27 Feb 2011 10:36:25 UTC (191 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 8 Apr 2002 10:56:26 UTC (116 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 20 Nov 2012 20:54:30 UTC (208 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 8 Mar 2019 11:20:39 UTC (9,080 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 6 Jun 2019 09:12:08 UTC (7,701 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 20 May 2019 02:00:56 UTC (223 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Wed, 10 Jul 2019 21:12:18 UTC (777 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 27 Sep 2016 07:33:58 UTC (944 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 7 Oct 2016 21:35:02 UTC (1,473 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 12 Aug 2016 14:40:46 UTC (356 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 11 Dec 2015 20:27:50 UTC (228 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 28 Aug 2017 02:54:11 UTC (3,836 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 25 Dec 2018 03:56:19 UTC (787 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 31 Aug 2017 20:33:06 UTC (90,900 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sat, 12 Jan 2019 18:12:44 UTC (625 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 22 Jan 2016 15:09:18 UTC (182 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 paper for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start news Rough Recommend
+[RS] [Warning!] Invalid news date formate 2017-10-0618:11:23
+[RS] [Warning!] Invalid news date formate 2018-05-1914:08:42
+[RS] [Warning!] Invalid news date formate 2019-03-3011:05:59
+[RS] [Warning!] Invalid news date formate 2018-02-2412:59:23
+[RS] [Warning!] Invalid news date formate 2019-04-0313:33:50
+[RS] [Warning!] Invalid news date formate 2018-12-0915:50:44
+[RS] [Warning!] Invalid news date formate 2019-05-1017:39:13
+[RS] [Warning!] Invalid news date formate 2019-06-0113:48:53
+[RS] [Warning!] Invalid news date formate 2019-06-2508:36:12
+[RS] [Warning!] Invalid news date formate 2019-07-2412:21:05
+[RS] [Warning!] Invalid news date formate 2019/7/97:45
+[RS] [Warning!] Invalid news date formate 2019/7/717:40
+[RS] [Warning!] Invalid news date formate 2019/6/2422:38
+[RS] [Warning!] Invalid news date formate 2019/6/189:30
+[RS] [Warning!] Invalid news date formate 2019/6/1413:23
+[RS] [Warning!] Invalid news date formate 2019/6/99:10
+[RS] [Warning!] Invalid news date formate 2019/5/3016:34
+[RS] [Warning!] Invalid news date formate 2019/5/2612:32
+[RS] [Warning!] Invalid news date formate 2019/4/2311:13
+[RS] [Warning!] Invalid news date formate 2019/3/711:01
+[RS] [Warning!] Invalid news date formate 2019/7/2013:11
+[RS] [Warning!] Invalid news date formate 2019/7/812:46
+[RS] [Warning!] Invalid news date formate 2019/6/2213:30
+[RS] [Warning!] Invalid news date formate 2019/6/2012:45
+[RS] [Warning!] Invalid news date formate 2019/5/412:22
+[RS] [Warning!] Invalid news date formate 2019/4/2711:56
+[RS] [Warning!] Invalid news date formate 2019/4/2310:03
+[RS] [Warning!] Invalid news date formate 2019/4/1812:17
+[RS] [Warning!] Invalid news date formate 2019/2/2612:11
+[RS] [Warning!] Invalid news date formate 2019/2/17:42
+[RS] [Warning!] Invalid news date formate 2019/1/2812:47
+[RS] [Warning!] Invalid news date formate 2019/1/2612:52
+[RS] [Warning!] Invalid news date formate 2018/12/159:40
+[RS] [Warning!] Invalid news date formate 2018/12/311:56
+[RS] [Warning!] Invalid news date formate 2019-02-1712:41:39
+[RS] [Warning!] Invalid news date formate 2018-12-2418:49:40
+[RS] [Warning!] Invalid news date formate 2018-11-2708:16:38
+[RS] [Warning!] Invalid news date formate 2018-11-1314:07:05
+[RS] [Warning!] Invalid news date formate 2018-05-0221:36:04
+[RS] [Warning!] Invalid news date formate 2017-11-0119:57:35
+[RS] [Warning!] Invalid news date formate 2017-09-2822:16:33
+[RS] [Warning!] Invalid news date formate 2017-07-2400:17:14
+[RS] [Warning!] Invalid news date formate 2016-11-1420:50:23
+[RS] [Warning!] Invalid news date formate 2016-06-2923:07:10
+[RS] [Warning!] Invalid news date formate 2016-06-1823:18:19
+[RS] [Warning!] Invalid news date formate 2015-10-0918:10:14
+[RS] [Warning!] Invalid news date formate 2019-07-2408:50:07
+[RS] [Warning!] Invalid news date formate 2019-07-0823:59:07
+[RS] [Warning!] Invalid news date formate 2019-07-0423:58:02
+[RS] [Warning!] Invalid news date formate 2019-06-2621:05:52
+[RS] [Warning!] Invalid news date formate 2019-06-2418:59:15
+[RS] [Warning!] Invalid news date formate 2019-06-1818:52:59
+[RS] [Warning!] Invalid news date formate 2019-06-1523:59:36
+[RS] [Warning!] Invalid news date formate 2019-06-1023:59:16
+[RS] [Warning!] Invalid news date formate 2019-05-1123:39:21
+[RS] [Warning!] Invalid news date formate 2019-05-0123:28:14
+[RS] [Warning!] Invalid news date formate 2019-04-2020:10:50
+[RS] [Warning!] Invalid news date formate 2019-04-1823:27:50
+[RS] [Warning!] Invalid news date formate 2019-04-1423:56:29
+[RS] [Warning!] Invalid news date formate 2019-03-2918:42:32
+[RS] [Warning!] Invalid news date formate 2019-03-2520:07:57
+[RS] [Warning!] Invalid news date formate 2019-02-2100:07:32
+[RS] [Warning!] Invalid news date formate 2019-01-2413:44:35
+[RS] [Warning!] Invalid news date formate 2018-12-2421:50:57
+[RS] [Warning!] Invalid news date formate 2018-09-1810:10:56
+[RS] [Warning!] Invalid news date formate 2018-08-0709:26:40
+[RS] [Warning!] Invalid news date formate 2018-08-0602:19:01
+[RS] [Warning!] Invalid news date formate 2018-07-0123:45:30
+[RS] [Warning!] Invalid news date formate 2019/7/2917:56
+[RS] [Warning!] Invalid news date formate 2019/4/1017:25
+[RS] [Warning!] Invalid news date formate 2019/3/2717:17
+[RS] [Warning!] Invalid news date formate 2019/3/1517:15
+[RS] [Warning!] Invalid news date formate 2019/3/816:47
+[RS] [Warning!] Invalid news date formate 2019/2/1117:54
+[RS] [Warning!] Invalid news date formate 2019/1/2818:17
+[RS] [Warning!] Invalid news date formate 2019/1/1710:52
+[RS] [Warning!] Invalid news date formate 2018/12/516:54
+[RS] [Warning!] Invalid news date formate 2018/10/817:47
+[RS] [Warning!] Invalid news date formate 2018/9/1817:31
+[RS] [Warning!] Invalid news date formate 2018/6/322:34
+[RS] [Warning!] Invalid news date formate 2018/5/3122:49
+[RS] [Warning!] Invalid news date formate 2018/2/2317:07
+[RS] [Warning!] Invalid news date formate 2018/9/1212:22
+[RS] [Warning!] Invalid news date formate 2019/7/2612:29
+[RS] [Warning!] Invalid news date formate 2018/8/2212:17
+[RS] [Warning!] Invalid news date formate 2018/8/1412:02
+[RS] [Warning!] Invalid news date formate 2018/7/1813:33
+[RS] [Warning!] Invalid news date formate 2019/6/2012:27
+[RS] [Warning!] Invalid news date formate 2018/6/2812:45
+[RS] [Warning!] Invalid news date formate 2019/6/108:32
+[RS] [Warning!] Invalid news date formate 2018/5/1418:04
+[RS] [Warning!] Invalid news date formate 2019/4/250:20
+[RS] [Warning!] Invalid news date formate 2019/4/1916:14
+[RS] [Warning!] Invalid news date formate 2018/3/1613:05
+[RS] [Warning!] Invalid news date formate 2019/4/50:51
+[RS] [Warning!] Invalid news date formate 2019/3/290:12
+[RS] [Warning!] Invalid news date formate 2019/3/2723:48
+[RS] [Warning!] Invalid news date formate 2019/3/2311:12
+[RS] [Warning!] Invalid news date formate 2019/3/2013:48
+[RS] [Warning!] Invalid news date formate 2019/3/1412:01
+[RS] [Warning!] Invalid news date formate 2018/1/415:58
+[RS] [Warning!] Invalid news date formate 2019/2/2623:18
+[RS] [Warning!] Invalid news date formate 2017/11/712:05
+[RS] [Warning!] Invalid news date formate 2017/11/311:41
+[RS] [Warning!] Invalid news date formate 2018/11/213:36
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 news for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start github Rough Recommend
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 github for u
+28
+[pid: 25980|app: 0|req: 2/2] 137.110.39.186 () {40 vars in 666 bytes} [Tue Aug  6 14:11:54 2019] POST /account/login/ => generated 275306 bytes in 740 msecs (HTTP/1.1 200) 8 headers in 373 bytes (1 switches on core 0)
+28
+28
+------------------
+------------------
+------------------
+------------------
+[['5d3d3bd9170844906781e6df', '5d3d3bd9170844906781d80d'], ['5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f'], []]
+user info can not be directly changed to dict.
+################################
+[RS] Correct num of ES result 200
+[RS] Start paper Rough Recommend
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 10 Jun 2003 04:40:45 UTC (33 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sun, 27 Feb 2011 10:36:25 UTC (191 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 8 Apr 2002 10:56:26 UTC (116 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 20 Nov 2012 20:54:30 UTC (208 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 8 Mar 2019 11:20:39 UTC (9,080 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 6 Jun 2019 09:12:08 UTC (7,701 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 20 May 2019 02:00:56 UTC (223 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Wed, 10 Jul 2019 21:12:18 UTC (777 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 27 Sep 2016 07:33:58 UTC (944 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 7 Oct 2016 21:35:02 UTC (1,473 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 12 Aug 2016 14:40:46 UTC (356 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 11 Dec 2015 20:27:50 UTC (228 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 28 Aug 2017 02:54:11 UTC (3,836 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 25 Dec 2018 03:56:19 UTC (787 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 31 Aug 2017 20:33:06 UTC (90,900 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sat, 12 Jan 2019 18:12:44 UTC (625 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 22 Jan 2016 15:09:18 UTC (182 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 paper for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start news Rough Recommend
+[RS] [Warning!] Invalid news date formate 2017-10-0618:11:23
+[RS] [Warning!] Invalid news date formate 2018-05-1914:08:42
+[RS] [Warning!] Invalid news date formate 2019-03-3011:05:59
+[RS] [Warning!] Invalid news date formate 2018-02-2412:59:23
+[RS] [Warning!] Invalid news date formate 2019-04-0313:33:50
+[RS] [Warning!] Invalid news date formate 2018-12-0915:50:44
+[RS] [Warning!] Invalid news date formate 2019-05-1017:39:13
+[RS] [Warning!] Invalid news date formate 2019-06-0113:48:53
+[RS] [Warning!] Invalid news date formate 2019-06-2508:36:12
+[RS] [Warning!] Invalid news date formate 2019-07-2412:21:05
+[RS] [Warning!] Invalid news date formate 2019/7/97:45
+[RS] [Warning!] Invalid news date formate 2019/7/717:40
+[RS] [Warning!] Invalid news date formate 2019/6/2422:38
+[RS] [Warning!] Invalid news date formate 2019/6/189:30
+[RS] [Warning!] Invalid news date formate 2019/6/1413:23
+[RS] [Warning!] Invalid news date formate 2019/6/99:10
+[RS] [Warning!] Invalid news date formate 2019/5/3016:34
+[RS] [Warning!] Invalid news date formate 2019/5/2612:32
+[RS] [Warning!] Invalid news date formate 2019/4/2311:13
+[RS] [Warning!] Invalid news date formate 2019/3/711:01
+[RS] [Warning!] Invalid news date formate 2019/7/2013:11
+[RS] [Warning!] Invalid news date formate 2019/7/812:46
+[RS] [Warning!] Invalid news date formate 2019/6/2213:30
+[RS] [Warning!] Invalid news date formate 2019/6/2012:45
+[RS] [Warning!] Invalid news date formate 2019/5/412:22
+[RS] [Warning!] Invalid news date formate 2019/4/2711:56
+[RS] [Warning!] Invalid news date formate 2019/4/2310:03
+[RS] [Warning!] Invalid news date formate 2019/4/1812:17
+[RS] [Warning!] Invalid news date formate 2019/2/2612:11
+[RS] [Warning!] Invalid news date formate 2019/2/17:42
+[RS] [Warning!] Invalid news date formate 2019/1/2812:47
+[RS] [Warning!] Invalid news date formate 2019/1/2612:52
+[RS] [Warning!] Invalid news date formate 2018/12/159:40
+[RS] [Warning!] Invalid news date formate 2018/12/311:56
+[RS] [Warning!] Invalid news date formate 2019-02-1712:41:39
+[RS] [Warning!] Invalid news date formate 2018-12-2418:49:40
+[RS] [Warning!] Invalid news date formate 2018-11-2708:16:38
+[RS] [Warning!] Invalid news date formate 2018-11-1314:07:05
+[RS] [Warning!] Invalid news date formate 2018-05-0221:36:04
+[RS] [Warning!] Invalid news date formate 2017-11-0119:57:35
+[RS] [Warning!] Invalid news date formate 2017-09-2822:16:33
+[RS] [Warning!] Invalid news date formate 2017-07-2400:17:14
+[RS] [Warning!] Invalid news date formate 2016-11-1420:50:23
+[RS] [Warning!] Invalid news date formate 2016-06-2923:07:10
+[RS] [Warning!] Invalid news date formate 2016-06-1823:18:19
+[RS] [Warning!] Invalid news date formate 2015-10-0918:10:14
+[RS] [Warning!] Invalid news date formate 2019-07-2408:50:07
+[RS] [Warning!] Invalid news date formate 2019-07-0823:59:07
+[RS] [Warning!] Invalid news date formate 2019-07-0423:58:02
+[RS] [Warning!] Invalid news date formate 2019-06-2621:05:52
+[RS] [Warning!] Invalid news date formate 2019-06-2418:59:15
+[RS] [Warning!] Invalid news date formate 2019-06-1818:52:59
+[RS] [Warning!] Invalid news date formate 2019-06-1523:59:36
+[RS] [Warning!] Invalid news date formate 2019-06-1023:59:16
+[RS] [Warning!] Invalid news date formate 2019-05-1123:39:21
+[RS] [Warning!] Invalid news date formate 2019-05-0123:28:14
+[RS] [Warning!] Invalid news date formate 2019-04-2020:10:50
+[RS] [Warning!] Invalid news date formate 2019-04-1823:27:50
+[RS] [Warning!] Invalid news date formate 2019-04-1423:56:29
+[RS] [Warning!] Invalid news date formate 2019-03-2918:42:32
+[RS] [Warning!] Invalid news date formate 2019-03-2520:07:57
+[RS] [Warning!] Invalid news date formate 2019-02-2100:07:32
+[RS] [Warning!] Invalid news date formate 2019-01-2413:44:35
+[RS] [Warning!] Invalid news date formate 2018-12-2421:50:57
+[RS] [Warning!] Invalid news date formate 2018-09-1810:10:56
+[RS] [Warning!] Invalid news date formate 2018-08-0709:26:40
+[RS] [Warning!] Invalid news date formate 2018-08-0602:19:01
+[RS] [Warning!] Invalid news date formate 2018-07-0123:45:30
+[RS] [Warning!] Invalid news date formate 2019/7/2917:56
+[RS] [Warning!] Invalid news date formate 2019/4/1017:25
+[RS] [Warning!] Invalid news date formate 2019/3/2717:17
+[RS] [Warning!] Invalid news date formate 2019/3/1517:15
+[RS] [Warning!] Invalid news date formate 2019/3/816:47
+[RS] [Warning!] Invalid news date formate 2019/2/1117:54
+[RS] [Warning!] Invalid news date formate 2019/1/2818:17
+[RS] [Warning!] Invalid news date formate 2019/1/1710:52
+[RS] [Warning!] Invalid news date formate 2018/12/516:54
+[RS] [Warning!] Invalid news date formate 2018/10/817:47
+[RS] [Warning!] Invalid news date formate 2018/9/1817:31
+[RS] [Warning!] Invalid news date formate 2018/6/322:34
+[RS] [Warning!] Invalid news date formate 2018/5/3122:49
+[RS] [Warning!] Invalid news date formate 2018/2/2317:07
+[RS] [Warning!] Invalid news date formate 2018/9/1212:22
+[RS] [Warning!] Invalid news date formate 2019/7/2612:29
+[RS] [Warning!] Invalid news date formate 2018/8/2212:17
+[RS] [Warning!] Invalid news date formate 2018/8/1412:02
+[RS] [Warning!] Invalid news date formate 2018/7/1813:33
+[RS] [Warning!] Invalid news date formate 2019/6/2012:27
+[RS] [Warning!] Invalid news date formate 2018/6/2812:45
+[RS] [Warning!] Invalid news date formate 2019/6/108:32
+[RS] [Warning!] Invalid news date formate 2018/5/1418:04
+[RS] [Warning!] Invalid news date formate 2019/4/250:20
+[RS] [Warning!] Invalid news date formate 2019/4/1916:14
+[RS] [Warning!] Invalid news date formate 2018/3/1613:05
+[RS] [Warning!] Invalid news date formate 2019/4/50:51
+[RS] [Warning!] Invalid news date formate 2019/3/290:12
+[RS] [Warning!] Invalid news date formate 2019/3/2723:48
+[RS] [Warning!] Invalid news date formate 2019/3/2311:12
+[RS] [Warning!] Invalid news date formate 2019/3/2013:48
+[RS] [Warning!] Invalid news date formate 2019/3/1412:01
+[RS] [Warning!] Invalid news date formate 2018/1/415:58
+[RS] [Warning!] Invalid news date formate 2019/2/2623:18
+[RS] [Warning!] Invalid news date formate 2017/11/712:05
+[RS] [Warning!] Invalid news date formate 2017/11/311:41
+[RS] [Warning!] Invalid news date formate 2018/11/213:36
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 news for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start github Rough Recommend
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 github for u
+28
+[pid: 25980|app: 0|req: 3/3] 137.110.39.186 () {40 vars in 666 bytes} [Tue Aug  6 14:11:55 2019] POST /account/login/ => generated 650132 bytes in 460 msecs (HTTP/1.1 200) 8 headers in 373 bytes (1 switches on core 0)
+28
+28
+------------------
+------------------
+------------------
+------------------
+[['5d3d3bd9170844906781e6df', '5d3d3bd9170844906781d80d'], ['5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f'], []]
+user info can not be directly changed to dict.
+################################
+[RS] Correct num of ES result 200
+[RS] Start paper Rough Recommend
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 10 Jun 2003 04:40:45 UTC (33 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sun, 27 Feb 2011 10:36:25 UTC (191 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 8 Apr 2002 10:56:26 UTC (116 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 20 Nov 2012 20:54:30 UTC (208 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 8 Mar 2019 11:20:39 UTC (9,080 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 6 Jun 2019 09:12:08 UTC (7,701 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 20 May 2019 02:00:56 UTC (223 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Wed, 10 Jul 2019 21:12:18 UTC (777 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 27 Sep 2016 07:33:58 UTC (944 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 7 Oct 2016 21:35:02 UTC (1,473 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 12 Aug 2016 14:40:46 UTC (356 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 11 Dec 2015 20:27:50 UTC (228 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 28 Aug 2017 02:54:11 UTC (3,836 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 25 Dec 2018 03:56:19 UTC (787 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 31 Aug 2017 20:33:06 UTC (90,900 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sat, 12 Jan 2019 18:12:44 UTC (625 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 22 Jan 2016 15:09:18 UTC (182 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 paper for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start news Rough Recommend
+[RS] [Warning!] Invalid news date formate 2017-10-0618:11:23
+[RS] [Warning!] Invalid news date formate 2018-05-1914:08:42
+[RS] [Warning!] Invalid news date formate 2019-03-3011:05:59
+[RS] [Warning!] Invalid news date formate 2018-02-2412:59:23
+[RS] [Warning!] Invalid news date formate 2019-04-0313:33:50
+[RS] [Warning!] Invalid news date formate 2018-12-0915:50:44
+[RS] [Warning!] Invalid news date formate 2019-05-1017:39:13
+[RS] [Warning!] Invalid news date formate 2019-06-0113:48:53
+[RS] [Warning!] Invalid news date formate 2019-06-2508:36:12
+[RS] [Warning!] Invalid news date formate 2019-07-2412:21:05
+[RS] [Warning!] Invalid news date formate 2019/7/97:45
+[RS] [Warning!] Invalid news date formate 2019/7/717:40
+[RS] [Warning!] Invalid news date formate 2019/6/2422:38
+[RS] [Warning!] Invalid news date formate 2019/6/189:30
+[RS] [Warning!] Invalid news date formate 2019/6/1413:23
+[RS] [Warning!] Invalid news date formate 2019/6/99:10
+[RS] [Warning!] Invalid news date formate 2019/5/3016:34
+[RS] [Warning!] Invalid news date formate 2019/5/2612:32
+[RS] [Warning!] Invalid news date formate 2019/4/2311:13
+[RS] [Warning!] Invalid news date formate 2019/3/711:01
+[RS] [Warning!] Invalid news date formate 2019/7/2013:11
+[RS] [Warning!] Invalid news date formate 2019/7/812:46
+[RS] [Warning!] Invalid news date formate 2019/6/2213:30
+[RS] [Warning!] Invalid news date formate 2019/6/2012:45
+[RS] [Warning!] Invalid news date formate 2019/5/412:22
+[RS] [Warning!] Invalid news date formate 2019/4/2711:56
+[RS] [Warning!] Invalid news date formate 2019/4/2310:03
+[RS] [Warning!] Invalid news date formate 2019/4/1812:17
+[RS] [Warning!] Invalid news date formate 2019/2/2612:11
+[RS] [Warning!] Invalid news date formate 2019/2/17:42
+[RS] [Warning!] Invalid news date formate 2019/1/2812:47
+[RS] [Warning!] Invalid news date formate 2019/1/2612:52
+[RS] [Warning!] Invalid news date formate 2018/12/159:40
+[RS] [Warning!] Invalid news date formate 2018/12/311:56
+[RS] [Warning!] Invalid news date formate 2019-02-1712:41:39
+[RS] [Warning!] Invalid news date formate 2018-12-2418:49:40
+[RS] [Warning!] Invalid news date formate 2018-11-2708:16:38
+[RS] [Warning!] Invalid news date formate 2018-11-1314:07:05
+[RS] [Warning!] Invalid news date formate 2018-05-0221:36:04
+[RS] [Warning!] Invalid news date formate 2017-11-0119:57:35
+[RS] [Warning!] Invalid news date formate 2017-09-2822:16:33
+[RS] [Warning!] Invalid news date formate 2017-07-2400:17:14
+[RS] [Warning!] Invalid news date formate 2016-11-1420:50:23
+[RS] [Warning!] Invalid news date formate 2016-06-2923:07:10
+[RS] [Warning!] Invalid news date formate 2016-06-1823:18:19
+[RS] [Warning!] Invalid news date formate 2015-10-0918:10:14
+[RS] [Warning!] Invalid news date formate 2019-07-2408:50:07
+[RS] [Warning!] Invalid news date formate 2019-07-0823:59:07
+[RS] [Warning!] Invalid news date formate 2019-07-0423:58:02
+[RS] [Warning!] Invalid news date formate 2019-06-2621:05:52
+[RS] [Warning!] Invalid news date formate 2019-06-2418:59:15
+[RS] [Warning!] Invalid news date formate 2019-06-1818:52:59
+[RS] [Warning!] Invalid news date formate 2019-06-1523:59:36
+[RS] [Warning!] Invalid news date formate 2019-06-1023:59:16
+[RS] [Warning!] Invalid news date formate 2019-05-1123:39:21
+[RS] [Warning!] Invalid news date formate 2019-05-0123:28:14
+[RS] [Warning!] Invalid news date formate 2019-04-2020:10:50
+[RS] [Warning!] Invalid news date formate 2019-04-1823:27:50
+[RS] [Warning!] Invalid news date formate 2019-04-1423:56:29
+[RS] [Warning!] Invalid news date formate 2019-03-2918:42:32
+[RS] [Warning!] Invalid news date formate 2019-03-2520:07:57
+[RS] [Warning!] Invalid news date formate 2019-02-2100:07:32
+[RS] [Warning!] Invalid news date formate 2019-01-2413:44:35
+[RS] [Warning!] Invalid news date formate 2018-12-2421:50:57
+[RS] [Warning!] Invalid news date formate 2018-09-1810:10:56
+[RS] [Warning!] Invalid news date formate 2018-08-0709:26:40
+[RS] [Warning!] Invalid news date formate 2018-08-0602:19:01
+[RS] [Warning!] Invalid news date formate 2018-07-0123:45:30
+[RS] [Warning!] Invalid news date formate 2019/7/2917:56
+[RS] [Warning!] Invalid news date formate 2019/4/1017:25
+[RS] [Warning!] Invalid news date formate 2019/3/2717:17
+[RS] [Warning!] Invalid news date formate 2019/3/1517:15
+[RS] [Warning!] Invalid news date formate 2019/3/816:47
+[RS] [Warning!] Invalid news date formate 2019/2/1117:54
+[RS] [Warning!] Invalid news date formate 2019/1/2818:17
+[RS] [Warning!] Invalid news date formate 2019/1/1710:52
+[RS] [Warning!] Invalid news date formate 2018/12/516:54
+[RS] [Warning!] Invalid news date formate 2018/10/817:47
+[RS] [Warning!] Invalid news date formate 2018/9/1817:31
+[RS] [Warning!] Invalid news date formate 2018/6/322:34
+[RS] [Warning!] Invalid news date formate 2018/5/3122:49
+[RS] [Warning!] Invalid news date formate 2018/2/2317:07
+[RS] [Warning!] Invalid news date formate 2018/9/1212:22
+[RS] [Warning!] Invalid news date formate 2019/7/2612:29
+[RS] [Warning!] Invalid news date formate 2018/8/2212:17
+[RS] [Warning!] Invalid news date formate 2018/8/1412:02
+[RS] [Warning!] Invalid news date formate 2018/7/1813:33
+[RS] [Warning!] Invalid news date formate 2019/6/2012:27
+[RS] [Warning!] Invalid news date formate 2018/6/2812:45
+[RS] [Warning!] Invalid news date formate 2019/6/108:32
+[RS] [Warning!] Invalid news date formate 2018/5/1418:04
+[RS] [Warning!] Invalid news date formate 2019/4/250:20
+[RS] [Warning!] Invalid news date formate 2019/4/1916:14
+[RS] [Warning!] Invalid news date formate 2018/3/1613:05
+[RS] [Warning!] Invalid news date formate 2019/4/50:51
+[RS] [Warning!] Invalid news date formate 2019/3/290:12
+[RS] [Warning!] Invalid news date formate 2019/3/2723:48
+[RS] [Warning!] Invalid news date formate 2019/3/2311:12
+[RS] [Warning!] Invalid news date formate 2019/3/2013:48
+[RS] [Warning!] Invalid news date formate 2019/3/1412:01
+[RS] [Warning!] Invalid news date formate 2018/1/415:58
+[RS] [Warning!] Invalid news date formate 2019/2/2623:18
+[RS] [Warning!] Invalid news date formate 2017/11/712:05
+[RS] [Warning!] Invalid news date formate 2017/11/311:41
+[RS] [Warning!] Invalid news date formate 2018/11/213:36
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 news for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start github Rough Recommend
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 github for u
+28
+[pid: 25980|app: 0|req: 4/4] 137.110.39.186 () {40 vars in 666 bytes} [Tue Aug  6 14:11:58 2019] POST /account/login/ => generated 312389 bytes in 436 msecs (HTTP/1.1 200) 8 headers in 373 bytes (2 switches on core 0)
+28
+28
+------------------
+------------------
+------------------
+------------------
+[['5d3d3bd9170844906781e6df', '5d3d3bd9170844906781d80d'], ['5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f'], []]
+user info can not be directly changed to dict.
+################################
+[RS] Correct num of ES result 200
+[RS] Start paper Rough Recommend
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 10 Jun 2003 04:40:45 UTC (33 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sun, 27 Feb 2011 10:36:25 UTC (191 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 8 Apr 2002 10:56:26 UTC (116 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 20 Nov 2012 20:54:30 UTC (208 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 8 Mar 2019 11:20:39 UTC (9,080 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 6 Jun 2019 09:12:08 UTC (7,701 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 20 May 2019 02:00:56 UTC (223 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Wed, 10 Jul 2019 21:12:18 UTC (777 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 27 Sep 2016 07:33:58 UTC (944 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 7 Oct 2016 21:35:02 UTC (1,473 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 12 Aug 2016 14:40:46 UTC (356 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 11 Dec 2015 20:27:50 UTC (228 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 28 Aug 2017 02:54:11 UTC (3,836 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 25 Dec 2018 03:56:19 UTC (787 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 31 Aug 2017 20:33:06 UTC (90,900 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sat, 12 Jan 2019 18:12:44 UTC (625 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 22 Jan 2016 15:09:18 UTC (182 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 paper for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start news Rough Recommend
+[RS] [Warning!] Invalid news date formate 2017-10-0618:11:23
+[RS] [Warning!] Invalid news date formate 2018-05-1914:08:42
+[RS] [Warning!] Invalid news date formate 2019-03-3011:05:59
+[RS] [Warning!] Invalid news date formate 2018-02-2412:59:23
+[RS] [Warning!] Invalid news date formate 2019-04-0313:33:50
+[RS] [Warning!] Invalid news date formate 2018-12-0915:50:44
+[RS] [Warning!] Invalid news date formate 2019-05-1017:39:13
+[RS] [Warning!] Invalid news date formate 2019-06-0113:48:53
+[RS] [Warning!] Invalid news date formate 2019-06-2508:36:12
+[RS] [Warning!] Invalid news date formate 2019-07-2412:21:05
+[RS] [Warning!] Invalid news date formate 2019/7/97:45
+[RS] [Warning!] Invalid news date formate 2019/7/717:40
+[RS] [Warning!] Invalid news date formate 2019/6/2422:38
+[RS] [Warning!] Invalid news date formate 2019/6/189:30
+[RS] [Warning!] Invalid news date formate 2019/6/1413:23
+[RS] [Warning!] Invalid news date formate 2019/6/99:10
+[RS] [Warning!] Invalid news date formate 2019/5/3016:34
+[RS] [Warning!] Invalid news date formate 2019/5/2612:32
+[RS] [Warning!] Invalid news date formate 2019/4/2311:13
+[RS] [Warning!] Invalid news date formate 2019/3/711:01
+[RS] [Warning!] Invalid news date formate 2019/7/2013:11
+[RS] [Warning!] Invalid news date formate 2019/7/812:46
+[RS] [Warning!] Invalid news date formate 2019/6/2213:30
+[RS] [Warning!] Invalid news date formate 2019/6/2012:45
+[RS] [Warning!] Invalid news date formate 2019/5/412:22
+[RS] [Warning!] Invalid news date formate 2019/4/2711:56
+[RS] [Warning!] Invalid news date formate 2019/4/2310:03
+[RS] [Warning!] Invalid news date formate 2019/4/1812:17
+[RS] [Warning!] Invalid news date formate 2019/2/2612:11
+[RS] [Warning!] Invalid news date formate 2019/2/17:42
+[RS] [Warning!] Invalid news date formate 2019/1/2812:47
+[RS] [Warning!] Invalid news date formate 2019/1/2612:52
+[RS] [Warning!] Invalid news date formate 2018/12/159:40
+[RS] [Warning!] Invalid news date formate 2018/12/311:56
+[RS] [Warning!] Invalid news date formate 2019-02-1712:41:39
+[RS] [Warning!] Invalid news date formate 2018-12-2418:49:40
+[RS] [Warning!] Invalid news date formate 2018-11-2708:16:38
+[RS] [Warning!] Invalid news date formate 2018-11-1314:07:05
+[RS] [Warning!] Invalid news date formate 2018-05-0221:36:04
+[RS] [Warning!] Invalid news date formate 2017-11-0119:57:35
+[RS] [Warning!] Invalid news date formate 2017-09-2822:16:33
+[RS] [Warning!] Invalid news date formate 2017-07-2400:17:14
+[RS] [Warning!] Invalid news date formate 2016-11-1420:50:23
+[RS] [Warning!] Invalid news date formate 2016-06-2923:07:10
+[RS] [Warning!] Invalid news date formate 2016-06-1823:18:19
+[RS] [Warning!] Invalid news date formate 2015-10-0918:10:14
+[RS] [Warning!] Invalid news date formate 2019-07-2408:50:07
+[RS] [Warning!] Invalid news date formate 2019-07-0823:59:07
+[RS] [Warning!] Invalid news date formate 2019-07-0423:58:02
+[RS] [Warning!] Invalid news date formate 2019-06-2621:05:52
+[RS] [Warning!] Invalid news date formate 2019-06-2418:59:15
+[RS] [Warning!] Invalid news date formate 2019-06-1818:52:59
+[RS] [Warning!] Invalid news date formate 2019-06-1523:59:36
+[RS] [Warning!] Invalid news date formate 2019-06-1023:59:16
+[RS] [Warning!] Invalid news date formate 2019-05-1123:39:21
+[RS] [Warning!] Invalid news date formate 2019-05-0123:28:14
+[RS] [Warning!] Invalid news date formate 2019-04-2020:10:50
+[RS] [Warning!] Invalid news date formate 2019-04-1823:27:50
+[RS] [Warning!] Invalid news date formate 2019-04-1423:56:29
+[RS] [Warning!] Invalid news date formate 2019-03-2918:42:32
+[RS] [Warning!] Invalid news date formate 2019-03-2520:07:57
+[RS] [Warning!] Invalid news date formate 2019-02-2100:07:32
+[RS] [Warning!] Invalid news date formate 2019-01-2413:44:35
+[RS] [Warning!] Invalid news date formate 2018-12-2421:50:57
+[RS] [Warning!] Invalid news date formate 2018-09-1810:10:56
+[RS] [Warning!] Invalid news date formate 2018-08-0709:26:40
+[RS] [Warning!] Invalid news date formate 2018-08-0602:19:01
+[RS] [Warning!] Invalid news date formate 2018-07-0123:45:30
+[RS] [Warning!] Invalid news date formate 2019/7/2917:56
+[RS] [Warning!] Invalid news date formate 2019/4/1017:25
+[RS] [Warning!] Invalid news date formate 2019/3/2717:17
+[RS] [Warning!] Invalid news date formate 2019/3/1517:15
+[RS] [Warning!] Invalid news date formate 2019/3/816:47
+[RS] [Warning!] Invalid news date formate 2019/2/1117:54
+[RS] [Warning!] Invalid news date formate 2019/1/2818:17
+[RS] [Warning!] Invalid news date formate 2019/1/1710:52
+[RS] [Warning!] Invalid news date formate 2018/12/516:54
+[RS] [Warning!] Invalid news date formate 2018/10/817:47
+[RS] [Warning!] Invalid news date formate 2018/9/1817:31
+[RS] [Warning!] Invalid news date formate 2018/6/322:34
+[RS] [Warning!] Invalid news date formate 2018/5/3122:49
+[RS] [Warning!] Invalid news date formate 2018/2/2317:07
+[RS] [Warning!] Invalid news date formate 2018/9/1212:22
+[RS] [Warning!] Invalid news date formate 2019/7/2612:29
+[RS] [Warning!] Invalid news date formate 2018/8/2212:17
+[RS] [Warning!] Invalid news date formate 2018/8/1412:02
+[RS] [Warning!] Invalid news date formate 2018/7/1813:33
+[RS] [Warning!] Invalid news date formate 2019/6/2012:27
+[RS] [Warning!] Invalid news date formate 2018/6/2812:45
+[RS] [Warning!] Invalid news date formate 2019/6/108:32
+[RS] [Warning!] Invalid news date formate 2018/5/1418:04
+[RS] [Warning!] Invalid news date formate 2019/4/250:20
+[RS] [Warning!] Invalid news date formate 2019/4/1916:14
+[RS] [Warning!] Invalid news date formate 2018/3/1613:05
+[RS] [Warning!] Invalid news date formate 2019/4/50:51
+[RS] [Warning!] Invalid news date formate 2019/3/290:12
+[RS] [Warning!] Invalid news date formate 2019/3/2723:48
+[RS] [Warning!] Invalid news date formate 2019/3/2311:12
+[RS] [Warning!] Invalid news date formate 2019/3/2013:48
+[RS] [Warning!] Invalid news date formate 2019/3/1412:01
+[RS] [Warning!] Invalid news date formate 2018/1/415:58
+[RS] [Warning!] Invalid news date formate 2019/2/2623:18
+[RS] [Warning!] Invalid news date formate 2017/11/712:05
+[RS] [Warning!] Invalid news date formate 2017/11/311:41
+[RS] [Warning!] Invalid news date formate 2018/11/213:36
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 news for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start github Rough Recommend
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 github for u
+28
+[pid: 25980|app: 0|req: 5/5] 137.110.39.186 () {40 vars in 666 bytes} [Tue Aug  6 14:11:58 2019] POST /account/login/ => generated 367022 bytes in 442 msecs (HTTP/1.1 200) 8 headers in 373 bytes (1 switches on core 0)
+28
+28
+------------------
+------------------
+------------------
+------------------
+[['5d3d3bd9170844906781e6df', '5d3d3bd9170844906781d80d'], ['5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f'], []]
+user info can not be directly changed to dict.
+################################
+[RS] Correct num of ES result 200
+[RS] Start paper Rough Recommend
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 10 Jun 2003 04:40:45 UTC (33 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sun, 27 Feb 2011 10:36:25 UTC (191 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 8 Apr 2002 10:56:26 UTC (116 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 20 Nov 2012 20:54:30 UTC (208 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 8 Mar 2019 11:20:39 UTC (9,080 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 6 Jun 2019 09:12:08 UTC (7,701 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 20 May 2019 02:00:56 UTC (223 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Wed, 10 Jul 2019 21:12:18 UTC (777 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 27 Sep 2016 07:33:58 UTC (944 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 7 Oct 2016 21:35:02 UTC (1,473 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 12 Aug 2016 14:40:46 UTC (356 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 11 Dec 2015 20:27:50 UTC (228 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 28 Aug 2017 02:54:11 UTC (3,836 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 25 Dec 2018 03:56:19 UTC (787 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 31 Aug 2017 20:33:06 UTC (90,900 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sat, 12 Jan 2019 18:12:44 UTC (625 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 22 Jan 2016 15:09:18 UTC (182 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 paper for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start news Rough Recommend
+[RS] [Warning!] Invalid news date formate 2017-10-0618:11:23
+[RS] [Warning!] Invalid news date formate 2018-05-1914:08:42
+[RS] [Warning!] Invalid news date formate 2019-03-3011:05:59
+[RS] [Warning!] Invalid news date formate 2018-02-2412:59:23
+[RS] [Warning!] Invalid news date formate 2019-04-0313:33:50
+[RS] [Warning!] Invalid news date formate 2018-12-0915:50:44
+[RS] [Warning!] Invalid news date formate 2019-05-1017:39:13
+[RS] [Warning!] Invalid news date formate 2019-06-0113:48:53
+[RS] [Warning!] Invalid news date formate 2019-06-2508:36:12
+[RS] [Warning!] Invalid news date formate 2019-07-2412:21:05
+[RS] [Warning!] Invalid news date formate 2019/7/97:45
+[RS] [Warning!] Invalid news date formate 2019/7/717:40
+[RS] [Warning!] Invalid news date formate 2019/6/2422:38
+[RS] [Warning!] Invalid news date formate 2019/6/189:30
+[RS] [Warning!] Invalid news date formate 2019/6/1413:23
+[RS] [Warning!] Invalid news date formate 2019/6/99:10
+[RS] [Warning!] Invalid news date formate 2019/5/3016:34
+[RS] [Warning!] Invalid news date formate 2019/5/2612:32
+[RS] [Warning!] Invalid news date formate 2019/4/2311:13
+[RS] [Warning!] Invalid news date formate 2019/3/711:01
+[RS] [Warning!] Invalid news date formate 2019/7/2013:11
+[RS] [Warning!] Invalid news date formate 2019/7/812:46
+[RS] [Warning!] Invalid news date formate 2019/6/2213:30
+[RS] [Warning!] Invalid news date formate 2019/6/2012:45
+[RS] [Warning!] Invalid news date formate 2019/5/412:22
+[RS] [Warning!] Invalid news date formate 2019/4/2711:56
+[RS] [Warning!] Invalid news date formate 2019/4/2310:03
+[RS] [Warning!] Invalid news date formate 2019/4/1812:17
+[RS] [Warning!] Invalid news date formate 2019/2/2612:11
+[RS] [Warning!] Invalid news date formate 2019/2/17:42
+[RS] [Warning!] Invalid news date formate 2019/1/2812:47
+[RS] [Warning!] Invalid news date formate 2019/1/2612:52
+[RS] [Warning!] Invalid news date formate 2018/12/159:40
+[RS] [Warning!] Invalid news date formate 2018/12/311:56
+[RS] [Warning!] Invalid news date formate 2019-02-1712:41:39
+[RS] [Warning!] Invalid news date formate 2018-12-2418:49:40
+[RS] [Warning!] Invalid news date formate 2018-11-2708:16:38
+[RS] [Warning!] Invalid news date formate 2018-11-1314:07:05
+[RS] [Warning!] Invalid news date formate 2018-05-0221:36:04
+[RS] [Warning!] Invalid news date formate 2017-11-0119:57:35
+[RS] [Warning!] Invalid news date formate 2017-09-2822:16:33
+[RS] [Warning!] Invalid news date formate 2017-07-2400:17:14
+[RS] [Warning!] Invalid news date formate 2016-11-1420:50:23
+[RS] [Warning!] Invalid news date formate 2016-06-2923:07:10
+[RS] [Warning!] Invalid news date formate 2016-06-1823:18:19
+[RS] [Warning!] Invalid news date formate 2015-10-0918:10:14
+[RS] [Warning!] Invalid news date formate 2019-07-2408:50:07
+[RS] [Warning!] Invalid news date formate 2019-07-0823:59:07
+[RS] [Warning!] Invalid news date formate 2019-07-0423:58:02
+[RS] [Warning!] Invalid news date formate 2019-06-2621:05:52
+[RS] [Warning!] Invalid news date formate 2019-06-2418:59:15
+[RS] [Warning!] Invalid news date formate 2019-06-1818:52:59
+[RS] [Warning!] Invalid news date formate 2019-06-1523:59:36
+[RS] [Warning!] Invalid news date formate 2019-06-1023:59:16
+[RS] [Warning!] Invalid news date formate 2019-05-1123:39:21
+[RS] [Warning!] Invalid news date formate 2019-05-0123:28:14
+[RS] [Warning!] Invalid news date formate 2019-04-2020:10:50
+[RS] [Warning!] Invalid news date formate 2019-04-1823:27:50
+[RS] [Warning!] Invalid news date formate 2019-04-1423:56:29
+[RS] [Warning!] Invalid news date formate 2019-03-2918:42:32
+[RS] [Warning!] Invalid news date formate 2019-03-2520:07:57
+[RS] [Warning!] Invalid news date formate 2019-02-2100:07:32
+[RS] [Warning!] Invalid news date formate 2019-01-2413:44:35
+[RS] [Warning!] Invalid news date formate 2018-12-2421:50:57
+[RS] [Warning!] Invalid news date formate 2018-09-1810:10:56
+[RS] [Warning!] Invalid news date formate 2018-08-0709:26:40
+[RS] [Warning!] Invalid news date formate 2018-08-0602:19:01
+[RS] [Warning!] Invalid news date formate 2018-07-0123:45:30
+[RS] [Warning!] Invalid news date formate 2019/7/2917:56
+[RS] [Warning!] Invalid news date formate 2019/4/1017:25
+[RS] [Warning!] Invalid news date formate 2019/3/2717:17
+[RS] [Warning!] Invalid news date formate 2019/3/1517:15
+[RS] [Warning!] Invalid news date formate 2019/3/816:47
+[RS] [Warning!] Invalid news date formate 2019/2/1117:54
+[RS] [Warning!] Invalid news date formate 2019/1/2818:17
+[RS] [Warning!] Invalid news date formate 2019/1/1710:52
+[RS] [Warning!] Invalid news date formate 2018/12/516:54
+[RS] [Warning!] Invalid news date formate 2018/10/817:47
+[RS] [Warning!] Invalid news date formate 2018/9/1817:31
+[RS] [Warning!] Invalid news date formate 2018/6/322:34
+[RS] [Warning!] Invalid news date formate 2018/5/3122:49
+[RS] [Warning!] Invalid news date formate 2018/2/2317:07
+[RS] [Warning!] Invalid news date formate 2018/9/1212:22
+[RS] [Warning!] Invalid news date formate 2019/7/2612:29
+[RS] [Warning!] Invalid news date formate 2018/8/2212:17
+[RS] [Warning!] Invalid news date formate 2018/8/1412:02
+[RS] [Warning!] Invalid news date formate 2018/7/1813:33
+[RS] [Warning!] Invalid news date formate 2019/6/2012:27
+[RS] [Warning!] Invalid news date formate 2018/6/2812:45
+[RS] [Warning!] Invalid news date formate 2019/6/108:32
+[RS] [Warning!] Invalid news date formate 2018/5/1418:04
+[RS] [Warning!] Invalid news date formate 2019/4/250:20
+[RS] [Warning!] Invalid news date formate 2019/4/1916:14
+[RS] [Warning!] Invalid news date formate 2018/3/1613:05
+[RS] [Warning!] Invalid news date formate 2019/4/50:51
+[RS] [Warning!] Invalid news date formate 2019/3/290:12
+[RS] [Warning!] Invalid news date formate 2019/3/2723:48
+[RS] [Warning!] Invalid news date formate 2019/3/2311:12
+[RS] [Warning!] Invalid news date formate 2019/3/2013:48
+[RS] [Warning!] Invalid news date formate 2019/3/1412:01
+[RS] [Warning!] Invalid news date formate 2018/1/415:58
+[RS] [Warning!] Invalid news date formate 2019/2/2623:18
+[RS] [Warning!] Invalid news date formate 2017/11/712:05
+[RS] [Warning!] Invalid news date formate 2017/11/311:41
+[RS] [Warning!] Invalid news date formate 2018/11/213:36
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 news for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start github Rough Recommend
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 github for u
+28
+[pid: 25980|app: 0|req: 6/6] 137.110.39.186 () {40 vars in 666 bytes} [Tue Aug  6 14:11:59 2019] POST /account/login/ => generated 528366 bytes in 462 msecs (HTTP/1.1 200) 8 headers in 373 bytes (1 switches on core 0)
+[uwsgi-http key: 106.75.229.123:9999 client_addr: 137.110.39.186 client_port: 31983] hr_write(): Connection reset by peer [plugins/http/http.c line 565]
+[uwsgi-http key: 106.75.229.123:9999 client_addr: 137.110.39.186 client_port: 32239] hr_write(): Connection reset by peer [plugins/http/http.c line 565]
+28
+28
+------------------
+------------------
+------------------
+------------------
+[['5d3d3bd9170844906781e6df', '5d3d3bd9170844906781d80d'], ['5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f', '5d3d8386050496234b6cb89f'], []]
+user info can not be directly changed to dict.
+################################
+[RS] Correct num of ES result 200
+[RS] Start paper Rough Recommend
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 10 Jun 2003 04:40:45 UTC (33 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sun, 27 Feb 2011 10:36:25 UTC (191 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 8 Apr 2002 10:56:26 UTC (116 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 20 Nov 2012 20:54:30 UTC (208 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 8 Mar 2019 11:20:39 UTC (9,080 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 6 Jun 2019 09:12:08 UTC (7,701 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 20 May 2019 02:00:56 UTC (223 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Wed, 10 Jul 2019 21:12:18 UTC (777 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 27 Sep 2016 07:33:58 UTC (944 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 7 Oct 2016 21:35:02 UTC (1,473 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 12 Aug 2016 14:40:46 UTC (356 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 11 Dec 2015 20:27:50 UTC (228 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Mon, 28 Aug 2017 02:54:11 UTC (3,836 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Tue, 25 Dec 2018 03:56:19 UTC (787 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Thu, 31 Aug 2017 20:33:06 UTC (90,900 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Sat, 12 Jan 2019 18:12:44 UTC (625 KB)
+[RS] [Warning!] Invalid paper date formate 
+[RS] 
+Fri, 22 Jan 2016 15:09:18 UTC (182 KB)
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] Invalid paper without date
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 paper for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start news Rough Recommend
+[RS] [Warning!] Invalid news date formate 2017-10-0618:11:23
+[RS] [Warning!] Invalid news date formate 2018-05-1914:08:42
+[RS] [Warning!] Invalid news date formate 2019-03-3011:05:59
+[RS] [Warning!] Invalid news date formate 2018-02-2412:59:23
+[RS] [Warning!] Invalid news date formate 2019-04-0313:33:50
+[RS] [Warning!] Invalid news date formate 2018-12-0915:50:44
+[RS] [Warning!] Invalid news date formate 2019-05-1017:39:13
+[RS] [Warning!] Invalid news date formate 2019-06-0113:48:53
+[RS] [Warning!] Invalid news date formate 2019-06-2508:36:12
+[RS] [Warning!] Invalid news date formate 2019-07-2412:21:05
+[RS] [Warning!] Invalid news date formate 2019/7/97:45
+[RS] [Warning!] Invalid news date formate 2019/7/717:40
+[RS] [Warning!] Invalid news date formate 2019/6/2422:38
+[RS] [Warning!] Invalid news date formate 2019/6/189:30
+[RS] [Warning!] Invalid news date formate 2019/6/1413:23
+[RS] [Warning!] Invalid news date formate 2019/6/99:10
+[RS] [Warning!] Invalid news date formate 2019/5/3016:34
+[RS] [Warning!] Invalid news date formate 2019/5/2612:32
+[RS] [Warning!] Invalid news date formate 2019/4/2311:13
+[RS] [Warning!] Invalid news date formate 2019/3/711:01
+[RS] [Warning!] Invalid news date formate 2019/7/2013:11
+[RS] [Warning!] Invalid news date formate 2019/7/812:46
+[RS] [Warning!] Invalid news date formate 2019/6/2213:30
+[RS] [Warning!] Invalid news date formate 2019/6/2012:45
+[RS] [Warning!] Invalid news date formate 2019/5/412:22
+[RS] [Warning!] Invalid news date formate 2019/4/2711:56
+[RS] [Warning!] Invalid news date formate 2019/4/2310:03
+[RS] [Warning!] Invalid news date formate 2019/4/1812:17
+[RS] [Warning!] Invalid news date formate 2019/2/2612:11
+[RS] [Warning!] Invalid news date formate 2019/2/17:42
+[RS] [Warning!] Invalid news date formate 2019/1/2812:47
+[RS] [Warning!] Invalid news date formate 2019/1/2612:52
+[RS] [Warning!] Invalid news date formate 2018/12/159:40
+[RS] [Warning!] Invalid news date formate 2018/12/311:56
+[RS] [Warning!] Invalid news date formate 2019-02-1712:41:39
+[RS] [Warning!] Invalid news date formate 2018-12-2418:49:40
+[RS] [Warning!] Invalid news date formate 2018-11-2708:16:38
+[RS] [Warning!] Invalid news date formate 2018-11-1314:07:05
+[RS] [Warning!] Invalid news date formate 2018-05-0221:36:04
+[RS] [Warning!] Invalid news date formate 2017-11-0119:57:35
+[RS] [Warning!] Invalid news date formate 2017-09-2822:16:33
+[RS] [Warning!] Invalid news date formate 2017-07-2400:17:14
+[RS] [Warning!] Invalid news date formate 2016-11-1420:50:23
+[RS] [Warning!] Invalid news date formate 2016-06-2923:07:10
+[RS] [Warning!] Invalid news date formate 2016-06-1823:18:19
+[RS] [Warning!] Invalid news date formate 2015-10-0918:10:14
+[RS] [Warning!] Invalid news date formate 2019-07-2408:50:07
+[RS] [Warning!] Invalid news date formate 2019-07-0823:59:07
+[RS] [Warning!] Invalid news date formate 2019-07-0423:58:02
+[RS] [Warning!] Invalid news date formate 2019-06-2621:05:52
+[RS] [Warning!] Invalid news date formate 2019-06-2418:59:15
+[RS] [Warning!] Invalid news date formate 2019-06-1818:52:59
+[RS] [Warning!] Invalid news date formate 2019-06-1523:59:36
+[RS] [Warning!] Invalid news date formate 2019-06-1023:59:16
+[RS] [Warning!] Invalid news date formate 2019-05-1123:39:21
+[RS] [Warning!] Invalid news date formate 2019-05-0123:28:14
+[RS] [Warning!] Invalid news date formate 2019-04-2020:10:50
+[RS] [Warning!] Invalid news date formate 2019-04-1823:27:50
+[RS] [Warning!] Invalid news date formate 2019-04-1423:56:29
+[RS] [Warning!] Invalid news date formate 2019-03-2918:42:32
+[RS] [Warning!] Invalid news date formate 2019-03-2520:07:57
+[RS] [Warning!] Invalid news date formate 2019-02-2100:07:32
+[RS] [Warning!] Invalid news date formate 2019-01-2413:44:35
+[RS] [Warning!] Invalid news date formate 2018-12-2421:50:57
+[RS] [Warning!] Invalid news date formate 2018-09-1810:10:56
+[RS] [Warning!] Invalid news date formate 2018-08-0709:26:40
+[RS] [Warning!] Invalid news date formate 2018-08-0602:19:01
+[RS] [Warning!] Invalid news date formate 2018-07-0123:45:30
+[RS] [Warning!] Invalid news date formate 2019/7/2917:56
+[RS] [Warning!] Invalid news date formate 2019/4/1017:25
+[RS] [Warning!] Invalid news date formate 2019/3/2717:17
+[RS] [Warning!] Invalid news date formate 2019/3/1517:15
+[RS] [Warning!] Invalid news date formate 2019/3/816:47
+[RS] [Warning!] Invalid news date formate 2019/2/1117:54
+[RS] [Warning!] Invalid news date formate 2019/1/2818:17
+[RS] [Warning!] Invalid news date formate 2019/1/1710:52
+[RS] [Warning!] Invalid news date formate 2018/12/516:54
+[RS] [Warning!] Invalid news date formate 2018/10/817:47
+[RS] [Warning!] Invalid news date formate 2018/9/1817:31
+[RS] [Warning!] Invalid news date formate 2018/6/322:34
+[RS] [Warning!] Invalid news date formate 2018/5/3122:49
+[RS] [Warning!] Invalid news date formate 2018/2/2317:07
+[RS] [Warning!] Invalid news date formate 2018/9/1212:22
+[RS] [Warning!] Invalid news date formate 2019/7/2612:29
+[RS] [Warning!] Invalid news date formate 2018/8/2212:17
+[RS] [Warning!] Invalid news date formate 2018/8/1412:02
+[RS] [Warning!] Invalid news date formate 2018/7/1813:33
+[RS] [Warning!] Invalid news date formate 2019/6/2012:27
+[RS] [Warning!] Invalid news date formate 2018/6/2812:45
+[RS] [Warning!] Invalid news date formate 2019/6/108:32
+[RS] [Warning!] Invalid news date formate 2018/5/1418:04
+[RS] [Warning!] Invalid news date formate 2019/4/250:20
+[RS] [Warning!] Invalid news date formate 2019/4/1916:14
+[RS] [Warning!] Invalid news date formate 2018/3/1613:05
+[RS] [Warning!] Invalid news date formate 2019/4/50:51
+[RS] [Warning!] Invalid news date formate 2019/3/290:12
+[RS] [Warning!] Invalid news date formate 2019/3/2723:48
+[RS] [Warning!] Invalid news date formate 2019/3/2311:12
+[RS] [Warning!] Invalid news date formate 2019/3/2013:48
+[RS] [Warning!] Invalid news date formate 2019/3/1412:01
+[RS] [Warning!] Invalid news date formate 2018/1/415:58
+[RS] [Warning!] Invalid news date formate 2019/2/2623:18
+[RS] [Warning!] Invalid news date formate 2017/11/712:05
+[RS] [Warning!] Invalid news date formate 2017/11/311:41
+[RS] [Warning!] Invalid news date formate 2018/11/213:36
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 news for u
+################################
+[RS] Correct num of ES result 200
+[RS] Start github Rough Recommend
+[RS] [Warning!] All date same!
+[RS] Finish Rough Recommend
+[RS] Recommend 20 github for u
+28
+[pid: 25980|app: 0|req: 7/7] 58.247.22.142 () {40 vars in 665 bytes} [Tue Aug  6 14:12:10 2019] POST /account/login/ => generated 290321 bytes in 431 msecs (HTTP/1.1 200) 8 headers in 373 bytes (1 switches on core 0)
+[pid: 25980|app: 0|req: 8/8] 58.247.22.142 () {42 vars in 676 bytes} [Tue Aug  6 14:12:11 2019] OPTIONS /api/click/ => generated 0 bytes in 1 msecs (HTTP/1.1 200) 8 headers in 484 bytes (1 switches on core 0)
+{'uid': 28, 'action': 1, 'start_time': 1565100731855}
+Internal Server Error: /api/click/
+Traceback (most recent call last):
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/views/generic/base.py", line 71, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/views/generic/base.py", line 97, in dispatch
+    return handler(request, *args, **kwargs)
+  File "./api/views.py", line 245, in post
+    action_record = ActionLog(uid=body['uid'],fid=body['fid'],action=body['action'],start_time=body['start_time'],end_time=0)
+KeyError: 'fid'
+ERROR:django.request:Internal Server Error: /api/click/
+Traceback (most recent call last):
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/views/generic/base.py", line 71, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/views/generic/base.py", line 97, in dispatch
+    return handler(request, *args, **kwargs)
+  File "./api/views.py", line 245, in post
+    action_record = ActionLog(uid=body['uid'],fid=body['fid'],action=body['action'],start_time=body['start_time'],end_time=0)
+KeyError: 'fid'
+[pid: 25980|app: 0|req: 9/9] 58.247.22.142 () {40 vars in 657 bytes} [Tue Aug  6 14:12:11 2019] POST /api/click/ => generated 67859 bytes in 34 msecs (HTTP/1.1 500) 6 headers in 229 bytes (1 switches on core 0)
+{'uid': 28, 'action': 1, 'start_time': 1565100766815}
+Internal Server Error: /api/click/
+Traceback (most recent call last):
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/views/generic/base.py", line 71, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/views/generic/base.py", line 97, in dispatch
+    return handler(request, *args, **kwargs)
+  File "./api/views.py", line 245, in post
+    action_record = ActionLog(uid=body['uid'],fid=body['fid'],action=body['action'],start_time=body['start_time'],end_time=0)
+KeyError: 'fid'
+ERROR:django.request:Internal Server Error: /api/click/
+Traceback (most recent call last):
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/exception.py", line 34, in inner
+    response = get_response(request)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/base.py", line 115, in _get_response
+    response = self.process_exception_by_middleware(e, request)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/core/handlers/base.py", line 113, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/views/generic/base.py", line 71, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/anaconda3/lib/python3.7/site-packages/django/views/generic/base.py", line 97, in dispatch
+    return handler(request, *args, **kwargs)
+  File "./api/views.py", line 245, in post
+    action_record = ActionLog(uid=body['uid'],fid=body['fid'],action=body['action'],start_time=body['start_time'],end_time=0)
+KeyError: 'fid'
+[pid: 25980|app: 0|req: 10/10] 58.247.22.142 () {40 vars in 657 bytes} [Tue Aug  6 14:12:46 2019] POST /api/click/ => generated 67859 bytes in 35 msecs (HTTP/1.1 500) 6 headers in 229 bytes (1 switches on core 0)
+Gracefully killing worker 1 (pid: 25980)...

@@ -21,7 +21,7 @@ class RecView(View):
         _usr_id = request.GET.get('uid',None)
         text_w,use_info = get_user_tags(_usr_id)
         '''--------------for debug---------------------'''
-        text_w = [('word embedding',1.0),('graph embedding',2.0)]
+        # text_w = [('word embedding',1.0),('graph embedding',2.0)]
 
         arxiv_info = get_rough_query_result(text_w,index='arxiv')
         news_info = get_rough_query_result(text_w,index = 'news')
@@ -37,14 +37,18 @@ class RecView(View):
         return JsonResponse(texts)
 
 class SearchView(View):
-    def post(self,request,*args,**kwargs):
+    def get(self,request,*args,**kwargs):
         # if not request.session.get('is_logined',False):
             # return HttpResponseRedirect('/login') 
         texts = {}
         #get keyword and give it a weight 
-        post = json.loads(request.body)
-        keywords = post.get('keywords',None)
-        text_w = [(word,1) for word in keywords]
+        # post = json.loads(request.body)
+        
+        keywords = request.GET.get('keywords',None)
+        if not keywords:
+            return JsonResponse({'message':'Nothing to search.','flag':0})
+        text_w = [(keywords,1)]
+        # text_w = [(word,1) for word in keywords]
         arxiv_info = get_rough_query_result(text_w,index='arxiv')
         news_info = get_rough_query_result(text_w,index = 'news')
         github_info = get_rough_query_result(text_w,index = 'github')

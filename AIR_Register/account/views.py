@@ -1,56 +1,52 @@
-from django.shortcuts import render
 from django.views.generic import View
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import JsonResponse, HttpResponseRedirect
-from django.utils.decorators import method_decorator
-#from rest_framework.decorators import api_view
-from djongo.models import IntegerField,CharField
-from django.views.decorators.csrf import csrf_exempt,csrf_protect
+from django.http import JsonResponse
+from django.contrib.sessions.models import Session
+# from django.contrib.auth.decorators import login_required
+# from django.utils.decorators import method_decorator
+# from django.views.decorators.csrf import csrf_exempt,csrf_protect
+# import django.contrib.sessions.middleware.SessionMiddleware
+from .models import UserProfile,UserInfo,StringField, ActionLog, Interests
 
-from .models import UserProfile,UserInfo,StringField, ActionLog
-from .models import Interests
 import json
 import bson
 import sys
 import random
-from django.contrib.sessions.models import Session
+import time
+import datetime
 
-# import djongo
 sys.path.append("../")
-from air_ES.query_result import get_rough_query_result
+from air_ES.query_result import get_rough_query_result,get_acc_query_result,get_feeds_info
+from airs import rsfunction
+from utils import gen_json_response,get_session_data,action_record_to_dict
 
-SESSION_KEY = '_auth_user_id'
-BACKEND_SESSION_KEY = '_auth_user_backend'
-HASH_SESSION_KEY = '_auth_user_hash'
-REDIRECT_FIELD_NAME = 'next'
 
+
+USE_ACC_QUERY = False
 # generate json response for front end
-def gen_json_response(session_id,status='success', message="success",data={},):
-    res = {
-    "status": status,
-    "message": message,
-    "data": data,
-    "session_id":session_id
-    }
-    return JsonResponse(res)
-
 # record new user's username and password
 class RegisterView(View):
-
+    '''Only accept post request with username and password for register
+    '''
     def get(self,request):
         # session_id=request.session.session_key
         return gen_json_response(status='error',message='No get for this page.')
     
     def post(self,request):
-        # received_data = json.loads(request.body.decode('utf-8'))
+        '''Args:
+            request(
+            username: string
+            password: string)
+           Returns:
+            success status
+            error status when duplication detected
+        '''
         #use request.body to accommodate front end's axios
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         # body = request.POST
         print(body)
-        print('!!!!!!!!!!!!')
         username = body['username']
         password = body['password']
         
@@ -67,9 +63,6 @@ class RegisterView(View):
             password=password,
         )
         # initial user profile
-        degree='No degree'
-
-        # print(d1)
         user_info = UserInfo(user=user)
         # write to db
         user_info.save()
@@ -79,35 +72,47 @@ class RegisterView(View):
         print(uid)
         print('save success.')
         data ={'uid':uid}
-        return gen_json_response(status='success',message='Register success!',data=data)
+        if not request.session.session_key:
+            request.session.save()
+        request.session['uid'] = uid
+        
+        request.session.modified = True
+        response = gen_json_response(status='success',message='Register success!',data=data)
+        session_id =request.session.session_key
+        response.set_cookie('session_id',session_id)
+        return response
+
 
 # record new user's interests and degree
 class RegisterInterestsView(View):
-    
+    '''collect user interests/degree when registration
+    '''
     def get(self,request):
         return gen_json_response(status='error',message='No get for this page.')
     
     def post(self,request):
+        '''Args:
+            interests:
+            password: string
+           Returns:
+            success
+            error status when duplication detected
+        '''
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
         uid = body['uid']
         interests_raw = body['interests']
-        # if interests_raw is None:
-        # interests_raw = json.loads('[{"CV":1.22}]')
-        # interests_insert=[]
-        # for x in interests_raw:
-        #     key,value = next(iter(x.items()))
-        #     interests_insert.append([key,value])
-        
+
+        print(body)
         degree = body['degree']
-
+        print("*******************")
+        #print(interests_raw)
         interests_insert=[]
-        # interests_raw = json.loads(interests_raw)
+        # nomarlize weigt of each interest
         for x in interests_raw:
-            key,value = next(iter(x.items()))
-            interests_insert.append(Interests(domain=key,weight=value))
-
-        # debug
+            domain = x#list(x.keys())[0]
+            interests_insert.append(Interests(domain=domain,weight=1,father="hbnb"))
+            #interests_insert.append(Interests(domain=domain.lower(),weight=1,father="hbnb"))
         
         # method 1 to update
         # user = UserProfile.objects.filter(user_id=uid).update(interests=interests_insert,degree=degree)
@@ -126,12 +131,69 @@ class RegisterInterestsView(View):
         user_profile.save()
 
         print('save success.')
-        return gen_json_response(status="success",message="Register interests success!")
+        
+        ##############3
+        degree = user_profile.degree
+        paper_collections = user_profile.paper_collections
+        news_collections = user_profile.news_collections
+        github_collections = user_profile.github_collections
+        total_collections = []
+        total_collections.append([ str(item) for item in paper_collections])
+        total_collections.append([str(item) for item in news_collections])
+        total_collections.append([ str(item) for item in github_collections])
+        print("------------------")
+        print("------------------")
+        print("------------------")
+        print(total_collections)
+        interests = [[x.domain, x.weight] for x in user_profile.interests]
+        _res_interests = [[x[0],x[1]] for x in interests[:100] if x[1]>0]
+        query_text = [[x[0],x[1]] for x in interests if x[1] > 0]
+        
+       
+        index = ['arxiv','news','github']
+        total_info_score = get_rough_query_result(query_text,index=index)
+
+        paper_info_score = total_info_score['arxiv']
+        news_info_score = total_info_score['news']
+        github_info_score = total_info_score['github']
+
+
+        try:
+            use_info = uid
+            print(use_info)
+        except:
+            use_info = []
+            print("user info can not be directly changed to dict.")
+
+        print('################################')
+        paper_info = get_acc_query_result(use_info,paper_info_score,index='arxiv')
+        news_info = get_acc_query_result(use_info,news_info_score,index = 'news')
+        github_info = get_acc_query_result(use_info,github_info_score,index = 'github') 
+        paper_list = paper_info + news_info +github_info      
+
+        random.shuffle(paper_list) 
+                
+        return_data = paper_list[0:10]
+
+        t = int(round(time.time()* 1000))
+        for item in return_data:
+
+            item['fid'] = item.pop('id')
+            action_record = ActionLog(uid=uid,fid=item['fid'],action=0,start_time=t,end_time=0)
+            
+            action_record.save()
+
+        
+        data = {"uid":uid,"degree":degree,"interests":_res_interests,"collections":total_collections,"paper_list":return_data}
+
+        #############3
+
+
+        return gen_json_response(status="success",message="Register interests success!",data=data)
 
 
 class LoginView(View):
-    # template_name = 'account/login.html'
-    
+
     def get(self,request):
         # session_id=request.session.session_key
 
@@ -141,67 +203,113 @@ class LoginView(View):
         body = json.loads(request.body.decode('utf-8'))
         username = body["username"]
         password = body["password"]
-        
+        #print('hbnb')
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            uid = user.pk # todo: need tests
+            uid = user.pk 
+            # add login info into session
             request.session['uid'] = uid
             request.session['test'] = 'hbnb'
-        
+
+            # get session id 
             print(request.session['uid'])
-            print(request.session.keys())
             if not request.session.session_key:
                 request.session.save()
             session_id =request.session.session_key
-            print(request.user)
-            # uid = User.objects.get(username=username).pk
-            
+
             # expected interests from front end:
             # "'interests':[
             #     [{'CV':1.2},{'CV object detection':0.8},{'CV SLAM':0.4}],
             #     [{'NLP':1.3},{'NLP object detection':0.7}，{'NLP SLAM':0.8}]
             # ]"
             print(uid)
-            # todo: if speed is too slow, we can redesign the models.py for database
-            # reformat input for query 
             print("------------------")
             try:
-                interests_raw = UserProfile.objects.get(uid=uid)
+                user_profile = UserProfile.objects.get(uid=uid)
             except:
                 return gen_json_response(session_id,status='error',message='Wrong username or password!')
             # print(interests_raw)
-            degree = interests_raw.degree
-            paper_collections = interests_raw.paper_collections
-            news_collections = interests_raw.news_collections
-            github_collections = interests_raw.github_collections
+            
+            degree = user_profile.degree
+            paper_collections = user_profile.paper_collections
+            news_collections = user_profile.news_collections
+            github_collections = user_profile.github_collections
             total_collections = []
             total_collections.append([ str(item) for item in paper_collections])
             total_collections.append([str(item) for item in news_collections])
             total_collections.append([ str(item) for item in github_collections])
-            query_text = [[x.domain, x.weight] for x in interests_raw.interests]
-            # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
+            print("------------------")
+            print("------------------")
+            print("------------------")
+            print(total_collections)
+            interests = [[x.domain, x.weight] for x in user_profile.interests]
+            query_text = [[x[0], x[1]] for x in interests if x[1] >0]
+            _res_interests = [[x[0],x[1]] for x in interests[:100] if x[1]>0]
+            # return_interests = [[x.domain, x.weight] for x in user_profile.interests if x.weight >= 1 ]
             
             # Get recommended papers
             # expected input: [("CV",1.0),("nlp",10.0)]
             # query_text = [("机器学习",10.0),("nlp",10.0)]
             # paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
-            paper_list = get_rough_query_result(query_text)
+            #     paper_info_score,_ = get_rough_query_result(query_text,index='arxiv')
+            # # paper_info = []
+            #     news_info_score,_ = get_rough_query_result(query_text,index = 'news')
+            #     github_info_score,_ = get_rough_query_result(query_text,index = 'github')
+            index = ['arxiv','news','github']
+            total_info_score = get_rough_query_result(query_text,index=index)
+
+            paper_info_score = total_info_score['arxiv']
+            # # # paper_info = []
+            news_info_score = total_info_score['news']
+            github_info_score = total_info_score['github']
+
+        # paper_info_score = get_rough_query_result(query_text,index='arxiv')
+        # paper_info = []
+            # news_info_score = get_rough_query_result(query_text,index = 'news')
+            # github_info_score = get_rough_query_result(query_text,index = 'github')
+
+            try:
+                use_info = uid
+                print(use_info)
+            except:
+                use_info = []
+                print("user info can not be directly changed to dict.")
+
+            print('################################')
+            paper_info = get_acc_query_result(use_info,paper_info_score,index='arxiv')
+            print('################################')
+            news_info = get_acc_query_result(use_info,news_info_score,index = 'news')
+            print('################################')
+            github_info = get_acc_query_result(use_info,github_info_score,index = 'github') 
+            # paper_info = paper_info_score
+            # news_info = news_info_score
+            # github_info = github_info_score
+            paper_list = paper_info + news_info +github_info      
             
-            # paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
-            # print(paper_list[0][1])
-
             # {'uid':123,'username':'kaizige','degree':'master','interests':[ ['CV',1.2],['object detection,0.8],['slam',0.4],['NLP',1.3],['word embedding',0.7]],‘collections’:[{‘type’:‘arxiv’(or ‘news’,‘github’),type对应的字段},…]}
+            # paper_list = paper_info+news_info+github_info
+            random.shuffle(paper_list) 
+                 
+            return_data = paper_list[0:10]
 
-            data = {"uid":uid,"username":username,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":paper_list[0]}
+            t = int(round(time.time()* 1000))
+            for item in return_data:
+
+                item['fid'] = item.pop('id')
+                action_record = ActionLog(uid=uid,fid=item['fid'],action=0,start_time=t,end_time=0)
+                
+                action_record.save()
+                # action_record = {'uid':uid,'fid':item['fid'],'action':0,'start_time':t,'end_time':0}
+            data = {"uid":uid,"username":username,"degree":degree,"interests":_res_interests,"collections":total_collections,"paper_list":return_data}
             # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
-            print(request.session['uid'])
+            print('***********debug login')
+            #print(data['interests'])
+            #print(request.session['uid'])
             request.session.modified = True
 
             response = gen_json_response(session_id,status="success",message="Login success!",data=data)
-            # response.set_cookie('session_id','8bnncdah79b55wn2gnz0jh3bah3937bf')
-            response.set_cookie('my_cookie','cookie value')
-            response.set_cookie('my_cookie2','cookie value2')
+            # add cookie
             response.set_cookie('session_id',session_id)
             
             request.session['test2'] = 'hbnb'
@@ -212,199 +320,174 @@ class LoginView(View):
         else:
             return gen_json_response(status='error',message='Wrong username or password!')
 
-        # return HttpResponseRedirect("/account/login")
 
-@method_decorator(login_required, name='dispatch')
+
 class LogoutView(View):
     # form_class = UserForm  # models.py中自定义的表单
     def get(self,request):
-        logout(request)
-        print('log out ..............')
+        
         return gen_json_response(status="success",message="Logout success!")
         
     def post(self,request):
-        logout(request)
-        print('log out ..............')
+        # print('log out ..............')
+        # logout(request)
+        # # request
+        # try :
+        #     session_id =request.COOKIES['session_id']
+        #     # print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+        #     # print(session_id)
+        # except KeyError:
+        #     return gen_json_response(status='error',message='Your cookie is lost! Please login again!')
+    
+        # sess = Session.objects.get(pk=session_id) 
+        # print(sess) 
         return gen_json_response(status="success",message="Logout success!")
 
+class CollectionsView(View):
 
-@method_decorator(login_required, name='dispatch')
-class CollectView(View):
-    def get(self,request):
+    def post(self,request):
+        '''Input: uid, collection_list, 
+
+        '''
         body_unicode = request.body.decode('utf-8')
-        
-        print(body_unicode)
-        return gen_json_response(status="successs",message="Return your get.",data=body_unicode)
-
-    def post(self,request):
-        body = json.loads(request.body.decode('utf-8'))
+        body = json.loads(body_unicode)
+        # body = request.POST
         print(body)
         uid = body['uid']
-        iid = body['data']['iid']
-        # iid = bson.ObjectId(body['iid'])
-        item_type = body['data']['type']
         user_profile = UserProfile.objects.get(uid=uid)
-        if item_type == 'arxiv':
-            print(type(iid))
-            # temp = CharField('sadsdd')
-            print(type(user_profile.paper_collections))
-            user_profile.paper_collections.append(StringField(text=iid))
-            # UserProfile.objects.filter(uid=uid).update(paper_collections=[CharField(iid)]) 
-            print(user_profile.paper_collections[0])
-            user_profile.save()
-        elif item_type == 'news':
-            user_profile.news_collections.append(StringField(text=iid))
-            user_profile.save()
-        elif item_type == 'github':
-            user_profile.github_collections.append(StringField(text=iid))
-            user_profile.save()
-        else :
-            return gen_json_response(status="error",message="Wrong type for collection!")
-        return gen_json_response(status="successs",message="Collect success.")
+        paper_collections = [ str(item) for item in user_profile.paper_collections]
+        news_collections = [ str(item) for item in user_profile.news_collections]
+        github_collections = [ str(item) for item in user_profile.github_collections]
+        paper_collections_list = get_feeds_info(paper_collections,index='arxiv')
+        news_collections_list = get_feeds_info(news_collections,index='news')
+        github_collections_list = get_feeds_info(github_collections,index='github')
+        res = []
+        res.append(paper_collections_list)
+        res.append(news_collections_list)
+        res.append(github_collections_list)
+        # print("-----debug collections view----")
+        # print(res)
+        return gen_json_response(status='success',data=res)
 
-# @method_decorator(login_required, name='dispatch')
-class FeedsView(View):
-    # template_name = 'account/login.html'
-    
+
+        
+class UpdateInterestsView(View):
+    '''collect user interests/degree when registration
+    '''
     def get(self,request):
-        # session_id =request.session.session_key
-        return gen_json_response(status='error',message='No get for this page.kiddding?')
-
-    def post(self,request):
-        print("$$$$$$$$$$$$$$$$$$$$$$$")
-        print(request.COOKIES.keys())
-        session_id =request.COOKIES['session_id']
-        sess = Session.objects.get(pk=session_id)
-        print(sess.session_data)
-        print(sess.get_decoded())
-
-        
-        print(request.session.keys())
-        # for key, value in sess.items():
-        #     print('{} => {}'.format(key, value))
-        # request.session['test']='dddd'
-        print(sess.session_key)
-        # if not request.session.session_key:
-        #     request.session.save()
-        # print(request.session.session_key)
-        # print(request.session[SESSION_KEY])
-        # print(request.session[BACKEND_SESSION_KEY])
-        # print(request.session[HASH_SESSION_KEY])
-        print("@@@@@@@@@@@@@")
-        sess_data = sess.get_decoded()
-        hello=type(sess_data)
-        print(hello)
-        print(sess_data['test'])
-        body = json.loads(request.body.decode('utf-8'))
-        uid = body["uid"]
-        print(uid)
-        try:
-            if sess_data["uid"] == uid:
-                print('only for login')
-        except KeyError:
-            print("why!!!")
-            return gen_json_response(session_id,status='error',message='Please login first!')
-        # Expected Input
-        # [{"uid":213,"iid":"12dwdaswas22","action":1,"start_time":,"end_time":},...]
-        
-        # feedback=body["data"]["feedback"]
-        print(uid)
-        # todo: if speed is too slow, we can redesign the models.py for database
-        # reformat input for query 
-        # for item in feedback:
-        #     action_log = ActionLog(uid=uid,iid=item['iid'],action=item['action'],start_time=item['start_time'],end_time=['end_time'] )
-        #     action_log.save()
-        # print("------------------")
-        try:
-            interests_raw = UserProfile.objects.get(uid=uid)
-            print(interests_raw)
-        except:
-            return gen_json_response(status='error',message='Please login first!')
-        print(interests_raw)
-        # interests = json.loads()
-        # mytuple = next(iter(interests[0][0].items()))
-        query_text = [[x.domain, x.weight] for x in interests_raw.interests]
-        # query_text = [ next(iter(x.items())) for item in query_text_raw for x in item ]
-        
-        # Get recommended papers
-        # expected input: [("CV",1.0),("nlp",10.0)]
-        # query_text = [("机器学习",10.0),("nlp",10.0)]
-        # paper_list = get_rough_query_result(query_text,index='news',fields=[('content',4),('title',10)])
-        # paper_list = get_rough_query_result(query_text)
-        paper_list = [['ooooooo']]
-        # paper_list = [[x.domain, x.weight] for x in interests_raw.interests]
-        
-        random.shuffle(paper_list[0]) # just for testing interface
-        print(paper_list[0][1])
-        data = {"uid":uid,"paper_list":paper_list[0]}
-        # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
-        return gen_json_response(session_id,status="success",message="Send feeds success!",data=data)
-
-@method_decorator(login_required, name='dispatch')
-class ProfileView(View):
-    pass
-
-# @method_decorator(login_required, name='dispatch')
-class TrendingView(View):
-    def get(self,request):
-        body = json.loads(request.body.decode('utf-8'))
-        uid = body['uid']
-        iid = body['iid']
-        start_time = body['start_time']
-        end_time = body['end_time']
-        
-        data = {"uid":uid,"iid":iid,"start_time" : start_time,"end_time":end_time}
-        # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
-        return gen_json_response(status="success",message="Search success!",data=data)
+        return gen_json_response(status='error',message='No get for this page.')
     
-
     def post(self,request):
-        body = json.loads(request.body.decode('utf-8'))
-        print("############")
-        print(body)
-        uid = body['uid']
-        iid = body['iid']
-        start_time = body['start_time']
-        end_time = body['end_time']
-        
-        data = {"uid":uid,"iid":iid,"start_time" : start_time,"end_time":end_time}
-        # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
-        return gen_json_response(status="success",message="Search success!",data=data)
-    
-    
-@method_decorator(login_required, name='dispatch')
-class SubscribeView(View):
-    def post(self,request):
-        body = json.loads(request.body.decode('utf-8'))
+        '''Args:
+            interests:
+            password: string
+            Returns:
+            success
+            error status when duplication detected
+        '''
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
         uid = body['uid']
         interests_raw = body['interests']
+
+        print(body)
+        degree = body['degree']
+        print("*******************")
+        #print(interests_raw)
+        interests_insert=[]
+
+        for x in interests_raw:
+            domain = x
+            interests_insert.append(Interests(domain=domain.lower(),weight=1,father="hbnb"))
+        
+        user_profile = UserProfile.objects.get(uid=uid)
+        user_profile.interests = interests_insert
+        user_profile.degree = degree
+    
+        # write to db
+        user_profile.save()
+        
+        paper_collections = user_profile.paper_collections
+        news_collections = user_profile.news_collections
+        github_collections = user_profile.github_collections
+        total_collections = []
+        total_collections.append([ str(item) for item in paper_collections])
+        total_collections.append([str(item) for item in news_collections])
+        total_collections.append([ str(item) for item in github_collections])
+        print("------------------")
+        print("------------------")
+        query_text = [[x.domain, x.weight] for x in user_profile.interests if x.weight > 0]
+        
+        
+        index = ['arxiv','news','github']
+        total_info_score = get_rough_query_result(query_text,index=index)
+
+        paper_info_score = total_info_score['arxiv']
+        # # # paper_info = []
+        news_info_score = total_info_score['news']
+        github_info_score = total_info_score['github']
+
+        use_info = uid
+        print('################################')
+        paper_info = get_acc_query_result(use_info,paper_info_score,index='arxiv')
+        print('################################')
+        news_info = get_acc_query_result(use_info,news_info_score,index = 'news')
+        print('################################')
+        github_info = get_acc_query_result(use_info,github_info_score,index = 'github') 
+
+        paper_list = paper_info + news_info +github_info      
+        random.shuffle(paper_list) 
+                
+        return_data = paper_list[0:10]
+
+        t = int(round(time.time()* 1000))
+        for item in return_data:
+
+            item['fid'] = item.pop('id')
+            action_record = ActionLog(uid=uid,fid=item['fid'],action=0,start_time=t,end_time=0)
+            
+            action_record.save()
+        data = {"uid":uid,"degree":degree,"interests":query_text,"collections":total_collections,"paper_list":return_data}
+
+        # print(request.session['uid'])
+        # request.session.modified = True
+        print(data["interests"])
+        response = gen_json_response(status="success",message="Update interests success!",data=data)
+
+        print('update success.')
+        # add cookie
+        # response.set_cookie('session_id',session_id)
+        
+        return response
+
+
+class UpdateDegreeView(View):
+    def get(self,request):
+        return gen_json_response(status='error',message='No get for this page.')
+    def post(self,request):
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
         uid = body['uid']
 
-        interests_insert=[]
-        # interests_raw = json.loads(interests_raw)
-        user_profile = UserProfile.objects.get(uid=uid)
-        for x in interests_raw:
-            key,value = next(iter(x.items()))
-            user_profile.interests.append(Interests(domain=key,weight=value))
+        print(body)
+        degree = body['degree']
 
-        print("@@@@@@@@@@@@@")
+        user_profile = UserProfile.objects.get(uid=uid)
+        user_profile.degree = degree
+    
+        # write to db
         user_profile.save()
 
-        print('save success.')
-        return gen_json_response(status="success",message="Subscribe interests success!")
+        data = {"uid":uid, "degree":degree}
 
-class SearchView(View):
-    # form_class = UserForm  # models.py中自定义的表单
-    def get(self,request):
-        body = json.loads(request.body.decode('utf-8'))
-        uid = body['uid']
-        query_raw = body['data']['keywords']
-        query_text = [[x, 1.0] for x in query_raw]
+        # print(request.session['uid'])
+        # request.session.modified = True
+        print(data["degree"])
+        response = gen_json_response(status="success",message="Update degree success!",data=data)
 
-        paper_list = get_rough_query_result(query_text)
+        print('update success.')
+        # add cookie
+        # response.set_cookie('session_id',session_id)
         
-        print(paper_list[0][1])
-        data = {"uid":uid,"paper_list":paper_list[0]}
-        # data = {"status":"success","message":"Login success!","data":{"uid":uid}}
-        return gen_json_response(status="success",message="Search success!",data=data)
-
+        return response
+    
