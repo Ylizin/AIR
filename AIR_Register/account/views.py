@@ -204,24 +204,8 @@ class LoginView(View):
             response.set_cookie('my_cookie2','cookie value2')
             response.set_cookie('session_id',session_id)
             
-            
-            hello=response.cookies.keys()
-            
-
-
-            print(hello)
-                        # response.set_cookie('username',username,3600)
-            # response["Access-Control-Allow-Origin"] = "*" 
-            # response["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS" 
-            # response["Access-Control-Allow-Credentials"] = "true"
-            
-            # # response["Access-Control-Max-Age"] = "1000" 
-            # response["Access-Control-Allow-Headers"] = "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-            # print(response._headers)
             request.session['test2'] = 'hbnb'
             request.session.modified = True
-
-            # print(request.session.keys())
             return response
 
 
